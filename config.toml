@@ -31,10 +31,10 @@ googleAnalytics = ""
 #    name = "Projects"
 #    weight = 3
 
-#[[menu.main]]
-#    url = "/categories/"
-#    name = "Categories"
-#    weight = 4
+[[menu.main]]
+    url = "/categories/"
+    name = "Categories"
+    weight = 4
 
 [[menu.main]]
     url = "/tags/"
