@@ -68,7 +68,7 @@ spanning-tree gaurd loop default
 
 ## Root Guard
 * Configured on all **designated ports**.
-* Prevents a normallydesignated port from transitioning to root.
+* Prevents a normally designated port from transitioning to root.
 * Prevent surrounding switches from becoming root.
 * Places a port into **listening**, **root-inconsistent** state on the detection of a superior BPDU.
 * Ports auto recover once the superior BPDUs stop being received.
