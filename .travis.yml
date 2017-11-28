@@ -8,6 +8,7 @@ install:
 
 script:
   - hugo # This commands builds your website on travis
+  - echo 'blog.it-ninja.xyz' > public/CNAME # Create a CNAME file which maps your site to your custom domain
 
 # Deploy to GitHub pages
 deploy:
@@ -17,4 +18,3 @@ deploy:
   local_dir: public
   on:
     branch: master
-
