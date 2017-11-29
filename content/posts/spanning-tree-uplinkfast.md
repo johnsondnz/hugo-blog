@@ -9,7 +9,7 @@ tags: [ spanning-tree ]
 # Uplink Fast
 * Used to transition a **blocking** port into forwarding faster than the normal 50 second timer (max-age(20) + (2 x forwarding delay(15))
 * Transition take around 1-3 seconds.
-* Cisco best practise states only use in the access-layer.
+* Cisco best practice states only use in the access-layer.
 * Enabled globally for all VLANs on the switch.  **All or nothing**.
 * When the normal root port comes back up uplinkfast will transition back to that port.  Time this takes is 2 x forwarding delay + 5 seconds before the root port enters the forwarding state.
 
@@ -21,6 +21,4 @@ tags: [ spanning-tree ]
   * Default update rate is 150pps.
 
 ## Configure globally
-```
-spanning-tree uplinkfast
-```
+`spanning-tree uplinkfast`

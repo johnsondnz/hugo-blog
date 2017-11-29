@@ -20,20 +20,18 @@ tags: [ spanning-tree ]
 
 ```
 spanning-tree portfast default
-!
 interface <iface>
  no spanning-tree portfast
 ```
 
 ### Per interface
 ```
-!
 interface <iface>
  spanning-tree portfast
 ```
 
 ## Verify
-* Verify all trunks to be sure when using the global option. IOS shouldn't apply the configure to the trubk ports by default.
+* Verify all trunks to be sure when using the global option. IOS shouldn't apply the configure to the trunk ports by default.
 
 ```
 ASW1#show spanning-tree interface gi1/0 portfast 
@@ -63,23 +61,17 @@ interface <iface>
 ```
 
 ### Configure globally
-```
-spanning-tree portfast edge bpduguard default
-```
+`spanning-tree portfast edge bpduguard default`
 
 or
 
-```
-spanning-tree portfast bpduguard default
-```
+`spanning-tree portfast bpduguard default`
 
 ## BPDU Filter
 * Can be enabled on a `portfast` enabled port.
 
 ### Configure globally
-```
-spanning-tree bpdufilter default
-```
+`spanning-tree bpdufilter default`
 
 ### Configure per interface
 ```

@@ -18,6 +18,7 @@ tags: [ spanning-tree, loop-prevention ]
 ## Timers
 * Hello every 15 seconds.
 * Dead timer: 3 x hello.
+* Uses mutlicast destination of 0180.c200.0002.
 
 ## Normal
 * Does nothing except logging when the dead timer expires.
@@ -29,9 +30,7 @@ tags: [ spanning-tree, loop-prevention ]
 * If none of the eight messages return a reply the port is put into **err-dsiable** state and a log generated.
 
 ## Configure globlly
-```
-udld (enable|agressive)
-```
+`udld (enable|agressive)`
 
 ## Configure per interface
 ```
