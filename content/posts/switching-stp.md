@@ -3,7 +3,7 @@ title: "Spanning-Tree"
 date: 2017-11-29T15:14:19+13:00
 draft: true
 categories: [ cisco, switching ]
-tags: [ cisco, spanning-tree ]
+tags: [ spanning-tree ]
 ---
 
 ## Todo
