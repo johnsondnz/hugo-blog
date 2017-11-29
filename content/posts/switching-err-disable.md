@@ -15,7 +15,9 @@ tags: [ security ]
 
 ## Configure
 ### Timer interval
-`err-disable recovery interval <30-86400>`
+```
+switch(config)# err-disable recovery interval <30-86400>
+```
 
 ### Detect
 ```

@@ -21,14 +21,14 @@ tags: [ spanning-tree ]
 
 ```
 spanning-tree portfast default
-interface <iface>
- no spanning-tree portfast
+switch(config)# interface <iface>
+switch(config-if)# no spanning-tree portfast
 ```
 
 ### Per interface
 ```
-interface <iface>
- spanning-tree portfast
+switch(config)# interface <iface>
+switch(config-if)# spanning-tree portfast
 ```
 
 ## Verify
@@ -46,7 +46,7 @@ VLAN0200            disabled
 ```
 
 # BPDU Guard
-* `spanning-tree portfast` is a prerequisite.
+* `switch(config-if)# spanning-tree portfast` is a prerequisite.
 * Can be applied globally or per port.
 * Should be applied to all **edge ports**.
 * err-disables a port on detection of a BPDU.
@@ -57,25 +57,31 @@ VLAN0200            disabled
 
 ### Configure per interface
 ```
-interface <iface>
- spanning-tree bpduguard enable
+switch(config)# interface <iface>
+switch(config-if)# spanning-tree bpduguard enable
 ```
 
 ### Configure globally
-`spanning-tree portfast edge bpduguard default`
+```
+switch(config)# spanning-tree portfast edge bpduguard default
+```
 
 or
 
-`spanning-tree portfast bpduguard default`
+```
+switch(config)# spanning-tree portfast bpduguard default
+```
 
 ## BPDU Filter
 * Can be enabled on a `portfast` enabled port.
 
 ### Configure globally
-`spanning-tree bpdufilter default`
+```
+switch(config)# spanning-tree bpdufilter default
+```
 
 ### Configure per interface
 ```
-interface <iface>
- spanning-tree bpdufilter enable
+switch(config)# interface <iface>
+switch(config-if)# spanning-tree bpdufilter enable
 ```

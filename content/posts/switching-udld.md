@@ -30,10 +30,10 @@ tags: [ loop-prevention ]
 * If none of the eight messages return a reply the port is put into **err-dsiable** state and a log generated.
 
 ## Configure globlly
-`udld (enable|agressive)`
+`switch(config)# udld (enable|agressive)`
 
 ## Configure per interface
 ```
-interface <iface>
- udld (<cr>|agressive|disable)
+switch(config)# interface <iface>
+switch(config-if)# udld (<cr>|agressive|disable)
 ```

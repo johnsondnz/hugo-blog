@@ -23,43 +23,43 @@ tags: [ security ]
 ## Configure per interface
 ### Shutdown (Default mode)
 ```
-interface <iface>
- switchport port-security
+switch(config)#interface <iface>
+switch(config-if)# switchport port-security
 ``` 
 
 or
 
 ```
-interface <iface>
- switchport port-security violation shutdown
+switch(config)# interface <iface>
+switch(config-if)# switchport port-security violation shutdown
 ```
 
 ### Protect
 ```
-interface <iface>
- switchport port-security violation protect
+switch(config)# interface <iface>
+switch(config-if)# switchport port-security violation protect
 ``` 
 
 ### Restrict
 ```
-interface <iface>
- switchport port-security violation restrict
+switch(config)# interface <iface>
+switch(config-if)# switchport port-security violation restrict
 ``` 
 
 ### Sticky, static, forbidden MAC
 ```
-interface <iface>
- switchport port-security mac-address (48bit mac|sticky)
+switch(config)# interface <iface>
+switch(config-if)# switchport port-security mac-address (48bit mac|sticky)
 ``` 
 
 ```
-interface <iface>
- switchport port-security mac-address forbidden <mac>
+switch(config)# interface <iface>
+switch(config-if)# switchport port-security mac-address forbidden <mac>
 ``` 
 
 ### MAC limit
 ```
-interface <iface>
+switch(config)#interface <iface>
  switchport port-security maximum <1-4097>
 ```
 
@@ -88,7 +88,6 @@ Configured MAC Addresses   : 0
 Sticky MAC Addresses       : 0
 Last Source Address:Vlan   : 0050.0100.0500:10
 Security Violation Count   : 0
-
 ```
 
 ### Sticky MAC
@@ -133,7 +132,6 @@ Vlan    Mac Address       Type                          Ports   Remaining Age
 -----------------------------------------------------------------------------
 Total Addresses in System (excluding one mac per port)     : 0
 Max Addresses limit in System (excluding one mac per port) : 4096
-
 ```
 
 ## Recovery from err-disable

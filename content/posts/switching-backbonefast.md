@@ -41,7 +41,7 @@ tags: [ spanning-tree ]
 
 ## Configure
 ```
-spanning-tree backbonefast
+switch(config)# spanning-tree backbonefast
 ```
 
 ## Verify

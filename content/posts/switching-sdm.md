@@ -16,27 +16,37 @@ tags: [ templates ]
 ### Access
 If the MLS is running a lot of ACLs this template will allocate resources to handle the maximum number of ACLs.
 
-`switch(config)# sdm prefer access`
+```
+switch(config)# sdm prefer access
+```
 
 ### Default
 Default. Treats all functions roughly the same.
 
-`switch(config)# sdm prefer default`
+```
+switch(config)# sdm prefer default
+```
 
 ### Dual IPv4 and IPv6
 For dual-stack switches.  It doesn't support every IPv6 feature includng IPv6 multicast.  *__Do homework__*.
 
-`switch(config)# sdm prefer dual-ipv4-and-ipv6`
+```
+switch(config)# sdm prefer dual-ipv4-and-ipv6
+```
 
 ### Routing
 Enhances the environment for IPv4 unicast routing.
 
-`switch(config)# sdm prefer routing`
+```
+switch(config)# sdm prefer routing
+```
 
 ### vlan
 Supprts CAM growth to contain the maximum number of unicast MAC address.  *__This also disable hardware routing__*.
 
-`switch(config)# sdm prefer vlan`
+```
+switch(config)# sdm prefer vlan
+```
 
 *__Note__*: Reload is required to change the allocation of system resources.
 

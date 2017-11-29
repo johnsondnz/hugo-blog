@@ -40,25 +40,25 @@ tags: [ interfaces, lacp, pagp, spanning-tree ]
 * Ports can be up and not bundled, meaning STP sees the physical ports not the logical ports.
 * Each end of a etherchannel pair needs to run the same protocol.  Modes can differ within that protocol.
 * You cannot change the protocol on a port without first removing the original configured protocol.
-  * Issue `no channel-group <num>` first.
+  * Issue `switch(config-if)# no channel-group <num>` first.
 
 ## Configure per interface
 ### On
 ```
-interface <iface>
- channel-group <num> mode on
+switch(config)# interface <iface>
+switch(config-if)# channel-group <num> mode on
 ```
 
 ### LACP
 ```
-interface <iface>
- channel-group <num> mode (active|passive)
+switch(config)# interface <iface>
+switch(config-if)# channel-group <num> mode (active|passive)
 ```
 
 ### PAgP
 ```
-interface <iface>
- channel-group <num> mode (desirable|auto)
+switch(config)# interface <iface>
+switch(config-if)# channel-group <num> mode (desirable|auto)
 ```
 
 ## Verify

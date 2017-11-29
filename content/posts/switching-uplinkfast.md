@@ -21,4 +21,6 @@ tags: [ spanning-tree ]
   * Default update rate is 150pps.
 
 ## Configure globally
-`spanning-tree uplinkfast`
+```
+switch(config)# spanning-tree uplinkfast
+```

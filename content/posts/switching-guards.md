@@ -32,7 +32,7 @@ interface <iface>
 ```
 
 #### Configure globally
-`spanning-tree gaurd loop default`
+`switch(config)# spanning-tree gaurd loop default`
 
 
 ## Root Guard
@@ -45,6 +45,6 @@ interface <iface>
 
 ### Configure per interface
 ```
-interface <iface>
- spanning-tree guard root
+switch(config)# interface <iface>
+switch(config-if)# spanning-tree guard root
 ```
