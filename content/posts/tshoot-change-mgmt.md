@@ -1,7 +1,7 @@
 ---
 title: "Change Management"
 date: 2017-11-29T14:22:19+13:00
-draft: true
+draft: false
 categories: [ cisco, troubleshooting ]
 tags: [ study-notes, tshoot, methodologies ]
 ---

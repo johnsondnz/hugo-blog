@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting Process"
 date: 2017-11-29T15:08:19+13:00
-draft: true
+draft: false
 categories: [ cisco, troubleshooting ]
 tags: [ study-notes, tshoot, methodologies ]
 ---

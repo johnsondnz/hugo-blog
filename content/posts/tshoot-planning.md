@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting Planned vs Unplanned"
 date: 2017-11-29T13:38:19+13:00
-draft: true
+draft: false
 categories: [ cisco, troubleshooting ]
 tags: [ study-notes, tshoot, methodologies ]
 ---

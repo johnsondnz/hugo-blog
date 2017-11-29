@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting Methods"
 date: 2017-11-29T14:47:19+13:00
-draft: true
+draft: false
 categories: [ cisco, troubleshooting ]
 tags: [ study-notes, tshoot, methodologies ]
 ---
@@ -38,5 +38,3 @@ tags: [ study-notes, tshoot, methodologies ]
 * Eliminate faulty equipment.
 * Swap device/cabling, does the fault move?
 * If the problem moves or goes away the device was at fault.
-
-## 
