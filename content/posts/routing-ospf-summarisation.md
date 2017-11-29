@@ -23,6 +23,11 @@ tags: [ ospf, summarisation ]
 * ABSR summarisation.
   * `summary-address <address> <mask>` command is used within the routing process.
 
+## What happens
+* Downstream OSPF routers receive an internal OSPF route with a AD of 110.
+* There must be a route with a longer prefix that lies within the summary-address prefix for the summary-address to be advertised.
+
+
 ## Tips
 1. Convert the addres binary.
 2. From left to right comapare the binary addresses.

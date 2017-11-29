@@ -7,6 +7,7 @@ tags: [ ospf ]
 ---
 
 ## OSPF
+* IP protocol 89.
 * Link state protocol.
 * Uses dijkstra algorithm.
 * Multi-area and single area topology options.
@@ -90,7 +91,7 @@ router(config-if)# ip ospf network <type>
 Changing the `hello-interval` interface command also changes the dead timer interval.
 
 ```
-router(config#) interface <int>
+router(config#) interface <iface>
 router(config-if)# ip ospf hello-interval <sec>
 ```
 
@@ -98,7 +99,7 @@ router(config-if)# ip ospf hello-interval <sec>
 Effects the DR and BDR election.
 
 ```
-router(config)# interface <int>
+router(config)# interface <iface>
 router(config-if)# ip ospf priroity <0-255>
 ```
 
@@ -116,19 +117,35 @@ router(config-if)# ip ospf <process> area <area>
 ```
 
 ### Passive Interface
-If using the `default` knob be sure to issue `no passive-interface <int>` on interfaces where you expect neighbours to form.
+If using the `default` knob be sure to issue `no passive-interface <iface>` on interfaces where you expect neighbours to form.
 
 ```
 router(config)# router ospf <process>
-router(config-router)# passive-interface <int>
+router(config-router)# passive-interface <iface>
 ```
 
 or
 
 ```
-router(config)# interface <int>
+router(config)# interface <iface>
 router(config-if)# ip ospf passive-interface
 ```
+
+### Advertise default route
+A default route must exist in the routers route table.
+
+```
+router(config)# router ospf <process>
+router(config-router)# default information-originate
+```
+
+or always, a default route is advertise regardless of the presence of a default route.
+
+```
+router(config)# router ospf <process>
+router(config-router)# default information-originate always
+```
+
 ## Verify
 ### Interfaces
 ```
