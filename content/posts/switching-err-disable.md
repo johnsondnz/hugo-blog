@@ -6,7 +6,7 @@ categories: [ cisco, switching ]
 tags: [ security ]
 ---
 
-# Recovery
+## Recovery
 * All detectors are on by default.
 * All recovery modes are disabled by default.
 * Default recovery timer is 300 seconds.

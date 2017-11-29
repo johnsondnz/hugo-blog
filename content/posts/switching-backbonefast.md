@@ -6,7 +6,7 @@ categories: [ cisco, switching ]
 tags: [ spanning-tree ]
 ---
 
-# Backbone Fast
+## Backbonefast
 * Cisco proprietary.
 * Helps with recover from undirect link failure by detecting inferrior BPDU.
 

@@ -6,7 +6,7 @@ categories: [ cisco, switching ]
 tags: [ security ]
 ---
 
-# Port Security
+## Port Security
 * Port level security feature.
 * Exclusive use from 802.1x.  You cannot use both features on the same port.
 * Modes

@@ -1,19 +1,19 @@
 ---
-title: "Spanning-Tree Loop and Root Guard"
+title: "Loop and Root Guard"
 date: 2017-11-28T16:18:19+13:00
 draft: false
 categories: [ cisco, switching ]
 tags: [ spanning-tree, loop-prevention ]
 ---
 
-# Short Version
+## Short Version
 * Loop Guard on non-designated ports, except edge ports.
 * Root Guard on all designated ports.
 * BPDU Guard and portfast on all edge ports.
 
-# Loop Guard vs Root Guard
+## Loop Guard vs Root Guard
 
-## Loop Guard
+### Loop Guard
 * Should be applied on **all non-designated ports**.
 * Can be configured globally and per interface.
 * Prevents an interface from transitioning to designated in the absence of BPDUs.
@@ -25,13 +25,13 @@ tags: [ spanning-tree, loop-prevention ]
 * When applied globally the switch only ports considered to be point-to-point links are enabled.
 * Ports auto recover once BPDUs start being received again.
 
-### Configure per interface
+#### Configure per interface
 ```
 interface <iface>
  spanning-tree guard loop
 ```
 
-### Configure globally
+#### Configure globally
 `spanning-tree gaurd loop default`
 
 
