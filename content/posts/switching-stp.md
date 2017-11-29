@@ -3,14 +3,27 @@ title: "Spanning-Tree"
 date: 2017-11-29T15:14:19+13:00
 draft: true
 categories: [ cisco, switching ]
-tags: [ spanning-tree ]
+tags: [ cisco, spanning-tree ]
 ---
 
+## Todo
+Split this into respective STP docs.
+
+## CST, PVST+, MST
+* __CST__: Common spanning-tree.  All VLANs in the same instance.  One switch handles all traffic.
+* __PVST+__: Per-VLAN spanning-tree plus.  SPT run per-vlan, very granular.
+* __MST__: Multiple spanning-tree.  VLANs are mapped to one of 16 instance that have a common topology.
+  * IST works with CST and is instance 0.  Can represent the entire MST region as a virtual CST bridge.
+  * MSTI is an instance with VLAN mappings and is instance 1-15.
+  * MSTI regions:
+    * `name`, `revision` and `vlan-mapping table` must match for switches to be in the same region.
+
 ## Cisco MAC address
-As Cisco uses per-vlan spanning-tree and as a result uses non-IEEE destination MAC for BPDUs.
+As Cisco uses per-vlan spanning-tree (PVST+) and as a result uses non-IEEE destination MAC for BPDUs.
 
 * __Cisco__: 0100.0ccc.cccd for PVST and RSTP+.  Uses a 802.3 / 802.2 SNAP Frame.
 * __IEEE-802.1d and 802.1w__: 0180.c200.0000 802.3 / 802.2 LLC Frame.
+* __IEEE-802.1s__: ------------ DUNNO ------------
 
 ### Vendor interoperability
 Cisco uses of non-IEEE standard protocols can result in other vendors not understanding the BPDU.  Some will drop the frame, others will switch it as a standard multicast frame.
@@ -39,11 +52,11 @@ Juniper has a Rapid-PVST+ equivilent called VSTP.  Cisco switches meed to use th
   * Recieving switches flush mac-address table on all ports except the one which received the TCN.
   * Legacy switches are notified using the TCN BPDU as per 802.1d.
 
-### Port costs
+## Port costs
 From [packetlife.net](http://packetlife.net/blog/2008/sep/5/spanning-tree-port-costs/).
 
-#### Short
+### Short
 ![short](/img/8021d-1998-costs.png)
 
-#### Long
+### Long
 ![long](/img/8021d-2004-costs.png)
