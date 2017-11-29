@@ -69,7 +69,6 @@ ASW1(config)#errdisable recovery cause ?
   udld                  Enable timer to recover from udld error
   unicast-flood         Enable timer to recover from unicast flood error
   vmps                  Enable timer to recover from vmps shutdown error
-
 ```
 
 ## Verify
@@ -150,5 +149,4 @@ Recovery command: "clear     Disabled
 Timer interval: 300 seconds
 
 Interfaces that will be enabled at the next timeout:
-
 ```

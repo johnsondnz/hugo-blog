@@ -12,7 +12,7 @@ tags: [ ospf ]
 * Is a bandaid!!.  They are not a solution for poor area design.
 * In the configuration the command defines the transit area.
 * The transit area cannot be any sort of stub area.
-* You must you the RID of the remote router in the `router(config-router)# area <area> virtual-link` command.
+* You must you the RID of the remote router in the `area <area> virtual-link` route process command.
 * Is a point-to-point link.
 
 ## Authenticaiton

@@ -46,13 +46,13 @@ VLAN0200            disabled
 ```
 
 # BPDU Guard
-* `switch(config-if)# spanning-tree portfast` is a prerequisite.
+* `spanning-tree portfast` interface command is a prerequisite.
 * Can be applied globally or per port.
 * Should be applied to all **edge ports**.
 * err-disables a port on detection of a BPDU.
 * Recovery is not automated by default.
   * `shutdown`, `no shutdown` restores the interface but doesn't guarantee the absence of a BPDU.
-  * `err-disable recovery` can be configured to attempt a restore every x seconds.
+  * `err-disable recovery` global command can be configured to attempt a restore every x seconds.
   * either option results in an *err-diabled* port in the presence of BPDUs.
 
 ### Configure per interface

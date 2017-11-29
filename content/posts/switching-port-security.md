@@ -135,7 +135,7 @@ Max Addresses limit in System (excluding one mac per port) : 4096
 ```
 
 ## Recovery from err-disable
-* Issue `shutdown` followed by `no shutdown` onthe port.
+* Issue `shutdown` followed by `no shutdown` on the port.
 * or issue the global command `errdisable recovery cause psecure-violation` for automated recovery.
   * not to be confused with `security-violation` which is for 802.1x.
   * recovery timer default is every 300 seconds.

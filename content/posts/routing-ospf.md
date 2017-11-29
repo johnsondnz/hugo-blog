@@ -57,16 +57,16 @@ tags: [ ospf ]
 * LSA update on Cisco is 30 minutes, other vendors vary.
 
 ## Network command
-* `router(config-router)# network <network> <wildcard mask> area <area>`
+* `network <network> <wildcard mask> area <area>` route process command.
 * The above command is used to select interface matching this network and mask for entry into the OSPF process. 
-* I prefer `router(config-if)# ip ospf <process> area <area>`.  This more explicit and avoids wildcard mask traps.
+* I prefer `ip ospf <process> area <area>` interface command.  This more explicit and avoids wildcard mask traps.
 
 ### Hub and Spoke
-* `router(config-router)# neighbor <ip>` statement is required to start unicast OSPF neighbor process.
+* `neighbor <ip>` route process command is required to start unicast OSPF neighbor process.
   * Only required on the hub in hub-n-spoke networks.
   * Doesn't hurt to place this on the spokes as well.
 * Hub __must__ be the DR and there can be no BDR.
-  * All spoke interfaces __must__ be configured with `router(config-if)# ip ospf priority 0`.
+  * All spoke interfaces __must__ be configured with `ip ospf priority 0` interface command.
   * Adjacencies will come up if this isn't done, however it is inefficient to have a spoke as the DR.  If the hub goes down, then a BDR also serves no purpose as all inter-site communications must go via the hub.
 
 ## Passive interface
@@ -87,7 +87,7 @@ router(config)# interface <iface>
 router(config-if)# ip ospf network <type>
 ```
 ### Hello interval
-Changing the `hello-interval` also changes the dead timer interval.
+Changing the `hello-interval` interface command also changes the dead timer interval.
 
 ```
 router(config#) interface <int>
