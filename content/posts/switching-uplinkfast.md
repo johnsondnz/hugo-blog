@@ -6,7 +6,7 @@ categories: [ cisco, switching ]
 tags: [ spanning-tree ]
 ---
 
-# Uplink Fast
+## Uplinkfast
 * Used to transition a **blocking** port into forwarding faster than the normal 50 second timer (max-age(20) + (2 x forwarding delay(15))
 * Transition take around 1-3 seconds.
 * Cisco best practice states only use in the access-layer.

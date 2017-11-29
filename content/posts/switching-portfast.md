@@ -6,7 +6,8 @@ categories: [ cisco, switching ]
 tags: [ spanning-tree ]
 ---
 
-# Spanning-Tree Portfast
+
+## Portfast
 * Disables STP on an interface.
 * Listening and learning states skipped saving 30 seconds.
 * Can be enabled on access and trunk interfaces.
@@ -50,7 +51,7 @@ VLAN0200            disabled
 * Should be applied to all **edge ports**.
 * err-disables a port on detection of a BPDU.
 * Recovery is not automated by default.
-  * `shut`, `no shut` restores the interface but doesn't guarantee the absence of a BPDU.
+  * `shutdown`, `no shutdown` restores the interface but doesn't guarantee the absence of a BPDU.
   * `err-disable recovery` can be configured to attempt a restore every x seconds.
   * either option results in an *err-diabled* port in the presence of BPDUs.
 

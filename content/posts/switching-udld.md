@@ -6,7 +6,7 @@ categories: [ cisco, switching ]
 tags: [ spanning-tree, loop-prevention ]
 ---
 
-# UDLD
+## Unidirectional Link Detection (UDLD)
 * Used to also detect unidirectional links.
 * When first enabling agressive mode on the first end-point it waits for the first peering.  This tells the first switch that there is a udld enabled switch attached.
 * Has the added benefit of detecting unidirectional links before STP is fully converged after a boot.

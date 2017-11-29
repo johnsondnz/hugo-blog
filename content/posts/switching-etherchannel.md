@@ -6,7 +6,7 @@ categories: [ cisco, switching ]
 tags: [ interfaces, lacp, pagp, spanning-tree ]
 ---
 
-# EtherChannel
+## EtherChannel
 * Logical bundle of 2-8 like type interfaces between two switches.
   * MLAG allows for multi-chasses etherchannel.
 * Provides a single layer-2 or layer-3 logical interfaces to IOS.
@@ -32,9 +32,10 @@ tags: [ interfaces, lacp, pagp, spanning-tree ]
 * __Off__: Port is not in a bundle.
 
 ## Gotchas
-* Ports in a bundle must agree on sped and duplex.
-* Physical and Port-Channel interfaces must have the same native vlan.
-* Physical and Port-Channel interfaces must have the same vlan list.
+* Ports in a bundle must agree on speed and duplex.
+* Physical and Port-Channel ports must have the same native vlan.
+* Physical and Port-Channel ports must have the same vlan list.
+* Physical and Port-Channel ports must agree on interface-mode, i.e. access or trunk.
 * Port-Secuirty enabled ports cannot be entered into a etherchannel bundle.
 * Ports can be up and not bundled, meaning STP sees the physical ports not the logical ports.
 * Each end of a etherchannel pair needs to run the same protocol.  Modes can differ within that protocol.
