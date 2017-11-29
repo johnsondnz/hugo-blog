@@ -8,7 +8,7 @@ tags: [ security ]
 
 # Recovery
 * All detectors are on by default.
-* All recovery modes are disabled buy default.
+* All recovery modes are disabled by default.
 * Default recovery timer is 300 seconds.
   * Min is 30 seconds.
 * `detect` and `recovery` modes configured globally.
