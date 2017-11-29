@@ -23,7 +23,10 @@ tags: [ ospf ]
 * Stub flag.
 * Authentication password.
 
-*__Note__*: Unique RID is required for each router in the the OSPF domain.
+*__Notes__*:
+
+* Unique RID is required for each router in the the OSPF domain.
+* MTU should match too, else you risk getting stuck in EXSTART due to one neighbour maximising MTU to a point that one neighbour cannot accept the frames due to them being too large.
 
 ## OSPF Networks
 * __Point-to-point__: Network that joins a pair of routers.
@@ -66,6 +69,10 @@ tags: [ ospf ]
   * All spoke interfaces __must__ be configured with `router(config-if)# ip ospf priority 0`.
   * Adjacencies will come up if this isn't done, however it is inefficient to have a spoke as the DR.  If the hub goes down, then a BDR also serves no purpose as all inter-site communications must go via the hub.
 
+## Passive interface
+Useful for when an interface has no potential neighbours but you want the network assoicated with the interface injected into OSPF.
+
+Passive interfaces do not send or process received OSPF packets.
 
 ## Configure
 ### Network type
@@ -108,6 +115,20 @@ router(config)# interface <iface>
 router(config-if)# ip ospf <process> area <area>
 ```
 
+### Passive Interface
+If using the `default` knob be sure to issue `no passive-interface <int>` on interfaces where you expect neighbours to form.
+
+```
+router(config)# router ospf <process>
+router(config-router)# passive-interface <int>
+```
+
+or
+
+```
+router(config)# interface <int>
+router(config-if)# ip ospf passive-interface
+```
 ## Verify
 ### Interfaces
 ```
