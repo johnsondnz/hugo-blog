@@ -29,13 +29,10 @@ tags: [ spanning-tree, loop-prevention ]
 ```
 interface <iface>
  spanning-tree guard loop
-!
 ```
 
 ### Configure globally
-```
-spanning-tree gaurd loop default
-```
+`spanning-tree gaurd loop default`
 
 
 ## Root Guard
@@ -50,5 +47,4 @@ spanning-tree gaurd loop default
 ```
 interface <iface>
  spanning-tree guard root
-!
 ```
