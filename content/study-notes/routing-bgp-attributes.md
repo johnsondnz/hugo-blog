@@ -33,7 +33,7 @@ __Optional Transitive__:
 
 __Optional non-transitive__:
 
-* The `partial bit` is *__not__* set.
+* The `partial bit` is __not__ set.
 * BGP speakers not understanding these will not include them in advertisements to other BGP speakers.
 
 ## Attribute Details
@@ -47,7 +47,7 @@ Listed in order of preference in route selection.
 ### AS_PATH
 * Shortest path win.
 * Records the ASNs the route has gone through including the destination AS.
-* *__Helps prevent routing loops__*.  If a router receives a route update an its own AS is in the AS_PATH it is rejected.
+* __Helps prevent routing loops__.  If a router receives a route update an its own AS is in the AS_PATH it is rejected.
 * AS_PATH with the letter `i` means the route was sourced locally.
 
 ### next-hop
@@ -68,7 +68,7 @@ Listed in order of preference in route selection.
 * Influences a remote AS on how to route to a local AS.
 * Can be ignored and may not have an impact as it is step six in the best path selection process.
   * It is also optional non-transitive.  So may not get recognised.
-* My preference is to use `AS_PATH` prepend to have the same impact.  It is higher up the path selection process and *__well-known mandatory__*.
+* My preference is to use `AS_PATH` prepend to have the same impact.  It is higher up the path selection process and __well-known mandatory__.
 
 ### Weight
 * Cisco propietary.

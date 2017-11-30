@@ -31,7 +31,7 @@ tags: [ ospf, stubs ]
   * Converted to type-5 LSA by ABRs.
   * Route types: `(O N1)` or `(O N2)` with N2 the default.
 
-*__Notes__*:
+__Notes__:
 
 * N2 and E2 types are default for external routes.  These types do not increment the cost as they are propogarted within OSPF.  Cost remains 20.
 * N1 and E1 are used if you want to increment the cost to the ABSR as the route is propogated within OSPF.  __Best routes!!__
@@ -67,7 +67,7 @@ tags: [ ospf, stubs ]
     * `(O IA)`.
     * `(O N1)` or `(O N2)` with N2 the default.
 
-*__Notes__*: Candidate default route is represented with `(O*IA) `or `(O*Ex)` or `(O*Nx)`.  Where x = 1 or 2 depending on the OSPF metric-type.
+__Notes__: Candidate default route is represented with `(O*IA) `or `(O*Ex)` or `(O*Nx)`.  Where x = 1 or 2 depending on the OSPF metric-type.
 
 ## Configure
 

@@ -43,7 +43,7 @@ tags: [ bgp ]
 * Same as EIGRP and OSPF.
 * `bgp router-id` route process command can be used.
   * This resets any current adjancencies.
-* *__Must__* be unique.
+* __Must__ be unique.
 
 ## Cisco recommendations
 * Use loopbacks for peering.
@@ -101,7 +101,7 @@ tags: [ bgp ]
 ## Route Reflectors
 * A route reflector can take an iBGP learned route and advertise it a other iBGP peers.
 * `clients` peer with route-reflectors.
-* Route reflectors should be clients or each other as `non-clients`. *__(Need to validate this statement, likely wrong!!)__*
+* Route reflectors should be clients or each other as `non-clients`. __(Need to validate this statement, likely wrong!!)__
 
 ### Reflector rules
 * Updates from RR clients a sent to all client and non-client peers.
@@ -144,7 +144,7 @@ router(config-router)# neighbor <address> ebgp-multihop 2
 ```
 
 ### iBGP neighbor
-`ebgp-multihop` is *__never__* required for iBGP.
+`ebgp-multihop` is __never__ required for iBGP.
 
 ```
 router(config)# router bgp <as>

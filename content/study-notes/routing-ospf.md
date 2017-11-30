@@ -24,7 +24,7 @@ tags: [ ospf ]
 * Stub flag.
 * Authentication password.
 
-*__Notes__*:
+__Notes__:
 
 * Unique RID is required for each router in the the OSPF domain.
 * MTU should match too, else you risk getting stuck in EXSTART due to one neighbour maximising MTU to a point that one neighbour cannot accept the frames due to them being too large.

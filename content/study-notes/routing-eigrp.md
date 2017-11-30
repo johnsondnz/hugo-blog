@@ -72,7 +72,7 @@ tags: [ eigrp, ipv6 ]
   * K4: Reliability, off by default.
   * K5: MTU, off by default.
 
-*__Notes__*:
+__Notes__:
 
 * Timers don't need to match but it is recommended to prevent flapping neghbours.  This prevents one router's hold-time (three missed hellos) expiring before one router sends its periodic hello.
 

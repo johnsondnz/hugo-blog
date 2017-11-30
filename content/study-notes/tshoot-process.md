@@ -36,9 +36,9 @@ Problem reports can be very vague.  Therefore it is important to define sub proc
    * Test to confirm or refute theories on underlying cause.
 6. Loop as required until a hypothesis is confirmed.
 
-*__Note__*: Evidence is physical not assumed.  Just becuase CDP is working doesn't mean OSPF is.  Likewise just because a host has and IP, it doesn't mean it is not a duplicate.  Some operating systems are terrible at detecting and reporting these types of events (Windows 7 on MAC!!).
+__Note__: Evidence is physical not assumed.  Just becuase CDP is working doesn't mean OSPF is.  Likewise just because a host has and IP, it doesn't mean it is not a duplicate.  Some operating systems are terrible at detecting and reporting these types of events (Windows 7 on MAC!!).
 
-It is also *__extremely__* important to document everything you are doing to avoid duplication of tasks.  Record all actions and observed outcomes.  Rollback where desired outcome is not realised.
+It is also __extremely__ important to document everything you are doing to avoid duplication of tasks.  Record all actions and observed outcomes.  Rollback where desired outcome is not realised.
 
 #### Elimination of Causes
 This is basically a way of saying its not that that is the problem and hopefully resulting in a single item at the end of the list; This requires the least amount of communication as it is part of the analysis phase.

@@ -50,4 +50,4 @@ tags: [ study-notes, tshoot, methodologies ]
   * Archives of configurations are up-to-date.
 * __Original designs__: Documents are available and easy to find.
 
-*__Note__*: It is also very important to standardise the documents.  Keeping everything roughly the same makes it so that no matter the network segment the documentation format is well understood.
+__Note__: It is also very important to standardise the documents.  Keeping everything roughly the same makes it so that no matter the network segment the documentation format is well understood.

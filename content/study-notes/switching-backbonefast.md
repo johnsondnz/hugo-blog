@@ -1,11 +1,15 @@
 ---
 title: "Spanning-Tree Backbonefast"
 date: 2017-11-28T23:18:19+13:00
-draft: true
+draft: false
 categories: [ cisco, switching ]
 tags: [ spanning-tree ]
 ---
 
+
+## Todo
+* More reading. 
+* Get better understanding.
 ## Backbonefast
 * Cisco proprietary.
 * Helps with recover from undirect link failure by detecting inferrior BPDU.
@@ -31,7 +35,7 @@ tags: [ spanning-tree ]
 ## Backbone Fast Effects
 * All or nothing for the backbone of the network due to RLQ messages.
 * 20 second `max-age` timer is skipped.
-* RLQ is used.  *__Root Link Query__*.
+* RLQ is used.  __Root Link Query__.
   * Act like a echo and echo-reply.
 
 ### Indirect Link failure detected
@@ -50,4 +54,4 @@ ASW1#show spanning-tree backbonefast
 BackboneFast is disabled
 ```
 
-*__Note__*: backbonefast and uplinkfast are built into 802.1w (RSTP).  There is no need to configure these in today's networks when using 802.1w, unless you are using traditional IEEE-802.1d STP.
+__Note__: backbonefast and uplinkfast are built into 802.1w (RSTP).  There is no need to configure these in today's networks when using 802.1w, unless you are using traditional IEEE-802.1d STP.

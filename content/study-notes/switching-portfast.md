@@ -23,7 +23,7 @@ tags: [ spanning-tree ]
 ## Configuration
 ### Globally
 * When configuring globally a warning is displayed advising to disable explicitly on ports leading to hubs, bridges and switches.
-  * The cli help states *__enable portfast by default on all access ports__*, whereas the warning states you need to disable on trunks.
+  * The cli help states __enable portfast by default on all access ports__, whereas the warning states you need to disable on trunks.
 
 ```
 spanning-tree portfast default

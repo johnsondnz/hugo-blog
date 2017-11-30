@@ -1,7 +1,7 @@
 ---
 title: "SDM Templates"
 date: 2017-11-29T16:19:19+13:00
-draft: true
+draft: false
 categories: [ cisco, switching ]
 tags: [ templates ]
 ---
@@ -28,7 +28,7 @@ switch(config)# sdm prefer default
 ```
 
 ### Dual IPv4 and IPv6
-For dual-stack switches.  It doesn't support every IPv6 feature includng IPv6 multicast.  *__Do homework__*.
+For dual-stack switches.  It doesn't support every IPv6 feature includng IPv6 multicast.  __Do homework__.
 
 ```
 switch(config)# sdm prefer dual-ipv4-and-ipv6
@@ -42,13 +42,13 @@ switch(config)# sdm prefer routing
 ```
 
 ### vlan
-Supprts CAM growth to contain the maximum number of unicast MAC address.  *__This also disable hardware routing__*.
+Supprts CAM growth to contain the maximum number of unicast MAC address.  __This also disables hardware routing!!__.
 
 ```
 switch(config)# sdm prefer vlan
 ```
 
-*__Note__*: Reload is required to change the allocation of system resources.
+__Note__: Reload is required to change the allocation of system resources.
 
 ## Verify
 ```

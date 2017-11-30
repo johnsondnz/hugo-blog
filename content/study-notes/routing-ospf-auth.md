@@ -19,7 +19,7 @@ Can be applied on an entires area or a single network segment.
 
 When choosing per-area, all interfaces in the area must be configured with the apporpriate authentication key (md5 or plain-text).  The `router ospf` section mandates authentication for the entire area.  Unless you use the interface command `ip ospf authentication null`.
 
-*__Note__*: It is possible to override the authentication-type at the interface level.  It is more specific configuration.
+__Note__: It is possible to override the authentication-type at the interface level.  It is more specific configuration.
 
 ## Virtual Links
 * Area authentication can and will break virtual links.
