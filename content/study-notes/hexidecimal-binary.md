@@ -3,7 +3,7 @@ title: "Hexidecimal and Binary"
 date: 2017-11-30T14:19:19+13:00
 draft: false
 categories: [  ]
-tags: [ remind-me, ipv6, ipv4 ]
+tags: [ remind-me ]
 ---
 
 ## Base 16 math.

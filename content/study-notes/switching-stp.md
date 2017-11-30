@@ -7,7 +7,8 @@ tags: [ spanning-tree ]
 ---
 
 ## Todo
-Split this into respective STP docs.
+* Split this into respective STP docs.
+* Tidy this up, alot
 
 ## CST, PVST+, MST
 * __CST__: Common spanning-tree.  All VLANs in the same instance.  One switch handles all traffic.
@@ -42,6 +43,20 @@ Juniper has a Rapid-PVST+ equivilent called VSTP.  Cisco switches meed to use th
 ### Timers
 * __STP__: every 2 seconds by the root bridge.
 * __RSTP__: every 2 seconds by every switch.
+
+## Basics
+* Lowest bridge-id wins root bridge election.
+  * Bridge-id = bridge-priority (2 bytes) + MAC address (6 bytes)
+* Cost is incremented on receipt of BPDUs not as they are sent.
+
+
+## Root port selection
+1. Lowest bridge-id.
+2. Lowest path cost to the root bridge.
+3. Lowest sender bridge-id.
+4. Lowest port-priority.
+5. Lowest port-id.
+
 
 ### Topology change notification (TCN)
 * __STP__: Sent by the root bridge only out all its designated ports.  `max-age` + (2 x `forwarding delay`) required.
