@@ -8,7 +8,13 @@ tags: [ spanning-tree ]
 
 
 ## Portfast
-* Disables STP on an interface.
+* Portfast enabled ports contine to send BPDUs every 2 seconds.  It does not turn off STP.
+* When portfast is enabled globally with `spanning-tree portfast default` all access ports become portfast enabled.
+  * Upon use of `switchport mode trunk` portfast is disabled and trunking mode continues.
+  * Any port in `swithport mode dynamic desirable` mode that negotiates a trunk with DTP will also disable portfast.
+* `switchport nonegotiate` turns off DTP and prevent dynamic trunks forming, portfast then stays active.
+  * `switchport nonegoitate` and `switchport mode dynamic desirable` cannot be on the same interface.  They are mutually exclusive.
+  * Both ends of a link must have DTP enabled and be in `swithport mode dynamic desirable` mode for a trunk to form, otherwise the port stays in access mode.
 * Listening and learning states skipped saving 30 seconds.
 * Can be enabled on access and trunk interfaces.
   * An warning message is displayed by IOS when enabling on a trunk advising to take care on ports leading to hub, bridges and switches.
