@@ -1,9 +1,9 @@
 ---
 title: "OSPFv3"
 date: 2017-11-30T15:31:19+13:00
-draft: true
+draft: false
 categories: [ cisco, routing ]
-tags: [ ospf ]
+tags: [ ospf, ipv6 ]
 ---
 
 ## Basics

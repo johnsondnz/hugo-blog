@@ -1,7 +1,7 @@
 ---
 title: "IPv6"
 date: 2017-11-30T14:04:19+13:00
-draft: true
+draft: false
 categories: [ cisco, routed-protocols ]
 tags: [ ipv6 ]
 ---
@@ -165,3 +165,24 @@ router(config)# ipv6 cef
 router(cofig)# interface <iface>
 router(config-if)# ipv6 enable
 ```
+
+### Configure RIPng
+#### Start RIPng process and add interface
+```
+router(config)# ipv6 router rip <name>
+router(config-rtr) interface <iface>
+router(config-if)# ipv6 rip <name> enable 
+``` 
+
+#### Send default route
+```
+R4(config-if)#ipv6 rip RIPng default-information ?
+  only       Advertise only the default route
+  originate  Originate the default route
+```
+
+### Configure OSPFv3
+[OSPFv3](/study-notes/routing-ospfv3)
+
+### Configure EIGRP for IPv6
+[EIGRP](/study-notes/routing-eigrp)
