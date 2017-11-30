@@ -151,6 +151,10 @@ tags: [ eigrp ]
 * Later versions of IOS allow for the advertisement of dynamic prefixes via leak-maps.
 * Only one router in a given adjacency can be a stub.  Two stub routers cannot for an adjacency.
 
+
+## Redistribution
+When redistributing routes you ned to set a seed metric either per redistribution command on with the `default-metric` route process command.
+
 ## Configure
 ### Manuall configure router-id
 ```
@@ -184,7 +188,7 @@ router(config)# router eigrp <as>
 router(config-router)# variance <1-128>
 ```
 
-## Stub routing
+### Stub routing
 ```
 router(config)# router eigrp <as>
 router(config-router)# eigrp stub
@@ -221,6 +225,29 @@ This create a D* route with an AD of 90.
 router(config)# if default-network <network>
 ```
 
+## Redistribute something
+```
+router(config)# router eigrp <as>
+routerconfig-router)# redistribute <protocol> <speed> <delay> <reliability> <load> <mtu>
+```
+
+or
+
+```
+router(config)# router eigrp <as>
+routerconfig-router)# default-metric <speed> <delay> <reliability> <load> <mtu>
+routerconfig-router)# redistribute <protocol>
+```
+
+## Configuring EIGRP for IPv6
+Easy as!!
+
+```
+router(config)# ipv6 router eigrp <as>
+router(config-rtr)# router-id <address>
+router(config-rtr)# interface <iface>
+router(config-if)# ipv6 eigrp <as>
+```
 
 ## Verify
 ### Topology

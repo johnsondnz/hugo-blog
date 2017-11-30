@@ -146,6 +146,15 @@ router(config)# router ospf <process>
 router(config-router)# default information-originate always
 ```
 
+## Redistributing something
+* Use subnets to include subnet mask in LSAs, otherwise the advertisement is classful.
+* metric-type 2 is the default.  It's dumb.
+
+```
+router(config)# router ospf <process>
+router(config-router)# redistribute <protocol> subnets metric-type 2
+```
+
 ## Verify
 ### Interfaces
 ```
