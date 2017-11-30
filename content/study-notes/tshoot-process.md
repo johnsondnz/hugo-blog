@@ -68,7 +68,7 @@ Escalation maybe required at any one of the following points;
 Escalation is normally required when access to devices you don't have authority to access in required.
 
 
-### Value of strucutred discovery
+### Value of structured discovery
 By using a structured approach multiple engineers can attempt to resolve a problem.  In this scenario good communication and a structure approach is essential to avoid skipping key steps and adding critical time to resolution
 
 Some people have intricate knowledge of a network or have seen an issue before.  They can quickly step from collecting information to hypothesis and resolution without an examination, this is called **shoot-from-the-hip**.
