@@ -1,24 +1,22 @@
 ---
-title: "EIGRP Summarisation"
-date: 2017-11-30T12:06:19+13:00
+title: "BGP Summarisation"
+date: 2017-11-30T21:41:19+13:00
 draft: false
 categories: [ cisco, routing ]
-tags: [ eigrp, summarisation ]
+tags: [ bgp, summarisation ]
 ---
 
 
 ## Summarisation
-* EIGRP supports summarisation.
+* BGP supports summarisation.
 
 
 ## Where and how
-* On the interface using `ip summary-address eigrp <as> <address> <mask>`
+* In the route process `aggregate-address <address> <mask>`
+* In the route process `aggregate-address <address> <mask> (<no-summary>|<uppress-map>) [supress-map-name]`
 
 ## What happens
-* Neighbour relationsips on the interface.
-* Router where the summary-addres is created will create a summary address with a null0 destination with an AD of 5.
-  * AD can be viewed with `show ip route <address> <mask>` command or the running-config in some cases.
-* Downstream routers receive an EIGRP route with an AD of 90 like a normal internal EIGRP route.
+* Without `summary-only` or `suppress-map` knobs both the aggregate and more-specific routes are advertised.
 * There must be a route with a longer prefix that lies within the summary-address prefix for the summary-address to be advertised.
 
 ## Tips
@@ -38,9 +36,8 @@ Four addresses:
 * Mask is __111111__00 = 252.0.0.0.
 
 ## Configure
-### EIGRP summarisation
+### BGP summarisation
 ```
-router(config)# interface <iface>
-router(config-if)# ip summary-address eigrp <as> <address> <mask>
+router(config)# router bgp <as>
+router(config-router)# aggregate-address <address> <mask> (<no-summary>|<uppress-map>) <[upress-map-name]`
 ```
-
