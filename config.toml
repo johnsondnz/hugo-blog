@@ -15,7 +15,6 @@ theme = "hugo-sustain"
   author = "Donald Johnson"
   description = "ramblings of a network engineer"
   job_title = "Principal Network Engineer"
-  resume = "/resume/"
 
   # Custom assets can be linked with their paths relative to static/
   custom_css = []
@@ -34,16 +33,19 @@ theme = "hugo-sustain"
   weight = 100
   identifier = "blog"
   url = "/blog/"
+
 [[menu.main]]
   name = "study-notes"
   weight = 100
   identifier = "study-notes"
   url = "/study-notes/"
+
 #[[menu.main]]
 #  name = "projects"
 #  identifier = "projects"
 #  weight = 200
 #  url = "/projects/"
+
 #[[menu.main]]
 #  name = "resume"
 #  identifier = "resume"
