@@ -2,8 +2,9 @@
 title: "OSPF Summarisation"
 date: 2017-11-30T08:23:56+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ ospf, summarisation ]
+categories: [ study-notes ]
+tags: [ ospf, summarisation, routing ]
+highlight: false
 ---
 
 ## Summarisation

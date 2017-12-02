@@ -2,8 +2,9 @@
 title: "OSPFv3"
 date: 2017-11-30T15:31:19+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ ospf, ipv6 ]
+categories: [ study-notes ]
+tags: [ ospf, ipv6, routing ]
+highlight: false
 ---
 
 ## Basics

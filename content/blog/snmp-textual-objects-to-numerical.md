@@ -2,8 +2,9 @@
 title: "Converting SNMP Textual Objects to Numerical"
 date: 2017-03-31T14:19:19+13:00
 draft: false
-categories: [ snmp ]
-tags: [ ]
+categories: [ network-management ]
+tags: [ snmp ]
+highlight: true
 ---
 
 Today I have been working on SNMP monitoring standards for RAD G.SHDSL modems used within our network.  Part of this required reading MIB files and extracting the objects for us to monitor network health of these links, not very exciting but very important to our customers.

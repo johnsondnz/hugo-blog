@@ -2,8 +2,9 @@
 title: "EIGRP Summarisation"
 date: 2017-11-30T12:06:19+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ eigrp, summarisation ]
+categories: [ study-notes ]
+tags: [ eigrp, summarisation, routing ]
+highlight: false
 ---
 
 

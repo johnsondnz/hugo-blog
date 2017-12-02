@@ -2,8 +2,10 @@
 title: "Routing Protocol Admin Distance"
 date: 2017-11-29T22:18:19+13:00
 draft: false
-categories: [ cisco, junos, routing ]
-tags: [ remind-me ]
+categories: [ study-notes ]
+highlight: false
+tags: [ remind-me, junos, routing ]
+highlight: false
 ---
 
 __Cause I get confused between Junos and IOS!!__

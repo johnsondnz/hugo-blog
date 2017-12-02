@@ -2,8 +2,9 @@
 title: "OSPF Authentication"
 date: 2017-11-29T20:29:19+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ ospf ]
+categories: [ study-notes ]
+tags: [ ospf, routing ]
+highlight: false
 ---
 
 ## Types

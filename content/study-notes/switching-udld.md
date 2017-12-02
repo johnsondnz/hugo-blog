@@ -2,8 +2,9 @@
 title: "Unidirectional Link Detection (UDLD)"
 date: 2017-11-29T0:18:19+13:00
 draft: false
-categories: [ cisco, switching ]
-tags: [ loop-prevention ]
+categories: [ study-notes ]
+tags: [ loop-prevention, switching ]
+highlight: false
 ---
 
 ## Unidirectional Link Detection (UDLD)

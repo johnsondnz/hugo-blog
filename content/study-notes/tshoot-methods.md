@@ -2,8 +2,9 @@
 title: "Troubleshooting Methods"
 date: 2017-11-29T14:47:19+13:00
 draft: false
-categories: [ cisco, troubleshooting ]
+categories: [ study-notes ]
 tags: [ study-notes, tshoot, methodologies ]
+highlight: false
 ---
 
 ## Troubleshooting Methods

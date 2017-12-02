@@ -2,8 +2,9 @@
 title: "Hexidecimal and Binary"
 date: 2017-11-30T14:19:19+13:00
 draft: false
-categories: [  ]
-tags: [ remind-me ]
+categories: [ study-notes ]
+tags: [ remind-me, math ]
+highlight: false
 ---
 
 ## Base 16 math.

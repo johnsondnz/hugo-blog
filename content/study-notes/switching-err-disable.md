@@ -2,8 +2,9 @@
 title: "Error Disable"
 date: 2017-11-29T10:54:19+13:00
 draft: false
-categories: [ cisco, switching ]
-tags: [ security ]
+categories: [ study-notes ]
+tags: [ security, switching ]
+highlight: false
 ---
 
 ## Recovery

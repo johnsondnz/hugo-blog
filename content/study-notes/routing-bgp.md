@@ -2,8 +2,9 @@
 title: "BGP"
 date: 2017-11-30T20:16:19+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ bgp ]
+categories: [ study-notes ]
+tags: [ bgp, routing ]
+highlight: false
 ---
 
 ## Basics

@@ -1,67 +1,51 @@
-baseURL = "http://blog.it-ninja.xyz"
-languageCode = "en-us"
-title = "the it-ninja"
-theme = "minimal"
+baseurl = "https://example.com/"
+languageCode = "en-US"
+title = "it-ninja"
+# Enable comments by entering your Disqus shortname
+disqusShortname = ""
+# Enable Google Analytics by entering your tracking code
 googleAnalytics = "UA-110542214-1"
+theme = "hugo-sustain"
+
+[permalinks]
+  post = "/:year/:month/:day/:slug"
 
 [params]
-    author = "Donald Johnson"
-    description = "ramblings of a network engineer"
-    githubUsername = "johnsondnz"
-    copyright = "&copy; Donald Johnson 2017 | All rights reserved | Powered by [Hugo](https://gohugo.io) and [Minimal](https://github.com/calintat/minimal)"
-    accent = "red"
-    showBorder = true
-    backgroundColor = "white"
-    font = "Raleway" # should match the name on Google Fonts!
-    highlight = true
-    highlightStyle = "solarized-dark"
-    highlightLanguages = ["go", "haskell", "kotlin", "scala", "swift", "python", "bash", "diff", "JSON", "YAML", "Django" ]
+  avatar = "avatar.jpg"
+  author = "Donald Johnson"
+  description = "ramblings of a network engineer"
+  job_title = "Principal Network Engineer"
+  resume = "/resume/"
 
+  # Custom assets can be linked with their paths relative to static/
+  custom_css = []
+  custom_js  = []
+
+[params.social]
+  Github        = "johnsondnz"
+  Email         = "donald@it-ninja.xyz"
+  Twitter       = ""
+  LinkedIn      = "johnsondnz"
+  Stackoverflow = ""
+
+## Main Menu
 [[menu.main]]
-    url = "/"
-    name = "Home"
-    weight = 1
-
+  name = "blog"
+  weight = 100
+  identifier = "blog"
+  url = "/blog/"
 [[menu.main]]
-    url = "/posts/"
-    name = "Posts"
-    weight = 2
-
-[[menu.main]]
-    url = "/study-notes/"
-    name = "Study"
-    weight = 3
-
+  name = "study-notes"
+  weight = 100
+  identifier = "study-notes"
+  url = "/study-notes/"
 #[[menu.main]]
-#    url = "/projects/"
-#    name = "Projects"
-#    weight = 4
-
-[[menu.main]]
-    url = "/categories/"
-    name = "Categories"
-    weight = 5
-
-[[menu.main]]
-    url = "/tags/"
-    name = "Tags"
-    weight = 6
-
-# Social icons to be shown on the right-hand side of the navigation bar
-# The "name" field should match the name of the icon to be used
-# The list of available icons can be found at http://fontawesome.io/icons/
-
-[[menu.icon]]
-    url = "mailto:donald@it-ninja.xyz"
-    name = "envelope-o"
-    weight = 1
-
-[[menu.icon]]
-    url = "https://github.com/johnsondnz/"
-    name = "github"
-    weight = 2
-
-[[menu.icon]]
-    url = "https://www.linkedin.com/in/johnsondnz/"
-    name = "linkedin"
-    weight = 4
+#  name = "projects"
+#  identifier = "projects"
+#  weight = 200
+#  url = "/projects/"
+#[[menu.main]]
+#  name = "resume"
+#  identifier = "resume"
+#  weight = 300
+#  url = "/resume/"

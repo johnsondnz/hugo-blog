@@ -2,8 +2,9 @@
 title: "NAT and PAT"
 date: 2017-11-30T17:08:19+13:00
 draft: false
-categories: [ cisco ]
+categories: [ study-notes ]
 tags: [ nat ]
+highlight: false
 ---
 
 ## Basics

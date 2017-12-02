@@ -2,8 +2,9 @@
 title: "Loop and Root Guard"
 date: 2017-11-28T16:18:19+13:00
 draft: false
-categories: [ cisco, switching ]
-tags: [ spanning-tree, loop-prevention ]
+categories: [ study-notes ]
+tags: [ spanning-tree, loop-prevention, switching ]
+highlight: false
 ---
 
 ## Short Version

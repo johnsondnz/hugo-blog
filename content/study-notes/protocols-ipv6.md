@@ -2,8 +2,9 @@
 title: "IPv6"
 date: 2017-11-30T14:04:19+13:00
 draft: false
-categories: [ cisco, routed-protocols ]
-tags: [ ipv6 ]
+categories: [ study-notes ]
+tags: [ ipv6, routed-protocols ]
+highlight: false
 ---
 
 ## Basics

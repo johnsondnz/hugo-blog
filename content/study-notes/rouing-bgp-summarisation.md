@@ -2,8 +2,9 @@
 title: "BGP Summarisation"
 date: 2017-11-30T21:41:19+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ bgp, summarisation ]
+categories: [ study-notes ]
+tags: [ bgp, summarisation, routing ]
+highlight: false
 ---
 
 

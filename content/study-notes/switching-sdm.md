@@ -2,8 +2,9 @@
 title: "SDM Templates"
 date: 2017-11-29T16:19:19+13:00
 draft: false
-categories: [ cisco, switching ]
-tags: [ templates ]
+categories: [ study-notes ]
+tags: [ templates, switching ]
+highlight: false
 ---
 
 ## Todo read more!!

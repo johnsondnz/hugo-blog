@@ -2,8 +2,9 @@
 title: "EIGRP"
 date: 2017-11-30T09:50:19+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ eigrp, ipv6 ]
+categories: [ study-notes ]
+tags: [ eigrp, ipv6 cisco, routing ]
+highlight: false
 ---
 
 ## Features

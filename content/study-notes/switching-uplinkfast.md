@@ -2,8 +2,9 @@
 title: "Spanning Tree Uplinkfast"
 date: 2017-11-28T23:50:19+13:00
 draft: false
-categories: [ cisco, switching ]
-tags: [ spanning-tree ]
+categories: [ study-notes ]
+tags: [ spanning-tree, switching ]
+highlight: false
 ---
 
 ## Uplinkfast

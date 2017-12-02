@@ -2,8 +2,9 @@
 title: "OSPF LSA Types and Stubs"
 date: 2017-11-29T21:48:19+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ ospf, stubs ]
+categories: [ study-notes ]
+tags: [ ospf, stubs, routing ]
+highlight: false
 ---
 
 ## LSAs

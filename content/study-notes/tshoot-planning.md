@@ -2,8 +2,9 @@
 title: "Troubleshooting Planned vs Unplanned"
 date: 2017-11-29T13:38:19+13:00
 draft: false
-categories: [ cisco, troubleshooting ]
+categories: [ study-notes ]
 tags: [ study-notes, tshoot, methodologies ]
+highlight: false
 ---
 
 ## Structured vs Reactive

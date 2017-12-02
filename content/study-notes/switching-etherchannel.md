@@ -2,8 +2,9 @@
 title: "EtherChannel"
 date: 2017-11-29T11:20:19+13:00
 draft: false
-categories: [ cisco, switching ]
-tags: [ interfaces, lacp, pagp, spanning-tree ]
+categories: [ study-notes ]
+tags: [ interfaces, lacp, pagp, spanning-tree, switching ]
+highlight: false
 ---
 
 ## EtherChannel

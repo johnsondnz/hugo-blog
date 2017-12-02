@@ -2,8 +2,9 @@
 title: "Policy Based Routing"
 date: 2017-11-30T13:56:19+13:00
 draft: false
-categories: [ cisco, routing ]
-tags: [ policy ]
+categories: [ study-notes ]
+tags: [ route-policy, routing ]
+highlight: false
 ---
 
 ## Basics

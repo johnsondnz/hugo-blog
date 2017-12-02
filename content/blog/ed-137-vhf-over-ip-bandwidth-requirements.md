@@ -2,8 +2,9 @@
 title: "ED-137 - VHF over IP Bandwidth Requirements"
 date: 2017-04-06T14:19:19+13:00
 draft: true
-categories: [ mpls, voip ]
-tags: [  ]
+categories: [ design ]
+tags: [ mpls, voip ]
+highlight: true
 ---
 
 In 2014 during a new enterprise MPLS network build we needed to better understand the bandwidth requirements for VoIP services.  The project involved extensive training on Eurocae standards ED-137 and ED-138, their parts as well as our selected manufacturer's hardware and software.  These standards outline the way Air Traffic Control services such as VHF, data and other services should interoperate and be carried over IP networks.
@@ -52,7 +53,7 @@ PTT is on, the audio codec is G.711 ulaw.
 * IP Header = 20 octets.
 * UDP Header = 8 octets.
 * RTP Header = 16 octets.
-* ED-137 RTP Header Extension = 4.
+* ED-137 RTP Header Extension = 4 octets.
 
 ### Calculating packet overheads
 Each packet on our network will include two MPLS fields, one for transport the other for the VPN.  In a igh number of cases one 802.1q field is also use.  The total size of overhead is:
