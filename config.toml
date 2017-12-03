@@ -5,7 +5,7 @@ title = "it-ninja"
 disqusShortname = ""
 # Enable Google Analytics by entering your tracking code
 googleAnalytics = "UA-110542214-1"
-theme = "hugo-sustain"
+theme = "custom-hugo-sustain"
 
 [permalinks]
   post = "/:year/:month/:day/:slug"
