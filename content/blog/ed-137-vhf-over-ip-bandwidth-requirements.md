@@ -91,7 +91,7 @@ When there is audio transmission the application overhead is equal to 39.2kbps. 
 ### Adding in audio 
 Generally speaking, only a single air traffic controller position requires access to a radio for the purpose of transmitting to aircraftat any given time.  This means on a G.729 VHF circuit we expect 47.2kbps for all audio transmissions.
 
-It is possible to channel receive audio to multiple location.  This in turn means a 1:1 growth in bandwidth per destination fpr that audio.  As SIP/RTP sessions are unicast this means we have a situation whereby for every position that is setup as a receiver, the audio is multiplied by the number of receiving controller positions
+It is possible to channel receive audio to multiple location.  This in turn means a 1:1 growth in bandwidth per destination for that audio.  As SIP/RTP sessions are unicast this means we have a situation whereby for every position that is setup as a receiver, the audio is multiplied by the number of receiving controller positions
 
 ```
 * Required bandwidth = number receiving controller positions x 47.2kbps.
