@@ -1,4 +1,4 @@
-baseurl = "http://blog.it-ninja.xyz"
+baseurl = "http://blog.it-ninja.xyz/"
 languageCode = "en-US"
 title = "it-ninja"
 # Enable comments by entering your Disqus shortname
