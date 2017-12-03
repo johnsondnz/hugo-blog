@@ -1,7 +1,7 @@
 ---
 title: "ED-137 - VHF over IP Bandwidth Requirements"
 date: 2017-04-06T14:19:19+13:00
-draft: true
+draft: false
 categories: [ design ]
 tags: [ mpls, voip ]
 highlight: true
