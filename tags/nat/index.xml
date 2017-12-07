@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nat on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/nat/</link>
+    <description>Recent content in Nat on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 30 Nov 2017 17:08:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/nat/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>NAT and PAT</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-nat-pat/</link>
+      <pubDate>Thu, 30 Nov 2017 17:08:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-nat-pat/</guid>
+      <description>Basics  Translates RFC1918 to routed public addreses 1:1 burns a lot public addresses. This is known as source nat (SNAT). Dynamic creates a pool on inside global address (DNAT). Port address translation overloads an interface so all users share a single inside global address (PAT).  Address Types  Inside Local address: RFC1918 address in my network. Inside Global address: Public IP address in my network. Outside Local address: RFC1918 address at a remote network.</description>
+    </item>
+    
+  </channel>
+</rss>

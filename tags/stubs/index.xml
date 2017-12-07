@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Stubs on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/stubs/</link>
+    <description>Recent content in Stubs on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 29 Nov 2017 21:48:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/stubs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OSPF LSA Types and Stubs</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-lsa-stubs/</link>
+      <pubDate>Wed, 29 Nov 2017 21:48:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-lsa-stubs/</guid>
+      <description>LSAs  Type-1: Router link.  Flooded by all routers in an area. Route types: (O).  Type-2: Network link.  Sent by the DR. Lists all the routers on the segment it is adjacent to. Flooded within the area. Route types: (O).  Type-3: Network summary link.  Sent by the ASBR between areas. Typically from/to area 0. Lists all the prefixes avaialble in a given area. Route types: (O IA).</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Eigrp on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/eigrp/</link>
+    <description>Recent content in Eigrp on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 30 Nov 2017 12:06:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/eigrp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>EIGRP Summarisation</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-eigrp-summarisation/</link>
+      <pubDate>Thu, 30 Nov 2017 12:06:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-eigrp-summarisation/</guid>
+      <description>Summarisation  EIGRP supports summarisation.  Where and how  On the interface using ip summary-address eigrp &amp;lt;as&amp;gt; &amp;lt;address&amp;gt; &amp;lt;mask&amp;gt;  What happens  Neighbour relationsips on the interface. Router where the summary-addres is created will create a summary address with a null0 destination with an AD of 5.  AD can be viewed with show ip route &amp;lt;address&amp;gt; &amp;lt;mask&amp;gt; command or the running-config in some cases.  Downstream routers receive an EIGRP route with an AD of 90 like a normal internal EIGRP route.</description>
+    </item>
+    
+    <item>
+      <title>EIGRP</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-eigrp/</link>
+      <pubDate>Thu, 30 Nov 2017 09:50:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-eigrp/</guid>
+      <description>Features  IP protocol 88. Used to be Cisco propetary. Now open RFC7868. Hybrid protocol, more like a link-state protocol than a vector distance protocol. Multiprotocol support including IPv4, IPv6 etc. Support for CIDR and VLSM. Diffusing update algorithm (DUAL). Complex metric based on:  Bandwidth, on by default. Delay, on by default. Load, off by default. Reliability, off by default.  Accepts CIDR and VLSM wildcard in network route process command.</description>
+    </item>
+    
+  </channel>
+</rss>

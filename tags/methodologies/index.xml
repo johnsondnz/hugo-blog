@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Methodologies on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/methodologies/</link>
+    <description>Recent content in Methodologies on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 29 Nov 2017 15:08:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/methodologies/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Troubleshooting Process</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-process/</link>
+      <pubDate>Wed, 29 Nov 2017 15:08:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-process/</guid>
+      <description>Troubleshooting Process Simplified  Report problem. Problem diagnosis. Problem resolution.  Problem reports can be very vague. Therefore it is important to define sub processes.
+Problem diagnosis  Collect information.  Both from the network/network tools and the user.  Examine collected information.  Examine the data and possibly compare to a previous baseline.  Eliminate potential causes.  Identify key indicators. Use the following inputs:  Documentation. Gathered data.</description>
+    </item>
+    
+    <item>
+      <title>Troubleshooting Methods</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-methods/</link>
+      <pubDate>Wed, 29 Nov 2017 14:47:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-methods/</guid>
+      <description>Troubleshooting Methods Top down  Start at layer-7. Eliminates the most layers. Requires access to the application.  Bottom Up  Start at layer-1 Requires access to the physical network. Requires detailed analysis of layer-1 and layer-2. Slowest.  Divide and conquer  Start at layer-3. Use ping and traceroute to test layer-3 reachability. Validate routing is as expected. Changes are if routing protocols are configured correctly it is a layer-1 or layer-2 issue.</description>
+    </item>
+    
+    <item>
+      <title>Change Management</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-change-mgmt/</link>
+      <pubDate>Wed, 29 Nov 2017 14:22:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-change-mgmt/</guid>
+      <description>Change Management  Identifies:  Who authorised network changes. Which tasks are performed during maintenance windows.  Prior to change it described what procedures must be followed.  i.e. configuration backup.  Describes how success and failure are defined and managed. Rollback plans in case of failure. Process circumvention:  Identifies who can authorise an action that condradicts process. Describes what entitles a change to do so.   Restore after failure  Required:  Duplicate hardware.</description>
+    </item>
+    
+    <item>
+      <title>Troubleshooting Models</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-models/</link>
+      <pubDate>Wed, 29 Nov 2017 13:38:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-models/</guid>
+      <description>Models FCAPS Defined by ISO.
+ F: Fault management. C: Configuration management. A: Accounting. P: Performance management. S: Security management.  ITIL IT infrastructure library of best practices/recommendations that align with business goals.
+TMN Telecommunications management network.
+ ITU-T variation of FACPS designed for Telcos. ITU-T = Telecommunications standardard sector. Used to manage telecommuniction networks, for example PSTN.  Cisco Lifecycle services (PPDIOO) Defined distinct phases in the lifecycle of a networks.</description>
+    </item>
+    
+    <item>
+      <title>Troubleshooting Planned vs Unplanned</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-planning/</link>
+      <pubDate>Wed, 29 Nov 2017 13:38:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-planning/</guid>
+      <description>Structured vs Reactive  Structured: Pre-defined tasks are carried out periodically to ensure the health of the network.  Hours a efficiently allocated to tasks to ensure the health and security of the network.  Reactive: Will always exist, however with a structured approach with peridoic maintenance events that cause a reactive repsonse are kept to a minimum. That&amp;rsquo;s the theory anyway.  Staff are required to drop what they are doing and attend to the issue at hand.</description>
+    </item>
+    
+  </channel>
+</rss>

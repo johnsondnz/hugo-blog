@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spanning Tree on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/spanning-tree/</link>
+    <description>Recent content in Spanning Tree on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 29 Nov 2017 15:14:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/spanning-tree/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Spanning-Tree</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-stp/</link>
+      <pubDate>Wed, 29 Nov 2017 15:14:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-stp/</guid>
+      <description>Todo  Split this into respective STP docs. Tidy this up, alot  CST, PVST+, MST  CST: Common spanning-tree. All VLANs in the same instance. One switch handles all traffic. PVST+: Per-VLAN spanning-tree plus. SPT run per-vlan, very granular. MST: Multiple spanning-tree. VLANs are mapped to one of 16 instance that have a common topology.  IST works with CST and is instance 0. Can represent the entire MST region as a virtual CST bridge.</description>
+    </item>
+    
+    <item>
+      <title>EtherChannel</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-etherchannel/</link>
+      <pubDate>Wed, 29 Nov 2017 11:20:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-etherchannel/</guid>
+      <description>EtherChannel  Logical bundle of 2-8 like type interfaces between two switches.  MLAG allows for multi-chasses etherchannel.  Provides a single layer-2 or layer-3 logical interfaces to IOS. STP sees the logical interface as a single link.  Protocols and modes LACP  IEEE-802.3ad, later moved into IEEE-802.1AX-2008. Uses layer-2 multicast destiation of 0180.c200.0002.  This mac is shared by CDP, VTP, DTP, PAgP and UDLD.  Active: Turns on LACP unconditionally.</description>
+    </item>
+    
+    <item>
+      <title>Spanning Tree Uplinkfast</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-uplinkfast/</link>
+      <pubDate>Tue, 28 Nov 2017 23:50:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-uplinkfast/</guid>
+      <description>Uplinkfast  Used to transition a blocking port into forwarding faster than the normal 50 second timer (max-age(20) + (2 x forwarding delay(15)) Transition take around 1-3 seconds. Cisco best practice states only use in the access-layer. Enabled globally for all VLANs on the switch. All or nothing. When the normal root port comes back up uplinkfast will transition back to that port. Time this takes is 2 x forwarding delay + 5 seconds before the root port enters the forwarding state.</description>
+    </item>
+    
+    <item>
+      <title>Spanning-Tree Backbonefast</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-backbonefast/</link>
+      <pubDate>Tue, 28 Nov 2017 23:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-backbonefast/</guid>
+      <description>Todo  More reading. Get better understanding.
+Backbonefast Cisco proprietary.
+ Helps with recover from undirect link failure by detecting inferrior BPDU.
+  Issue SW1 is the root Link from SW to SW2 fails  SW3 receives BPDUs from SW1 and SW2 each claiming they are root. SW3 ignores SW2 BPDUs and begins max-age timer. When max-age timer for SW2 expires the port transitions to the listening state.  STP recovers  SW3 starts to relay SW1 BPDU to SW2.</description>
+    </item>
+    
+    <item>
+      <title>Spanning-Tree Portfast</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-portfast/</link>
+      <pubDate>Tue, 28 Nov 2017 22:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-portfast/</guid>
+      <description>Portfast  Portfast enabled ports contine to send BPDUs every 2 seconds. It does not turn off STP. When portfast is enabled globally with spanning-tree portfast default all access ports become portfast enabled.  Upon use of switchport mode trunk portfast is disabled and trunking mode continues. Any port in swithport mode dynamic desirable mode that negotiates a trunk with DTP will also disable portfast.  switchport nonegotiate turns off DTP and prevent dynamic trunks forming, portfast then stays active.</description>
+    </item>
+    
+    <item>
+      <title>Loop and Root Guard</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-guards/</link>
+      <pubDate>Tue, 28 Nov 2017 16:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-guards/</guid>
+      <description>Short Version  Loop Guard on non-designated ports, except edge ports. Root Guard on all designated ports. BPDU Guard and portfast on all edge ports.  Loop Guard vs Root Guard Loop Guard  Should be applied on all non-designated ports. Can be configured globally and per interface. Prevents an interface from transitioning to designated in the absence of BPDUs. Is exclusive from root guard. The two cannot cannot be active at the same time.</description>
+    </item>
+    
+  </channel>
+</rss>

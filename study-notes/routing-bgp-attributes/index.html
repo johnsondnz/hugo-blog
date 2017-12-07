@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>BGP Attributes</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/routing-bgp-attributes/">BGP Attributes</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 30, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">bgp</span>
+            
+            <span class="label label-success">routing</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="attribute-types">Attribute Types</h2>
+
+<ul>
+<li><strong>Well-known mandatory</strong>: Must appear in all BGP updates.  BGP speakers must undertand these.
+
+<ul>
+<li>AS_PATH.</li>
+<li>origin.</li>
+<li>next-hop.</li>
+</ul></li>
+<li><strong>Well-known descrentionary</strong>: Must be recognised by all BGP speakers but does not have to be included in every BGP udpdate.
+
+<ul>
+<li>LOCAL_PREF.</li>
+<li>atomic aggregate.</li>
+</ul></li>
+<li><strong>Optional Transitive</strong>:
+
+<ul>
+<li>aggregator.</li>
+<li>community.</li>
+</ul></li>
+<li><strong>Optional non-transitive</strong>:.
+
+<ul>
+<li>MED (multi-exit discriminator).</li>
+<li>Cluster List</li>
+</ul></li>
+</ul>
+
+<h3 id="optional-attributes">Optional attributes</h3>
+
+<p>Optional attributes that are those that not every BGP speaker will understand.</p>
+
+<p><strong>Optional Transitive</strong>:</p>
+
+<ul>
+<li>The <code>partial bit</code> is set.</li>
+<li>The advertisement is accepted.</li>
+<li>BGP speakers that do not recognise these must include them in advertisements them to other BGP speakers.</li>
+</ul>
+
+<p><strong>Optional non-transitive</strong>:</p>
+
+<ul>
+<li>The <code>partial bit</code> is <strong>not</strong> set.</li>
+<li>BGP speakers not understanding these will not include them in advertisements to other BGP speakers.</li>
+</ul>
+
+<h2 id="attribute-details">Attribute Details</h2>
+
+<h3 id="origin">Origin</h3>
+
+<p>Listed in order of preference in route selection.</p>
+
+<ul>
+<li><strong>i</strong>: IGP.  The <code>network</code> command was used.</li>
+<li><strong>e</strong>: EGP.  Legacy from the days of EGP.  Not normally seen today.</li>
+<li><strong>?</strong>: incomplete.  Route was injected into BGP using redistribution.</li>
+</ul>
+
+<h3 id="as-path">AS_PATH</h3>
+
+<ul>
+<li>Shortest path win.</li>
+<li>Records the ASNs the route has gone through including the destination AS.</li>
+<li><strong>Helps prevent routing loops</strong>.  If a router receives a route update an its own AS is in the AS_PATH it is rejected.</li>
+<li>AS_PATH with the letter <code>i</code> means the route was sourced locally.</li>
+</ul>
+
+<h3 id="next-hop">next-hop</h3>
+
+<ul>
+<li>Needs to be reachable via an IGP for a route to be selected as best.</li>
+<li>If BGP cannot resolve the next-hop address is it deemed inaccessible.  The route is therefore invalidated.
+
+<ul>
+<li>To view this use <code>show ip bgp &lt;address&gt;</code> to see status.</li>
+</ul></li>
+<li>eBGP speakers set this to themselves.</li>
+<li>iBGP speakers do not change this attribute unless <code>next-hop-self</code> is configured on the <code>neighbor</code> route process command.</li>
+</ul>
+
+<h3 id="local-preference">Local preference</h3>
+
+<ul>
+<li>Default is 100, default LOCAL_PREF values are hidden in the bgp table unless <code>show ip bgp &lt;address&gt;</code> is used.
+
+<ul>
+<li>If LOCAL_PREF is set to any value, including 100 it will appear in <code>show ip bgp</code> outputs.</li>
+</ul></li>
+<li>Highest wins as step two of the BGP best path selection process.</li>
+<li>Describes how to exit the local AS to an external AS.
+
+<ul>
+<li>For pure iBGP networks (like MPLS) it can also be used to advertise the best router to route towards for a specific destination, i,e. used for outbound route policy.</li>
+</ul></li>
+</ul>
+
+<h3 id="multi-exit-discriminator-med">Multi-exit discriminator (MED)</h3>
+
+<ul>
+<li>Influences a remote AS on how to route to a local AS.</li>
+<li>Can be ignored and may not have an impact as it is step six in the best path selection process.
+
+<ul>
+<li>It is also optional non-transitive.  So may not get recognised.</li>
+</ul></li>
+<li>My preference is to use <code>AS_PATH</code> prepend to have the same impact.  It is higher up the path selection process and <strong>well-known mandatory</strong>.</li>
+</ul>
+
+<h3 id="weight">Weight</h3>
+
+<ul>
+<li>Cisco propietary.</li>
+<li>Locally significant only, never advertised to other BGP speakers.</li>
+<li>Highest weight wins.</li>
+<li>Default is 32768 for local routes and 0 for all others.</li>
+</ul>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/rouing-bgp-summarisation/">BGP Summarisation</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-bgp/">BGP</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-ospfv3/">OSPFv3</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-policy-based-routing/">Policy Based Routing</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-eigrp-summarisation/">EIGRP Summarisation</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

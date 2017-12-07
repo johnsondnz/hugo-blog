@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/blog/</link>
+    <description>Recent content in Blogs on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 07 Dec 2017 20:49:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cisco SSH without password</title>
+      <link>http://blog.it-ninja.xyz/blog/cisco-ssh-without-password/</link>
+      <pubDate>Thu, 07 Dec 2017 20:49:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/blog/cisco-ssh-without-password/</guid>
+      <description>Requirements  Hostname and domain configured. SSH Version 2. RSA with minimum 768bits. line vty configured to include transport ssh. Appropriate local or remote users.  Configuration Unhashed public-key router# configure terminal router(config)# hostname &amp;lt;hostname&amp;gt; router(config)# ip domain-name &amp;lt;domain&amp;gt; router(config)# crypto key generate rsa modulus &amp;lt;bit-length&amp;gt; router(config)# ip ssh version 2 router(config)# username &amp;lt;user&amp;gt; secret &amp;lt;secret&amp;gt; ! router(config)# ip ssh pubkey-chain router(conf-ssh-pubkey)# username &amp;lt;username&amp;gt; router(conf-ssh-pubkey-user)# key-string router(conf-ssh-pubkey-data)# &amp;lt;key string | max 256 characters per line&amp;gt; router(conf-ssh-pubkey-data)# &amp;lt;can be multiple lines&amp;gt; router(conf-ssh-pubkey-data)# exit router(conf-ssh-pubkey-user)# exit router(conf-ssh-pubkey)# exit router(config)# router#  Hashed public-key router# configure terminal router(config)# hostname &amp;lt;hostname&amp;gt; router(config)# ip domain-name &amp;lt;domain&amp;gt; router(config)# crypto key generate rsa modulus &amp;lt;bit-length&amp;gt; router(config)# ip ssh version 2 router(config)# username &amp;lt;user&amp;gt; secret &amp;lt;secret&amp;gt; !</description>
+    </item>
+    
+    <item>
+      <title>ED-137 - VHF over IP Bandwidth Requirements</title>
+      <link>http://blog.it-ninja.xyz/blog/ed-137-vhf-over-ip-bandwidth-requirements/</link>
+      <pubDate>Thu, 06 Apr 2017 14:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/blog/ed-137-vhf-over-ip-bandwidth-requirements/</guid>
+      <description>In 2014 during a new enterprise MPLS network build we needed to better understand the bandwidth requirements for VoIP services. The project involved extensive training on Eurocae standards ED-137 and ED-138, their parts as well as our selected manufacturer&amp;rsquo;s hardware and software. These standards outline the way Air Traffic Control services such as VHF, data and other services should interoperate and be carried over IP networks.
+I noticed early on in a section around bandwidth requirements that layer-1 was not accounted for and some layer-2 header information were missing in the bandwidth calculations.</description>
+    </item>
+    
+    <item>
+      <title>Converting SNMP Textual Objects to Numerical</title>
+      <link>http://blog.it-ninja.xyz/blog/snmp-textual-objects-to-numerical/</link>
+      <pubDate>Fri, 31 Mar 2017 14:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/blog/snmp-textual-objects-to-numerical/</guid>
+      <description>Today I have been working on SNMP monitoring standards for RAD G.SHDSL modems used within our network. Part of this required reading MIB files and extracting the objects for us to monitor network health of these links, not very exciting but very important to our customers.
+The issue with MIB files is that unless they are compiled into your NMS database the textual objects are not very useful. Therefore, I went about taking the known textual object-id from the MIB files and turning them into numerical object-ids.</description>
+    </item>
+    
+  </channel>
+</rss>

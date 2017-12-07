@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ipv6 Cisco on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/ipv6-cisco/</link>
+    <description>Recent content in Ipv6 Cisco on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 30 Nov 2017 09:50:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/ipv6-cisco/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>EIGRP</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-eigrp/</link>
+      <pubDate>Thu, 30 Nov 2017 09:50:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-eigrp/</guid>
+      <description>Features  IP protocol 88. Used to be Cisco propetary. Now open RFC7868. Hybrid protocol, more like a link-state protocol than a vector distance protocol. Multiprotocol support including IPv4, IPv6 etc. Support for CIDR and VLSM. Diffusing update algorithm (DUAL). Complex metric based on:  Bandwidth, on by default. Delay, on by default. Load, off by default. Reliability, off by default.  Accepts CIDR and VLSM wildcard in network route process command.</description>
+    </item>
+    
+  </channel>
+</rss>

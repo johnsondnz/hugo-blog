@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>Spanning-Tree Portfast</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/switching-portfast/">Spanning-Tree Portfast</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 28, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">spanning-tree</span>
+            
+            <span class="label label-success">switching</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="portfast">Portfast</h2>
+
+<ul>
+<li>Portfast enabled ports contine to send BPDUs every 2 seconds.  It does not turn off STP.</li>
+<li>When portfast is enabled globally with <code>spanning-tree portfast default</code> all access ports become portfast enabled.
+
+<ul>
+<li>Upon use of <code>switchport mode trunk</code> portfast is disabled and trunking mode continues.</li>
+<li>Any port in <code>swithport mode dynamic desirable</code> mode that negotiates a trunk with DTP will also disable portfast.</li>
+</ul></li>
+<li><code>switchport nonegotiate</code> turns off DTP and prevent dynamic trunks forming, portfast then stays active.
+
+<ul>
+<li><code>switchport nonegoitate</code> and <code>switchport mode dynamic desirable</code> cannot be on the same interface.  They are mutually exclusive.</li>
+<li>Both ends of a link must have DTP enabled and be in <code>swithport mode dynamic desirable</code> mode for a trunk to form, otherwise the port stays in access mode.</li>
+</ul></li>
+<li>Listening and learning states skipped saving 30 seconds.</li>
+<li>Can be enabled on access and trunk interfaces.
+
+<ul>
+<li>An warning message is displayed by IOS when enabling on a trunk advising to take care on ports leading to hub, bridges and switches.</li>
+</ul></li>
+<li>Can be enabled globally and on an interfaces.</li>
+</ul>
+
+<h2 id="configuration">Configuration</h2>
+
+<h3 id="globally">Globally</h3>
+
+<ul>
+<li>When configuring globally a warning is displayed advising to disable explicitly on ports leading to hubs, bridges and switches.
+
+<ul>
+<li>The cli help states <strong>enable portfast by default on all access ports</strong>, whereas the warning states you need to disable on trunks.</li>
+</ul></li>
+</ul>
+
+<pre><code>spanning-tree portfast default
+switch(config)# interface &lt;iface&gt;
+switch(config-if)# no spanning-tree portfast
+</code></pre>
+
+<h3 id="per-interface">Per interface</h3>
+
+<pre><code>switch(config)# interface &lt;iface&gt;
+switch(config-if)# spanning-tree portfast
+</code></pre>
+
+<h2 id="verify">Verify</h2>
+
+<ul>
+<li>Verify all trunks to be sure when using the global option. IOS shouldn&rsquo;t apply the configure to the trunk ports by default.</li>
+</ul>
+
+<pre><code>ASW1#show spanning-tree interface gi1/0 portfast 
+VLAN0010            enabled
+
+ASW1#show spanning-tree interface gi0/1 portfast 
+VLAN0001            disabled
+VLAN0010            disabled
+VLAN0020            disabled
+VLAN0200            disabled
+</code></pre>
+
+<h1 id="bpdu-guard">BPDU Guard</h1>
+
+<ul>
+<li><code>spanning-tree portfast</code> interface command is a prerequisite.</li>
+<li>Can be applied globally or per port.</li>
+<li>Should be applied to all <strong>edge ports</strong>.</li>
+<li>err-disables a port on detection of a BPDU.</li>
+<li>Recovery is not automated by default.
+
+<ul>
+<li><code>shutdown</code>, <code>no shutdown</code> restores the interface but doesn&rsquo;t guarantee the absence of a BPDU.</li>
+<li><code>err-disable recovery</code> global command can be configured to attempt a restore every x seconds.</li>
+<li>either option results in an <em>err-diabled</em> port in the presence of BPDUs.</li>
+</ul></li>
+</ul>
+
+<h3 id="configure-per-interface">Configure per interface</h3>
+
+<pre><code>switch(config)# interface &lt;iface&gt;
+switch(config-if)# spanning-tree bpduguard enable
+</code></pre>
+
+<h3 id="configure-globally">Configure globally</h3>
+
+<pre><code>switch(config)# spanning-tree portfast edge bpduguard default
+</code></pre>
+
+<p>or</p>
+
+<pre><code>switch(config)# spanning-tree portfast bpduguard default
+</code></pre>
+
+<h2 id="bpdu-filter">BPDU Filter</h2>
+
+<ul>
+<li>Can be enabled on a <code>portfast</code> enabled port.</li>
+</ul>
+
+<h3 id="configure-globally-1">Configure globally</h3>
+
+<pre><code>switch(config)# spanning-tree bpdufilter default
+</code></pre>
+
+<h3 id="configure-per-interface-1">Configure per interface</h3>
+
+<pre><code>switch(config)# interface &lt;iface&gt;
+switch(config-if)# spanning-tree bpdufilter enable
+</code></pre>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-sdm/">SDM Templates</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-stp/">Spanning-Tree</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-etherchannel/">EtherChannel</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-err-disable/">Error Disable</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-port-security/">Port Security</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Math on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/math/</link>
+    <description>Recent content in Math on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 30 Nov 2017 14:19:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/math/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hexidecimal and Binary</title>
+      <link>http://blog.it-ninja.xyz/study-notes/hexidecimal-binary/</link>
+      <pubDate>Thu, 30 Nov 2017 14:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/hexidecimal-binary/</guid>
+      <description>Base 16 math. Hex to decimal.
+ 01 = 0 units of 16 + 1 = 1 90 = 9 units of 16 = 0 = 144  Hex to binary  Base 16 math. 0-F  0 = 0000 1 = 0001 2 = 0010 3 = 0011 4 = 0100 5 = 0101 6 = 0110 7 = 0111 8 = 1000 9 = 1001 A = 1010 B = 1011 C = 1100 D = 1101 E = 1110 F = 1111  IPv4 to Binary 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1</description>
+    </item>
+    
+  </channel>
+</rss>

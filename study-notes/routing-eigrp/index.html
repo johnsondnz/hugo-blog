@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>EIGRP</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/routing-eigrp/">EIGRP</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 30, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">eigrp</span>
+            
+            <span class="label label-success">ipv6 cisco</span>
+            
+            <span class="label label-success">routing</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="features">Features</h2>
+
+<ul>
+<li>IP protocol 88.</li>
+<li>Used to be Cisco propetary.  Now open <a href="https://tools.ietf.org/html/rfc7868">RFC7868</a>.</li>
+<li>Hybrid protocol, more like a link-state protocol than a vector distance protocol.</li>
+<li>Multiprotocol support including IPv4, IPv6 etc.</li>
+<li>Support for CIDR and VLSM.</li>
+<li>Diffusing update algorithm (DUAL).</li>
+<li>Complex metric based on:
+
+<ul>
+<li>Bandwidth, on by default.</li>
+<li>Delay, on by default.</li>
+<li>Load, off by default.</li>
+<li>Reliability, off by default.</li>
+</ul></li>
+<li>Accepts CIDR and VLSM wildcard in <code>network</code> route process command.</li>
+<li>Load-balacing support.
+
+<ul>
+<li>Defaults to 4.</li>
+<li><code>maximum-paths</code> route process command can tunes this.</li>
+<li>Equal-cost load-balancing on by default.</li>
+<li>Support for unequal-cost load sharing via the <code>variance &lt;multiplier&gt;</code> route process command.</li>
+</ul></li>
+<li>RTO calculated per-neighbour to determine time to wait before sending unicast packets for reliable update and query processing.</li>
+<li>Reliable delivery for some packets.</li>
+<li>Reliable packets are sent via RTP (reliable transport protocol).
+
+<ul>
+<li>update, query and reply packets</li>
+</ul></li>
+<li>Uses split-horizon which can pose problems on point-to-multipoing links.</li>
+<li><code>router-id</code> defaults to highest loopback IP or in absense of a loopback interface the highest IP of a physical interface.</li>
+<li>Stub support.</li>
+</ul>
+
+<h2 id="data-structures">Data structures</h2>
+
+<ul>
+<li>Neighbour table: Neighbours.</li>
+<li>Topology table: Known loop-free paths to each destination.</li>
+<li>Route table: Best successor route(s) are placed here.</li>
+</ul>
+
+<h2 id="packet-types">Packet Types</h2>
+
+<ul>
+<li>Hello.
+
+<ul>
+<li>Sent to 224.0.0.10 multicast address.</li>
+</ul></li>
+<li>Update.
+
+<ul>
+<li>Sent when there is a change to 224.0.0.10.</li>
+<li>Ack expected from every neighbour.</li>
+<li>Unrepsonsive neighbours are sent the update via unicast up to 16 times.  If there is no further response the neighbour is declared dead.</li>
+<li>Uses RTP.</li>
+<li>After inital neighbour discovery full topology exchange occurs via unicast.</li>
+</ul></li>
+<li>Ack.
+
+<ul>
+<li>Acknowledgement of a received update.</li>
+<li>Unicast</li>
+</ul></li>
+<li>Query.
+
+<ul>
+<li>Sent to 224.0.0.10 when a route to a destination is lost.</li>
+<li>Expects a response from all neighbours.</li>
+<li>If a neighbour does not respond up to 16 unicast queries are sent before it gives up.</li>
+<li>Uses RTP.</li>
+</ul></li>
+<li>Reply.
+
+<ul>
+<li>Unicast repsonse to a query.</li>
+<li>Indicate the alternative path or absense of one.</li>
+<li>Uses RTP.</li>
+</ul></li>
+</ul>
+
+<h2 id="required-to-form-neighbour">Required to form neighbour</h2>
+
+<ul>
+<li>Same AS.</li>
+<li>Hello packet exchange.</li>
+<li>Same K values.
+
+<ul>
+<li>K1: Bandwidth, on by default.</li>
+<li>K2: Load, off by default.</li>
+<li>K3: Delay, on by default.</li>
+<li>K4: Reliability, off by default.</li>
+<li>K5: MTU, off by default.</li>
+</ul></li>
+</ul>
+
+<p><strong>Notes</strong>:</p>
+
+<ul>
+<li>Timers don&rsquo;t need to match but it is recommended to prevent flapping neghbours.  This prevents one router&rsquo;s hold-time (three missed hellos) expiring before one router sends its periodic hello.</li>
+</ul>
+
+<h2 id="timers">Timers</h2>
+
+<ul>
+<li>Hello:
+
+<ul>
+<li>T1 or slower: 60 seconds.</li>
+<li>Broadcast: 5 seconds.</li>
+<li>Configurable with <code>ip hello-interval eigrp &lt;as&gt; &lt;seconds&gt;</code> interface command.</li>
+</ul></li>
+<li>Hold time: 3 x the hello.
+
+<ul>
+<li>Configurable with <code>ip hold-time eigrp &lt;as&gt; &lt;seconds&gt;</code> interface command.</li>
+</ul></li>
+</ul>
+
+<h2 id="passive-interface">Passive interface</h2>
+
+<ul>
+<li>Same as OSPF, uses the <code>passive-interface &lt;iface&gt;</code> route process command.</li>
+<li>Passive interface prefix can be in the EIGRP topology but the interface not actively sending or processing EIGRP hello packets.</li>
+</ul>
+
+<h2 id="advertised-distance-ad-vs-feasible-distance-fd">Advertised Distance (AD) vs Feasible Distance (FD)</h2>
+
+<ul>
+<li>Advertised distance is also known as reported distance.</li>
+<li>Advertised distance is the distance from the next-hop router to a particular desitnation prefix.</li>
+<li>Feasible distance is the metric for the local router to reach a particular destination.
+
+<ul>
+<li>It is the cost to reach the next-hop route plus the advertise distance for that route.</li>
+</ul></li>
+</ul>
+
+<h3 id="successor">Successor</h3>
+
+<ul>
+<li>The route with the lowest FD is placed into the routing table.  This is called the successor and is the best path to the destination.</li>
+</ul>
+
+<h3 id="feasible-successor">Feasible successor</h3>
+
+<ul>
+<li>Routes with an AD less than that of the FD are placed into the topology table and is called a feasible successor.
+
+<ul>
+<li>This is the sum of the AD plus the metric to reach the next-hop router advertising that AD.</li>
+</ul></li>
+<li>For a feasible successor route to be deemed loop free the <strong>AD for a route must be less than the FD</strong> for the route.</li>
+</ul>
+
+<h3 id="unequal-cost-load-sharing">Unequal-cost load-sharing</h3>
+
+<ul>
+<li>By default variance is set to 1 which is equal-cost load-balancing only.</li>
+<li>FD of successor routes are multiplied by the vaiance multipler.</li>
+<li>Any feasible successor whos FD is less than the resulting successor FD is used for load-sharing.</li>
+<li>Metrics are not changed in any way.</li>
+<li>Command is locally significant only.</li>
+<li>Some IOS versions require you to clear the eigrp routes out of the route table.</li>
+<li>All of nothing, so this will impact all routes on the local router.</li>
+</ul>
+
+<h4 id="traffic-share">Traffic share</h4>
+
+<ul>
+<li><code>traffic-share balanced</code> route process command.
+
+<ul>
+<li>Balances the traffic proportionally to the ratios of the metrics associated with the different routes.</li>
+<li>Default behaviour.</li>
+</ul></li>
+<li><code>traffic-share min across-interfaces</code> route process command.</li>
+<li>CEF and fast-switched processing will use per-destination load-balancing.</li>
+<li>Process-switched packets are per-packet load-balanced.</li>
+<li>Load-balacing is performed only on packet that pass through the router.  This will thereore exclude router generated packets such as ICMP.</li>
+</ul>
+
+<h2 id="split-horizon-on-p2mp-interfaces">Split-horizon on p2mp interfaces</h2>
+
+<ul>
+<li>Split-horizon rules state that &ldquo;a route from being advertised out an interface to which it was learned&rdquo;.</li>
+<li>Solution is to turn of split-horizon.
+
+<ul>
+<li><code>no ip split-horizon eigrp &lt;as&gt;</code> interface command can be used.  <strong>Be very careful</strong>.</li>
+<li>Later IOS versions resync the neighbour relationship.</li>
+<li>Older IOS versions drop and reestablish the neighbour relationship.</li>
+<li>Risk of routing loops.  FD/AD EIGRP rules should prevent this.</li>
+</ul></li>
+<li><strong>Another, better solution is to simply use sub-interfaces</strong>.</li>
+</ul>
+
+<h2 id="passive-vs-active-routes">Passive vs Active Routes</h2>
+
+<ul>
+<li>Passive is good.  There is no active query for the destination.</li>
+<li>Active is bad.  The route is missing from the local router and it is actively querying for a alternative path.</li>
+</ul>
+
+<h3 id="stuck-in-active-sia">Stuck in Active (SIA)</h3>
+
+<ul>
+<li>Queries are propogarted throughout the entire EIGRP AS.</li>
+<li>Normally routes go from Active to Passive or gone very quickly.</li>
+</ul>
+
+<h2 id="stub-routing">Stub routing</h2>
+
+<ul>
+<li>Stubs are never queried for alternative paths.</li>
+<li>Limits the route table required on stubs as there are no alternative paths out of a stub.
+
+<ul>
+<li>Only a default route is advertised to stub routers.</li>
+</ul></li>
+<li>Often done in hub-n-spoke topologies.</li>
+<li>EIGRP stub routers advertise two types of routes:
+
+<ul>
+<li>Directly connected.</li>
+<li>Summary routes.</li>
+</ul></li>
+<li>Stub routes can also advertise static routes via redistribtion.  This is off by default.</li>
+<li>Later versions of IOS allow for the advertisement of dynamic prefixes via leak-maps.</li>
+<li>Only one router in a given adjacency can be a stub.  Two stub routers cannot for an adjacency.</li>
+</ul>
+
+<h2 id="redistribution">Redistribution</h2>
+
+<p>When redistributing routes you ned to set a seed metric either per redistribution command on with the <code>default-metric</code> route process command.</p>
+
+<h2 id="configure">Configure</h2>
+
+<h3 id="manuall-configure-router-id">Manuall configure router-id</h3>
+
+<pre><code>router(config)# router eigrp &lt;as&gt;
+router(condif-router)# router-id &lt;router-id&gt;
+</code></pre>
+
+<h3 id="place-interface-into-eigrp">Place interface into EIGRP</h3>
+
+<pre><code>router(config)# router eigrp &lt;as&gt;
+router(config)# no auto-summary
+router(config-router)# network &lt;address&gt; &lt;wildcard mask&gt;
+</code></pre>
+
+<h3 id="timers-1">Timers</h3>
+
+<pre><code>router(config)# interface &lt;iface&gt; 
+router(config-if)# ip hello-interval eigrp &lt;as&gt; &lt;seconds&gt; 
+router(config-if)# ip hold-time eigrp &lt;as&gt; &lt;seconds&gt;
+</code></pre>
+
+<h3 id="maximum-paths">Maximum-paths</h3>
+
+<pre><code>router(config)# router eigrp &lt;as&gt;
+router(config-router)# maximum-paths &lt;1-16&gt;
+</code></pre>
+
+<h3 id="unequal-cost-load-balancing">Unequal-cost load-balancing</h3>
+
+<pre><code>router(config)# router eigrp &lt;as&gt;
+router(config-router)# variance &lt;1-128&gt;
+</code></pre>
+
+<h3 id="stub-routing-1">Stub routing</h3>
+
+<pre><code>router(config)# router eigrp &lt;as&gt;
+router(config-router)# eigrp stub
+</code></pre>
+
+<pre><code>R4(config-router)#eigrp stub ?
+  connected      Do advertise connected routes
+  leak-map       Allow dynamic prefixes based on the leak-map
+  receive-only   Set receive only neighbor
+  redistributed  Do advertise redistributed routes
+  static         Do advertise static routes
+  summary        Do advertise summary routes
+  &lt;cr&gt;
+</code></pre>
+
+<h2 id="propogate-default-route">Propogate default route</h2>
+
+<h3 id="redistribute-static-route">Redistribute static route</h3>
+
+<p>Creates a D*EX with an AD of 170 on downstream routers.</p>
+
+<pre><code>router(config)# 0.0.0.0 0.0.0.0 (&lt;next-hop-address&gt;|iface&gt;)
+router(config)# router eigrp &lt;as&gt;
+router(config-router)# redistribute static 100000 10 255 1 1500
+</code></pre>
+
+<h3 id="ip-default-network">ip default-network</h3>
+
+<h3 id="redistribute-static-route-1">Redistribute static route</h3>
+
+<p>The router advertising via this command first needs to the network be in the EIGRP topology table and route table.</p>
+
+<p>This create a D* route with an AD of 90.</p>
+
+<pre><code>router(config)# if default-network &lt;network&gt;
+</code></pre>
+
+<h2 id="redistribute-something">Redistribute something</h2>
+
+<pre><code>router(config)# router eigrp &lt;as&gt;
+routerconfig-router)# redistribute &lt;protocol&gt; &lt;speed&gt; &lt;delay&gt; &lt;reliability&gt; &lt;load&gt; &lt;mtu&gt;
+</code></pre>
+
+<p>or</p>
+
+<pre><code>router(config)# router eigrp &lt;as&gt;
+routerconfig-router)# default-metric &lt;speed&gt; &lt;delay&gt; &lt;reliability&gt; &lt;load&gt; &lt;mtu&gt;
+routerconfig-router)# redistribute &lt;protocol&gt;
+</code></pre>
+
+<h2 id="configuring-eigrp-for-ipv6">Configuring EIGRP for IPv6</h2>
+
+<p>Easy as!!</p>
+
+<pre><code>router(config)# ipv6 router eigrp &lt;as&gt;
+router(config-rtr)# router-id &lt;address&gt;
+router(config-rtr)# interface &lt;iface&gt;
+router(config-if)# ipv6 eigrp &lt;as&gt;
+</code></pre>
+
+<h2 id="verify">Verify</h2>
+
+<h3 id="topology">Topology</h3>
+
+<ul>
+<li>FD is the first part of the metric before the backslash.</li>
+<li>AD is the second part of the metric after the backslash.</li>
+<li>P = Passive.</li>
+<li>A = Active</li>
+</ul>
+
+<pre><code>R4#show ip eigrp topology 
+EIGRP-IPv4 Topology Table for AS(10)/ID(10.1.4.9)
+Codes: P - Passive, A - Active, U - Update, Q - Query, R - Reply,
+       r - reply Status, s - sia Status 
+
+P 10.1.4.4/30, 1 successors, FD is 281600
+        via Connected, Ethernet0/0
+        via 10.1.4.10 (282112/3072), Ethernet0/1
+P 10.2.2.0/24, 2 successors, FD is 281856
+        via 10.1.4.6 (281856/2816), Ethernet0/0
+        via 10.1.4.10 (281856/2816), Ethernet0/1
+P 10.1.1.8/30, 1 successors, FD is 28160
+        via Redistributed (28160/0)
+P 0.0.0.0/0, 1 successors, FD is 28160
+        via Redistributed (28160/0)
+P 10.2.1.0/24, 2 successors, FD is 281856
+        via 10.1.4.6 (281856/2816), Ethernet0/0
+        via 10.1.4.10 (281856/2816), Ethernet0/1
+P 10.2.4.12/30, 1 successors, FD is 281856
+        via 10.1.4.6 (281856/2816), Ethernet0/0
+P 10.1.4.8/30, 1 successors, FD is 281600
+        via Connected, Ethernet0/1
+        via 10.1.4.6 (282112/3072), Ethernet0/0
+</code></pre>
+
+<h3 id="neighbours">Neighbours</h3>
+
+<pre><code>R4#show ip eigrp neighbors 
+EIGRP-IPv4 Neighbors for AS(10)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+1   10.1.4.6                Et0/0                    13 1d21h       1   100  0  78
+0   10.1.4.10               Et0/1                    11 1d22h       1   100  0  106
+</code></pre>
+
+<h3 id="interfaces">Interfaces</h3>
+
+<pre><code>R4#show ip eigrp interfaces 
+EIGRP-IPv4 Interfaces for AS(10)
+                  Xmit Queue   PeerQ        Mean   Pacing Time   Multicast    Pending
+Interface  Peers  Un/Reliable  Un/Reliable  SRTT   Un/Reliable   Flow Timer   Routes
+Et0/0        1        0/0       0/0           1       0/2           50           0
+Et0/1        1        0/0       0/0           1       0/2           50           0
+</code></pre>
+
+<h3 id="interface-timers">Interface timers</h3>
+
+<pre><code>R4#show ip eigrp interfaces detail 
+EIGRP-IPv4 Interfaces for AS(10)
+                  Xmit Queue   PeerQ        Mean   Pacing Time   Multicast    Pending
+Interface  Peers  Un/Reliable  Un/Reliable  SRTT   Un/Reliable   Flow Timer   Routes
+Et0/0        1        0/0       0/0           1       0/2           50           0
+  Hello-interval is 5, Hold-time is 15
+  Split-horizon is enabled
+  Next xmit serial &lt;none&gt;
+  Packetized sent/expedited: 9/0
+  Hello's sent/expedited: 36248/2
+  Un/reliable mcasts: 0/4  Un/reliable ucasts: 31/7
+  Mcast exceptions: 0  CR packets: 0  ACKs suppressed: 0
+  Retransmissions sent: 1  Out-of-sequence rcvd: 0
+  Topology-ids on interface - 0 
+  Authentication mode is not set
+Et0/1        1        0/0       0/0           1       0/2           50           0
+  Hello-interval is 5, Hold-time is 15
+  Split-horizon is enabled
+  Next xmit serial &lt;none&gt;
+  Packetized sent/expedited: 10/0
+  Hello's sent/expedited: 36244/2
+  Un/reliable mcasts: 0/6  Un/reliable ucasts: 30/7
+  Mcast exceptions: 0  CR packets: 0  ACKs suppressed: 0
+  Retransmissions sent: 1  Out-of-sequence rcvd: 1
+  Topology-ids on interface - 0 
+  Authentication mode is not set
+</code></pre>
+
+<p>and filtered</p>
+
+<pre><code>R4#show ip eigrp interfaces detail | i (Et|Ser|interval|Split|Xmit|Int)
+EIGRP-IPv4 Interfaces for AS(10)
+                  Xmit Queue   PeerQ        Mean   Pacing Time   Multicast    Pending
+Interface  Peers  Un/Reliable  Un/Reliable  SRTT   Un/Reliable   Flow Timer   Routes
+Et0/0        1        0/0       0/0           1       0/2           50           0
+  Hello-interval is 5, Hold-time is 15
+  Split-horizon is enabled
+Et0/1        1        0/0       0/0           1       0/2           50           0
+  Hello-interval is 5, Hold-time is 15
+  Split-horizon is enabled
+
+</code></pre>
+
+<h3 id="routes">Routes</h3>
+
+<pre><code>R4#show ip route eigrp 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 10.1.1.9 to network 0.0.0.0
+
+      10.0.0.0/8 is variably subnetted, 9 subnets, 3 masks
+D        10.2.1.0/24 [90/281856] via 10.1.4.10, 1d21h, Ethernet0/1
+                     [90/281856] via 10.1.4.6, 1d21h, Ethernet0/0
+D        10.2.2.0/24 [90/281856] via 10.1.4.10, 1d21h, Ethernet0/1
+                     [90/281856] via 10.1.4.6, 1d21h, Ethernet0/0
+D        10.2.4.12/30 [90/281856] via 10.1.4.6, 1d21h, Ethernet0/0
+</code></pre>
+
+<h3 id="traffic-share-1">Traffic Share</h3>
+
+<p>Look for the traffic share count.  This is the ratio of traffic that CEF will use to place traffic only this link.</p>
+
+<pre><code>R4#show ip route 10.2.1.0
+Routing entry for 10.2.1.0/24
+  Known via &quot;eigrp 10&quot;, distance 90, metric 281856, type internal
+  Redistributing via ospf 1, eigrp 10
+  Advertised by ospf 1 subnets
+  Last update from 10.1.4.6 on Ethernet0/0, 1d22h ago
+  Routing Descriptor Blocks:
+  * 10.1.4.10, from 10.1.4.10, 1d22h ago, via Ethernet0/1
+      Route metric is 281856, traffic share count is 1 &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; HERE
+      Total delay is 1010 microseconds, minimum bandwidth is 10000 Kbit
+      Reliability 255/255, minimum MTU 1500 bytes
+      Loading 1/255, Hops 1
+    10.1.4.6, from 10.1.4.6, 1d22h ago, via Ethernet0/0
+      Route metric is 281856, traffic share count is 1 &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; HERE
+      Total delay is 1010 microseconds, minimum bandwidth is 10000 Kbit
+      Reliability 255/255, minimum MTU 1500 bytes
+      Loading 1/255, Hops 1
+</code></pre>
+
+<h2 id="debug">Debug</h2>
+
+<ul>
+<li>To see EIGRP packets use the <code>debug eigrp packets</code> command.</li>
+</ul>
+
+<pre><code>R4#debug eigrp packets ?
+  &lt;1-99&gt;       Access list
+  &lt;1300-1999&gt;  Access list (expanded range)
+  SIAquery     EIGRP SIA-Query packets
+  SIAreply     EIGRP SIA-Reply packets
+  ack          EIGRP ack packets
+  all          Display all EIGRP packets
+  hello        EIGRP hello packets
+  query        EIGRP query packets
+  reply        EIGRP reply packets
+  request      EIGRP request packets
+  retry        EIGRP retransmissions
+  stub         EIGRP stub packets
+  terse        Display all EIGRP packets except Hellos
+  update       EIGRP update packets
+  &lt;cr&gt;
+</code></pre>
+
+<pre><code>R4#debug ip eigrp ?
+  &lt;1-65535&gt;      Autonomous System
+  A.B.C.D        IPv4 Address
+  neighbor       Neighbor debugging
+  notifications  Event notifications
+  summary        Summary Route Processing
+  vrf            Select a VPN Routing/Forwarding instance
+  &lt;cr&gt;
+
+R4#debug eigrp ?  
+  address-family  EIGRP address-family debug commands
+  fsm             EIGRP Dual Finite State Machine events/actions
+  neighbors       EIGRP neighbors
+  nsf             EIGRP Non-Stop Forwarding events/actions
+  packets         EIGRP packets
+  service-family  EIGRP service-family debug commands
+  timers          EIGRP Timer Events
+  transmit        EIGRP transmission events
+</code></pre>
+
+<pre><code>R4#show ip eigrp traffic 
+EIGRP-IPv4 Traffic Statistics for AS(10)
+  Hellos sent/received: 72429/71694
+  Updates sent/received: 14/54
+  Queries sent/received: 0/10
+  Replies sent/received: 10/0
+  Acks sent/received: 61/22
+  SIA-Queries sent/received: 0/0
+  SIA-Replies sent/received: 0/0
+  Hello Process ID: 399
+  PDM Process ID: 397
+  Socket Queue: 0/10000/2/0 (current/max/highest/drops)
+  Input Queue: 0/10000/2/0 (current/max/highest/drops)
+</code></pre>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/rouing-bgp-summarisation/">BGP Summarisation</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-bgp-attributes/">BGP Attributes</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-bgp/">BGP</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-ospfv3/">OSPFv3</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-policy-based-routing/">Policy Based Routing</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

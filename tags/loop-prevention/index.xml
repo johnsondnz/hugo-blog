@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Loop Prevention on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/loop-prevention/</link>
+    <description>Recent content in Loop Prevention on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 29 Nov 2017 00:18:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/loop-prevention/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Unidirectional Link Detection (UDLD)</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-udld/</link>
+      <pubDate>Wed, 29 Nov 2017 00:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-udld/</guid>
+      <description>Unidirectional Link Detection (UDLD)  Used to also detect unidirectional links. When first enabling agressive mode on the first end-point it waits for the first peering. This tells the first switch that there is a udld enabled switch attached. Has the added benefit of detecting unidirectional links before STP is fully converged after a boot.  Modes  Normal Agressive  Timers  Hello every 15 seconds. Dead timer: 3 x hello.</description>
+    </item>
+    
+    <item>
+      <title>Loop and Root Guard</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-guards/</link>
+      <pubDate>Tue, 28 Nov 2017 16:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-guards/</guid>
+      <description>Short Version  Loop Guard on non-designated ports, except edge ports. Root Guard on all designated ports. BPDU Guard and portfast on all edge ports.  Loop Guard vs Root Guard Loop Guard  Should be applied on all non-designated ports. Can be configured globally and per interface. Prevents an interface from transitioning to designated in the absence of BPDUs. Is exclusive from root guard. The two cannot cannot be active at the same time.</description>
+    </item>
+    
+  </channel>
+</rss>

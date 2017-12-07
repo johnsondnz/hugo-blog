@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>NAT and PAT</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/routing-nat-pat/">NAT and PAT</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 30, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">nat</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="basics">Basics</h2>
+
+<ul>
+<li>Translates RFC1918 to routed public addreses</li>
+<li>1:1 burns a lot public addresses.  This is known as source nat (SNAT).</li>
+<li>Dynamic creates a pool on inside global address (DNAT).</li>
+<li>Port address translation overloads an interface so all users share a single inside global address (PAT).</li>
+</ul>
+
+<h3 id="address-types">Address Types</h3>
+
+<ul>
+<li><strong>Inside Local address</strong>: RFC1918 address in my network.</li>
+<li><strong>Inside Global address</strong>: Public IP address in my network.</li>
+<li><strong>Outside Local address</strong>: RFC1918 address at a remote network.</li>
+<li><strong>Outside Global address</strong>: Public IP address or a remote network.</li>
+</ul>
+
+<h4 id="it-is-all-about-perspective">It is all about perspective</h4>
+
+<ul>
+<li>If the address is in use in your network (local or global) it is an inside address.</li>
+<li>If the address is external to your network it is an outside address.</li>
+</ul>
+
+<h3 id="rfc1918-address-space">RFC1918 address space</h3>
+
+<ul>
+<li>10.0.0.0/8</li>
+<li>172.16.0.0/212</li>
+<li>192.168.0.0/16</li>
+</ul>
+
+<h2 id="pat">PAT</h2>
+
+<ul>
+<li>Share an address for inside local to inside global translation.</li>
+<li>THe router randomises the source port number.</li>
+<li>ICMP traffic is given an ident number.</li>
+</ul>
+
+<h2 id="configure-nat">Configure NAT</h2>
+
+<h3 id="define-interfaces">Define interfaces</h3>
+
+<pre><code>router(config)# interface &lt;inside-iface&gt;
+router(config-if)# ip nat inside
+!
+router(config-if)# interface &lt;outside-iface&gt;
+router(config-if)# ip nat outside
+</code></pre>
+
+<h3 id="configure-snat">Configure SNAT</h3>
+
+<pre><code>router(config)# ip nat inside source static &lt;address&gt; &lt;address&gt;
+</code></pre>
+
+<h3 id="configure-dnat">Configure DNAT</h3>
+
+<pre><code>router(config)# access-list &lt;1-99&gt; permit &lt;address&gt; &lt;mask&gt;
+router(config)# ip nat pool &lt;name&gt; &lt;start-addres&gt; &lt;end-address&gt; netmask &lt;mask&gt;
+router(config)# ip nat inside source list &lt;acl&gt; pool &lt;name&gt;
+</code></pre>
+
+<p>or</p>
+
+<pre><code>router(config)# access-list &lt;1-99&gt; permit &lt;address&gt; &lt;mask&gt;
+router(config)# ip nat pool &lt;name&gt; &lt;start-addres&gt; &lt;end-address&gt; prefix-length &lt;0-32&gt;
+router(config)# ip nat inside source list &lt;acl&gt; pool &lt;name&gt;
+</code></pre>
+
+<h3 id="configure-pat">Configure PAT</h3>
+
+<pre><code>router(config)# access-list &lt;1-99&gt; permit &lt;address&gt; &lt;mask&gt;
+router(config)# ip nat inside source list &lt;acl&gt; interface &lt;iface&gt; overload
+</code></pre>
+
+<h3 id="configure-dynamic-pat">Configure dynamic PAT</h3>
+
+<pre><code>router(config)# access-list &lt;1-99&gt; permit &lt;address&gt; &lt;mask&gt;
+router(config)# ip nat pool &lt;name&gt; &lt;start-addres&gt; &lt;end-address&gt; netmask &lt;mask&gt;
+router(config)# ip nat inside source list &lt;acl&gt; pool &lt;name&gt; overload
+</code></pre>
+
+<p>or</p>
+
+<pre><code>router(config)# access-list &lt;1-99&gt; permit &lt;address&gt; &lt;mask&gt;
+router(config)# ip nat pool &lt;name&gt; &lt;start-addres&gt; &lt;end-address&gt; prefix-length &lt;0-32&gt;
+router(config)# ip nat inside source list &lt;acl&gt; pool &lt;name&gt; overload
+</code></pre>
+
+<h2 id="verify">Verify</h2>
+
+<h3 id="active-translations">Active translations</h3>
+
+<pre><code>R1#show ip nat translations 
+Pro Inside global      Inside local       Outside local      Outside global
+icmp 209.65.200.225:0  10.1.4.6:0         209.65.200.241:0   209.65.200.241:0
+</code></pre>
+
+<h3 id="translation-statistics">Translation statistics</h3>
+
+<pre><code>R1#show ip nat statistics 
+Total active translations: 1 (0 static, 1 dynamic; 1 extended)
+Peak translations: 2, occurred 01:16:12 ago
+Outside interfaces:
+  Serial1/1
+Inside interfaces: 
+  Serial1/0.112
+Hits: 216  Misses: 0
+CEF Translated packets: 14, CEF Punted packets: 0
+Expired translations: 1
+Dynamic mappings:
+-- Inside Source
+[Id: 1] access-list 1 interface Serial1/1 refcount 1
+
+Total doors: 0
+Appl doors: 0
+Normal doors: 0
+Queued Packets: 0
+</code></pre>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

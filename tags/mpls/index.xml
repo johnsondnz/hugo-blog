@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mpls on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/mpls/</link>
+    <description>Recent content in Mpls on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 06 Apr 2017 14:19:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/mpls/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ED-137 - VHF over IP Bandwidth Requirements</title>
+      <link>http://blog.it-ninja.xyz/blog/ed-137-vhf-over-ip-bandwidth-requirements/</link>
+      <pubDate>Thu, 06 Apr 2017 14:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/blog/ed-137-vhf-over-ip-bandwidth-requirements/</guid>
+      <description>In 2014 during a new enterprise MPLS network build we needed to better understand the bandwidth requirements for VoIP services. The project involved extensive training on Eurocae standards ED-137 and ED-138, their parts as well as our selected manufacturer&amp;rsquo;s hardware and software. These standards outline the way Air Traffic Control services such as VHF, data and other services should interoperate and be carried over IP networks.
+I noticed early on in a section around bandwidth requirements that layer-1 was not accounted for and some layer-2 header information were missing in the bandwidth calculations.</description>
+    </item>
+    
+  </channel>
+</rss>

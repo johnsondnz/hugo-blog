@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>Port Security</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/switching-port-security/">Port Security</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 29, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">security</span>
+            
+            <span class="label label-success">switching</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="port-security">Port Security</h2>
+
+<ul>
+<li>Port level security feature.</li>
+<li>Exclusive use from 802.1x.  You cannot use both features on the same port.</li>
+<li>Modes
+
+<ul>
+<li>Shutdown: Default state, the port is placed into <strong>err-disabled</strong> mode.  The LED switches off.</li>
+<li>Protect: Frames from the offending host are dropped.</li>
+<li>Restrict: Like <strong>protect</strong> frames are droped from the offending host and logged.</li>
+</ul></li>
+<li><code>sticky</code> used to ensure learned MAC survives a <code>reload</code>.  THe MAC is saved in the running and startup configurations.</li>
+<li>Can permit more the one MAC per port.</li>
+<li>Can forbib a mac on a port.</li>
+<li>An attempt to configure secure mac count greater than that of the configured limit would result in a error message.</li>
+<li>If the port in shutdown all dynamically learned mac-addresses are flushed, except for sticky macs.</li>
+<li>Does not work on trunk ports.</li>
+</ul>
+
+<h2 id="configure-per-interface">Configure per interface</h2>
+
+<h3 id="shutdown-default-mode">Shutdown (Default mode)</h3>
+
+<pre><code>switch(config)#interface &lt;iface&gt;
+switch(config-if)# switchport port-security
+</code></pre>
+
+<p>or</p>
+
+<pre><code>switch(config)# interface &lt;iface&gt;
+switch(config-if)# switchport port-security violation shutdown
+</code></pre>
+
+<h3 id="protect">Protect</h3>
+
+<pre><code>switch(config)# interface &lt;iface&gt;
+switch(config-if)# switchport port-security violation protect
+</code></pre>
+
+<h3 id="restrict">Restrict</h3>
+
+<pre><code>switch(config)# interface &lt;iface&gt;
+switch(config-if)# switchport port-security violation restrict
+</code></pre>
+
+<h3 id="sticky-static-forbidden-mac">Sticky, static, forbidden MAC</h3>
+
+<pre><code>switch(config)# interface &lt;iface&gt;
+switch(config-if)# switchport port-security mac-address (48bit mac|sticky)
+</code></pre>
+
+<pre><code>switch(config)# interface &lt;iface&gt;
+switch(config-if)# switchport port-security mac-address forbidden &lt;mac&gt;
+</code></pre>
+
+<h3 id="mac-limit">MAC limit</h3>
+
+<pre><code>switch(config)#interface &lt;iface&gt;
+ switchport port-security maximum &lt;1-4097&gt;
+</code></pre>
+
+<h2 id="verify">Verify</h2>
+
+<h3 id="operation">Operation</h3>
+
+<pre><code>ASW1#sh port-security                
+Secure Port  MaxSecureAddr  CurrentAddr  SecurityViolation  Security Action
+                (Count)       (Count)          (Count)
+---------------------------------------------------------------------------
+      Gi1/0              1            1                  0         Shutdown
+---------------------------------------------------------------------------
+Total Addresses in System (excluding one mac per port)     : 0
+Max Addresses limit in System (excluding one mac per port) : 4096
+
+ASW1#sh port-security interface Gi1/0
+Port Security              : Enabled
+Port Status                : Secure-up
+Violation Mode             : Shutdown
+Aging Time                 : 0 mins
+Aging Type                 : Absolute
+SecureStatic Address Aging : Disabled
+Maximum MAC Addresses      : 1
+Total MAC Addresses        : 1
+Configured MAC Addresses   : 0
+Sticky MAC Addresses       : 0
+Last Source Address:Vlan   : 0050.0100.0500:10
+Security Violation Count   : 0
+</code></pre>
+
+<h3 id="sticky-mac">Sticky MAC</h3>
+
+<pre><code>ASW1#show run int gi1/0
+Building configuration...
+
+Current configuration : 353 bytes
+!
+interface GigabitEthernet1/0
+ description Client1
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 0050.0100.0500
+ switchport port-security
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+end
+
+ASW1#show port-security int gi1/0
+Port Security              : Enabled
+Port Status                : Secure-up
+Violation Mode             : Shutdown
+Aging Time                 : 0 mins
+Aging Type                 : Absolute
+SecureStatic Address Aging : Disabled
+Maximum MAC Addresses      : 1
+Total MAC Addresses        : 1
+Configured MAC Addresses   : 0
+Sticky MAC Addresses       : 1
+Last Source Address:Vlan   : 0050.0100.0500:10
+Security Violation Count   : 0
+
+ASW1# sh ow port-security address
+               Secure Mac Address Table
+-----------------------------------------------------------------------------
+Vlan    Mac Address       Type                          Ports   Remaining Age
+                                                                   (mins)    
+----    -----------       ----                          -----   -------------
+  10    0050.0100.0500    SecureSticky                  Gi1/0        -
+-----------------------------------------------------------------------------
+Total Addresses in System (excluding one mac per port)     : 0
+Max Addresses limit in System (excluding one mac per port) : 4096
+</code></pre>
+
+<h2 id="recovery-from-err-disable">Recovery from err-disable</h2>
+
+<ul>
+<li>Issue <code>shutdown</code> followed by <code>no shutdown</code> on the port.</li>
+<li>or issue the global command <code>errdisable recovery cause psecure-violation</code> for automated recovery.
+
+<ul>
+<li>not to be confused with <code>security-violation</code> which is for 802.1x.</li>
+<li>recovery timer default is every 300 seconds.</li>
+</ul></li>
+</ul>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-sdm/">SDM Templates</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-stp/">Spanning-Tree</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-etherchannel/">EtherChannel</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-err-disable/">Error Disable</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-udld/">Unidirectional Link Detection (UDLD)</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

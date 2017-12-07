@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>ED-137 - VHF over IP Bandwidth Requirements</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/blog/ed-137-vhf-over-ip-bandwidth-requirements/">ED-137 - VHF over IP Bandwidth Requirements</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          April 6, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">mpls</span>
+            
+            <span class="label label-success">voip</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<p>In 2014 during a new enterprise MPLS network build we needed to better understand the bandwidth requirements for VoIP services.  The project involved extensive training on Eurocae standards ED-137 and ED-138, their parts as well as our selected manufacturer&rsquo;s hardware and software.  These standards outline the way Air Traffic Control services such as VHF, data and other services should interoperate and be carried over IP networks.</p>
+
+<p>I noticed early on in a section around bandwidth requirements that layer-1 was not accounted for and some layer-2 header information were missing in the bandwidth calculations.  It also did not account MPLS 4-byte tags, critical to our network services segmentation.</p>
+
+<p>The basics are that SIP sets up the sessions and RTP carries the audio data from the controller to the aircraft.  Traditional SIP/RTP VoIP means audio is full-duplex.  For VHF transmission and receive operates in half-duplex. There needs to be a way to determine the state of a transmitter/receiver and how to setup the push-to-talk (PTT) of the transmitter or squelch (SQU) of the receiver.</p>
+
+<p>ED-137 created a new ED-137 RTP header extension previously known as WG67 (working group 67) to achieve this.  It adds new fields to RTP packets.  These headers are used to signal to a transmitter to gate open for transmission to an aircraft and for receive to signal to the voice switch that receive audio is being transmitted to the controller.</p>
+
+<ul>
+<li>PTT Type <code>3-bits</code>.</li>
+<li>SQU <code>1-bit</code>.</li>
+<li>PTT-id <code>4-bits</code>.</li>
+<li>Simultaneous Call Transmission <code>1-bit</code>.</li>
+<li>X <code>1-bit</code>.</li>
+<li>Not Used <code>21-bits</code>.</li>
+<li>VF <code>1-bit</code>.</li>
+</ul>
+
+<h2 id="rtp-packet-with-all-bits-set-to-zero">RTP packet with all bits set to zero.</h2>
+
+<p>To ensure that the radio always knows the PTT and SQU state mode, these bits within the ED-137 headers are set to zero (except VF: VF ON) and are transmitted at a rate of 5pps (200ms intervals), even in absence of audio.  When PTT or SQU is set to 1 audio begins to transmit at a rate of 50pps (20ms intervals) and the all bits set to 0 packets cease only returning when the is no longer a PTT or SQU.</p>
+
+<p><img src="/img/ED137-RTP-Headers.png" alt="RTP ED-137 Headers" /></p>
+
+<h2 id="ptt-on-no-audio-payload">PTT on, no audio payload</h2>
+
+<p>To prevent the start of audio transmission being cut off a PTT on packet is sent in advance of the first 20ms audio sample.</p>
+
+<p><img src="/img/ED137-PTT-On-no-audio.png" alt="PTT on, no audio" /></p>
+
+<h2 id="ptt-is-on-the-audio-codec-is-g-711-ulaw">PTT is on, the audio codec is G.711 ulaw</h2>
+
+<p>PTT is on, the audio codec is G.711 ulaw.</p>
+
+<p><img src="/img/ED137-PTT-On.png" alt="PTT on, with audio" /></p>
+
+<h2 id="onto-the-math">Onto the Math</h2>
+
+<h3 id="terminology">Terminology</h3>
+
+<ul>
+<li>8 bits = 1 octet.</li>
+<li>1 octet = 1 byte.</li>
+</ul>
+
+<h3 id="headers">Headers</h3>
+
+<ul>
+<li>Layer-1 - 20 octets (preamble, start delimiter and interpacket gap).</li>
+<li>Layer-2 = 18 octets (excluding 802.1q header)</li>
+<li>802.1q field = 4 octets each.</li>
+<li>MPLS field = 4 octets each.</li>
+<li>IP Header = 20 octets.</li>
+<li>UDP Header = 8 octets.</li>
+<li>RTP Header = 16 octets.</li>
+<li>ED-137 RTP Header Extension = 4 octets.</li>
+</ul>
+
+<h3 id="calculating-packet-overheads">Calculating packet overheads</h3>
+
+<p>Each packet on our network will include two MPLS fields, one for transport the other for the VPN.  In a igh number of cases one 802.1q field is also use.  The total size of overhead is:</p>
+
+<pre><code>20 + 18 + 4 + 4 + 4 + 20 + 8 + 16 + 4 = 98 octets.
+98 octets x 8-bits = 784-bits.
+</code></pre>
+
+<ul>
+<li>784-bits is for a single packet.</li>
+<li>The audio sample rate is set to 20ms which is 50pps.</li>
+<li>Without audio the sample rate is set to 200ms which is 5pps. (referred to as keepalive).</li>
+</ul>
+
+<h4 id="keepalive-overhead">Keepalive overhead.</h4>
+
+<pre><code>784-bits x 5pps = 3,920bps.
+3,920bps / 1000 = 3.92kbps.
+</code></pre>
+
+<p>When there is no PTT or SQU the network requires 3.92kbps for each radio frequency.</p>
+
+<h4 id="with-audio-overhead">With audio overhead</h4>
+
+<pre><code>784-bits x 50pps = 39,200bps.
+39,200bps / 1000 = 39.2kbps.
+</code></pre>
+
+<p>When there is audio transmission the application overhead is equal to 39.2kbps.  The rest is easy.</p>
+
+<ul>
+<li>G.711 is uncompressed PCM at 64kbps.
+
+<ul>
+<li><code>39.2kbps + 64kbps = 103.2kbps</code>.</li>
+</ul></li>
+<li>G.729 is compress audio at 8kbps.
+
+<ul>
+<li><code>39.2kbps + 8kbps = 47.2kbps</code>.</li>
+</ul></li>
+</ul>
+
+<h3 id="adding-in-audio">Adding in audio</h3>
+
+<p>Generally speaking, only a single air traffic controller position requires access to a radio for the purpose of transmitting to aircraftat any given time.  This means on a G.729 VHF circuit we expect 47.2kbps for all audio transmissions.</p>
+
+<p>It is possible to channel receive audio to multiple location.  This in turn means a 1:1 growth in bandwidth per destination for that audio.  As SIP/RTP sessions are unicast this means we have a situation whereby for every position that is setup as a receiver, the audio is multiplied by the number of receiving controller positions</p>
+
+<pre><code>* Required bandwidth = number receiving controller positions x 47.2kbps.
+* Required bandwidth example = 6 receiving positions x 47.2kbps = 283.2kbps.
+</code></pre>
+
+<p>VHF radio sites are typically on hilltop or mountains, this ensure that operators gain the maximum amount of coverage for each installation. Connectivity to these locations using service providers can be cost prohibitive or impossible. As such operators will run a combination of service provider’s WANs and their own WAN infrastructure where the returns on investment is better than leasing or contributing towards building core network infrastrucutre for a service provider circuit.</p>
+
+<p>G.729 will normally be chosen due to the savings on WAN bandwidth costs.  It also doesn&rsquo;t from my testing have any recognisable difference to PCM audio quality.  G.711 is also used, however, typically only where technical limitations in applications and/or hardware prevent the use of G.729.  Licensing could also be a business restriction in that every G.729 codec incurs a licensing fee.</p>
+
+<p>-Donald</p>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+</html>

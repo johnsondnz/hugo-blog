@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ospf on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/ospf/</link>
+    <description>Recent content in Ospf on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 30 Nov 2017 15:31:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/ospf/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OSPFv3</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospfv3/</link>
+      <pubDate>Thu, 30 Nov 2017 15:31:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospfv3/</guid>
+      <description>Basics  Borrows many of OSPFv2 mechinisms. Interfaces are aded at the interface level with ipv6 ospf &amp;lt;process&amp;gt; area &amp;lt;area&amp;gt;. There is no option under the router process.  The router will automatically create ipv6 router ospf &amp;lt;process&amp;gt;. This cannot be deleted. Doing so will stop the OSPFv3 process.  Still uses an IPv4 RID.  uses router-id route process command if there is no IPv4 address configured on an interface.</description>
+    </item>
+    
+    <item>
+      <title>OSPF Summarisation</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-summarisation/</link>
+      <pubDate>Thu, 30 Nov 2017 08:23:56 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-summarisation/</guid>
+      <description>Summarisation  By default type-3 and type-5 LSAs do not contain summarised routes. Inter-area summarisation occurs on the ABR. External route summarisation generally occurs on the ABSR. OSPF is classless which means that subnet information is carried in route advertisements. Reducess the route table through aggregation of routing prefixes. Relies on a well designed IP plan. With OSPF summarisation type-3 and type-5 LSAs can be summarised.  Where and how  ABR summarisation  area &amp;lt;area&amp;gt; range &amp;lt;address&amp;gt; &amp;lt;mask&amp;gt; command is used within the routing process.</description>
+    </item>
+    
+    <item>
+      <title>OSPF LSA Types and Stubs</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-lsa-stubs/</link>
+      <pubDate>Wed, 29 Nov 2017 21:48:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-lsa-stubs/</guid>
+      <description>LSAs  Type-1: Router link.  Flooded by all routers in an area. Route types: (O).  Type-2: Network link.  Sent by the DR. Lists all the routers on the segment it is adjacent to. Flooded within the area. Route types: (O).  Type-3: Network summary link.  Sent by the ASBR between areas. Typically from/to area 0. Lists all the prefixes avaialble in a given area. Route types: (O IA).</description>
+    </item>
+    
+    <item>
+      <title>OSPF Authentication</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-auth/</link>
+      <pubDate>Wed, 29 Nov 2017 20:29:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-auth/</guid>
+      <description>Types  Type 0: null (no authentication). Type 1: plain-text. Type 2: message-digest.  Where Can be applied on an entires area or a single network segment.
+ Per-area. Per-segment.  When choosing per-area, all interfaces in the area must be configured with the apporpriate authentication key (md5 or plain-text). The router ospf section mandates authentication for the entire area. Unless you use the interface command ip ospf authentication null.</description>
+    </item>
+    
+    <item>
+      <title>OSPF Virtual Links</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-virtual-links/</link>
+      <pubDate>Wed, 29 Nov 2017 20:12:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-virtual-links/</guid>
+      <description>Why?  To link isolated non-backbone areas to the backbone area, because all non-backbone areas must be connected to the backbone area (area 0 or area 0.0.0.0). Stitches OSPF together so it works. Is a bandaid!!. They are not a solution for poor area design. In the configuration the command defines the transit area. The transit area cannot be any sort of stub area. You must you the RID of the remote router in the area &amp;lt;area&amp;gt; virtual-link route process command.</description>
+    </item>
+    
+    <item>
+      <title>OSPF Nonbroadcast Multiacces (NBMA)</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-nbma/</link>
+      <pubDate>Wed, 29 Nov 2017 20:08:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-nbma/</guid>
+      <description>NBMA Networks  Typically applies to frame-relay networks. These networks don&amp;rsquo;t have a multidestination capability, i.e. multicast or broadcast.  RFC 2328:  Nonbroadcast: OSPF similates broadcast network. Neighbours are manually configured.  One IP subnet. Neighbours and manually configured. DR and BDR elected, each needs full connectivity others. Full or partial-mesh topology.  Point-to-multipoint: Used in partial mesh. Treated as a collection of point-to-point links. No DR and BDR is elected and neighbours are dynamically discovered.</description>
+    </item>
+    
+    <item>
+      <title>OSPF</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf/</link>
+      <pubDate>Wed, 29 Nov 2017 16:35:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf/</guid>
+      <description>OSPF  IP protocol 89. Link state protocol. Uses dijkstra algorithm. Multi-area and single area topology options.  Data structures (tables)  Topology database or link-state database. Neighbour table or adjacency table. Routing table or forwarding table.  What needs to match between OSPF routers?  Interface netmask except on point-to-point links. Hello and dead timers. Area. Stub flag. Authentication password.  Notes:
+ Unique RID is required for each router in the the OSPF domain.</description>
+    </item>
+    
+  </channel>
+</rss>

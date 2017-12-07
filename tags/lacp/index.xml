@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lacp on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/lacp/</link>
+    <description>Recent content in Lacp on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 29 Nov 2017 11:20:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/lacp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>EtherChannel</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-etherchannel/</link>
+      <pubDate>Wed, 29 Nov 2017 11:20:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-etherchannel/</guid>
+      <description>EtherChannel  Logical bundle of 2-8 like type interfaces between two switches.  MLAG allows for multi-chasses etherchannel.  Provides a single layer-2 or layer-3 logical interfaces to IOS. STP sees the logical interface as a single link.  Protocols and modes LACP  IEEE-802.3ad, later moved into IEEE-802.1AX-2008. Uses layer-2 multicast destiation of 0180.c200.0002.  This mac is shared by CDP, VTP, DTP, PAgP and UDLD.  Active: Turns on LACP unconditionally.</description>
+    </item>
+    
+  </channel>
+</rss>

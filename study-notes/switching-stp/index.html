@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>Spanning-Tree</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/switching-stp/">Spanning-Tree</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 29, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">spanning-tree</span>
+            
+            <span class="label label-success">switching</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="todo">Todo</h2>
+
+<ul>
+<li>Split this into respective STP docs.</li>
+<li>Tidy this up, alot</li>
+</ul>
+
+<h2 id="cst-pvst-mst">CST, PVST+, MST</h2>
+
+<ul>
+<li><strong>CST</strong>: Common spanning-tree.  All VLANs in the same instance.  One switch handles all traffic.</li>
+<li><strong>PVST+</strong>: Per-VLAN spanning-tree plus.  SPT run per-vlan, very granular.</li>
+<li><strong>MST</strong>: Multiple spanning-tree.  VLANs are mapped to one of 16 instance that have a common topology.
+
+<ul>
+<li>IST works with CST and is instance 0.  Can represent the entire MST region as a virtual CST bridge.</li>
+<li>MSTI is an instance with VLAN mappings and is instance 1-15.</li>
+<li>MSTI regions:</li>
+<li><code>name</code>, <code>revision</code> and <code>vlan-mapping table</code> must match for switches to be in the same region.</li>
+</ul></li>
+</ul>
+
+<h2 id="cisco-mac-address">Cisco MAC address</h2>
+
+<p>As Cisco uses per-vlan spanning-tree (PVST+) and as a result uses non-IEEE destination MAC for BPDUs.</p>
+
+<ul>
+<li><strong>Cisco</strong>: 0100.0ccc.cccd for PVST and RSTP+.  Uses a 802.3 / 802.2 SNAP Frame.</li>
+<li><strong>IEEE-802.1d and 802.1w</strong>: 0180.c200.0000 802.3 / 802.2 LLC Frame.</li>
+<li><strong>IEEE-802.1s</strong>: &mdash;&mdash;&mdash;&mdash; DUNNO &mdash;&mdash;&mdash;&mdash;</li>
+</ul>
+
+<h3 id="vendor-interoperability">Vendor interoperability</h3>
+
+<p>Cisco uses of non-IEEE standard protocols can result in other vendors not understanding the BPDU.  Some will drop the frame, others will switch it as a standard multicast frame.</p>
+
+<p>Juniper has a Rapid-PVST+ equivilent called VSTP.  Cisco switches meed to use the <code>spanning-tree pathcost method long</code> command for interoperability, otherwise link costs will not align.</p>
+
+<h2 id="stp-802-1d-vs-rstp-802-1w">STP (802.1d) vs RSTP (802.1w)</h2>
+
+<h3 id="port-states">Port States</h3>
+
+<ul>
+<li><strong>STP Disabled</strong>: RSTP Discarding</li>
+<li><strong>STP Blocking</strong>: RSTP Discarding</li>
+<li><strong>STP Listening</strong>: RSTP Discarding</li>
+<li><strong>STP Learning</strong>: RSTP Learning</li>
+<li><strong>STP Forwarding</strong>: RSTP Forwarding</li>
+</ul>
+
+<h3 id="timers">Timers</h3>
+
+<ul>
+<li><strong>STP</strong>: every 2 seconds by the root bridge.</li>
+<li><strong>RSTP</strong>: every 2 seconds by every switch.</li>
+</ul>
+
+<h2 id="basics">Basics</h2>
+
+<ul>
+<li>Lowest bridge-id wins root bridge election.
+
+<ul>
+<li>Bridge-id = bridge-priority (2 bytes) + MAC address (6 bytes)</li>
+</ul></li>
+<li>Cost is incremented on receipt of BPDUs not as they are sent.</li>
+</ul>
+
+<h2 id="root-port-selection">Root port selection</h2>
+
+<ol>
+<li>Lowest bridge-id.</li>
+<li>Lowest path cost to the root bridge.</li>
+<li>Lowest sender bridge-id.</li>
+<li>Lowest port-priority.</li>
+<li>Lowest port-id.</li>
+</ol>
+
+<h3 id="topology-change-notification-tcn">Topology change notification (TCN)</h3>
+
+<ul>
+<li><strong>STP</strong>: Sent by the root bridge only out all its designated ports.  <code>max-age</code> + (2 x <code>forwarding delay</code>) required.
+
+<ul>
+<li>Only root can propogate a TCN Frame with TC bit set.  This means is can be very slow to popogate.</li>
+</ul></li>
+<li><strong>RSTP</strong>: Sent by the detecting switch out all non-edge designated ports and root ports, resulting in much fast convergence.
+
+<ul>
+<li>TC bit set in ver2 BPDU frame.</li>
+<li>Occurs as quickly as the TC propogation can occur.</li>
+<li>Recieving switches flush mac-address table on all ports except the one which received the TCN.</li>
+<li>Legacy switches are notified using the TCN BPDU as per 802.1d.</li>
+</ul></li>
+</ul>
+
+<h2 id="port-costs">Port costs</h2>
+
+<p>From <a href="http://packetlife.net/blog/2008/sep/5/spanning-tree-port-costs/">packetlife.net</a>.</p>
+
+<h3 id="short">Short</h3>
+
+<p><img src="/img/8021d-1998-costs.png" alt="short" /></p>
+
+<h3 id="long">Long</h3>
+
+<p><img src="/img/8021d-2004-costs.png" alt="long" /></p>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-sdm/">SDM Templates</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-etherchannel/">EtherChannel</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-err-disable/">Error Disable</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-port-security/">Port Security</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 29, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/switching-udld/">Unidirectional Link Detection (UDLD)</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

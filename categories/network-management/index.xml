@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Network Management on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/categories/network-management/</link>
+    <description>Recent content in Network Management on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 31 Mar 2017 14:19:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/categories/network-management/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Converting SNMP Textual Objects to Numerical</title>
+      <link>http://blog.it-ninja.xyz/blog/snmp-textual-objects-to-numerical/</link>
+      <pubDate>Fri, 31 Mar 2017 14:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/blog/snmp-textual-objects-to-numerical/</guid>
+      <description>Today I have been working on SNMP monitoring standards for RAD G.SHDSL modems used within our network. Part of this required reading MIB files and extracting the objects for us to monitor network health of these links, not very exciting but very important to our customers.
+The issue with MIB files is that unless they are compiled into your NMS database the textual objects are not very useful. Therefore, I went about taking the known textual object-id from the MIB files and turning them into numerical object-ids.</description>
+    </item>
+    
+  </channel>
+</rss>

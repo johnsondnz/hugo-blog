@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/blog/cisco-ssh-without-password/</loc>
+    <lastmod>2017-12-07T20:49:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/rouing-bgp-summarisation/</loc>
+    <lastmod>2017-11-30T21:41:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-bgp-attributes/</loc>
+    <lastmod>2017-11-30T20:26:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-bgp/</loc>
+    <lastmod>2017-11-30T20:16:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-nat-pat/</loc>
+    <lastmod>2017-11-30T17:08:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-ospfv3/</loc>
+    <lastmod>2017-11-30T15:31:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/hexidecimal-binary/</loc>
+    <lastmod>2017-11-30T14:19:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/protocols-ipv6/</loc>
+    <lastmod>2017-11-30T14:04:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-policy-based-routing/</loc>
+    <lastmod>2017-11-30T13:56:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-eigrp-summarisation/</loc>
+    <lastmod>2017-11-30T12:06:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-eigrp/</loc>
+    <lastmod>2017-11-30T09:50:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-ospf-summarisation/</loc>
+    <lastmod>2017-11-30T08:23:56+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-admin-distance/</loc>
+    <lastmod>2017-11-29T22:18:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-ospf-lsa-stubs/</loc>
+    <lastmod>2017-11-29T21:48:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-ospf-auth/</loc>
+    <lastmod>2017-11-29T20:29:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-ospf-virtual-links/</loc>
+    <lastmod>2017-11-29T20:12:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-ospf-nbma/</loc>
+    <lastmod>2017-11-29T20:08:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/routing-ospf/</loc>
+    <lastmod>2017-11-29T16:35:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-sdm/</loc>
+    <lastmod>2017-11-29T16:19:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-stp/</loc>
+    <lastmod>2017-11-29T15:14:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/tshoot-process/</loc>
+    <lastmod>2017-11-29T15:08:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/tshoot-methods/</loc>
+    <lastmod>2017-11-29T14:47:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/tshoot-change-mgmt/</loc>
+    <lastmod>2017-11-29T14:22:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/tshoot-models/</loc>
+    <lastmod>2017-11-29T13:38:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/tshoot-planning/</loc>
+    <lastmod>2017-11-29T13:38:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-etherchannel/</loc>
+    <lastmod>2017-11-29T11:20:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-err-disable/</loc>
+    <lastmod>2017-11-29T10:54:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-port-security/</loc>
+    <lastmod>2017-11-29T10:18:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-udld/</loc>
+    <lastmod>2017-11-29T00:18:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-uplinkfast/</loc>
+    <lastmod>2017-11-28T23:50:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-backbonefast/</loc>
+    <lastmod>2017-11-28T23:18:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-portfast/</loc>
+    <lastmod>2017-11-28T22:18:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/switching-guards/</loc>
+    <lastmod>2017-11-28T16:18:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/blog/ed-137-vhf-over-ip-bandwidth-requirements/</loc>
+    <lastmod>2017-04-06T14:19:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/blog/snmp-textual-objects-to-numerical/</loc>
+    <lastmod>2017-03-31T14:19:19+13:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/bgp/</loc>
+    <lastmod>2017-11-30T21:41:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/blog/</loc>
+    <lastmod>2017-12-07T20:49:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/cisco/</loc>
+    <lastmod>2017-12-07T20:49:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/categories/design/</loc>
+    <lastmod>2017-04-06T14:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/eigrp/</loc>
+    <lastmod>2017-11-30T12:06:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/interfaces/</loc>
+    <lastmod>2017-11-29T11:20:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/ipv6/</loc>
+    <lastmod>2017-11-30T15:31:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/ipv6-cisco/</loc>
+    <lastmod>2017-11-30T09:50:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/junos/</loc>
+    <lastmod>2017-11-29T22:18:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/lacp/</loc>
+    <lastmod>2017-11-29T11:20:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/loop-prevention/</loc>
+    <lastmod>2017-11-29T00:18:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/math/</loc>
+    <lastmod>2017-11-30T14:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/methodologies/</loc>
+    <lastmod>2017-11-29T15:08:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/mpls/</loc>
+    <lastmod>2017-04-06T14:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/nat/</loc>
+    <lastmod>2017-11-30T17:08:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/categories/network-management/</loc>
+    <lastmod>2017-03-31T14:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/ospf/</loc>
+    <lastmod>2017-11-30T15:31:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/pagp/</loc>
+    <lastmod>2017-11-29T11:20:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/remind-me/</loc>
+    <lastmod>2017-11-30T14:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/route-policy/</loc>
+    <lastmod>2017-11-30T13:56:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/routed-protocols/</loc>
+    <lastmod>2017-11-30T14:04:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/routing/</loc>
+    <lastmod>2017-11-30T21:41:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/security/</loc>
+    <lastmod>2017-11-29T10:54:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/categories/snippet/</loc>
+    <lastmod>2017-12-07T20:49:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/snmp/</loc>
+    <lastmod>2017-03-31T14:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/spanning-tree/</loc>
+    <lastmod>2017-11-29T15:14:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/ssh/</loc>
+    <lastmod>2017-12-07T20:49:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/stubs/</loc>
+    <lastmod>2017-11-29T21:48:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/study-notes/</loc>
+    <lastmod>2017-11-29T15:08:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/categories/study-notes/</loc>
+    <lastmod>2017-11-30T21:41:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/study-notes/</loc>
+    <lastmod>2017-11-30T21:41:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/summarisation/</loc>
+    <lastmod>2017-11-30T21:41:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/switching/</loc>
+    <lastmod>2017-11-29T16:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/</loc>
+    <lastmod>2017-11-30T21:41:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/templates/</loc>
+    <lastmod>2017-11-29T16:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/tshoot/</loc>
+    <lastmod>2017-11-29T15:08:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/tags/voip/</loc>
+    <lastmod>2017-04-06T14:19:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.it-ninja.xyz/</loc>
+    <lastmod>2017-12-07T20:49:19+13:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

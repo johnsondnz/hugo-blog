@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>it-ninja</title>
+    <link>http://blog.it-ninja.xyz/</link>
+    <description>Recent content on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 07 Dec 2017 20:49:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cisco SSH without password</title>
+      <link>http://blog.it-ninja.xyz/blog/cisco-ssh-without-password/</link>
+      <pubDate>Thu, 07 Dec 2017 20:49:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/blog/cisco-ssh-without-password/</guid>
+      <description>Requirements  Hostname and domain configured. SSH Version 2. RSA with minimum 768bits. line vty configured to include transport ssh. Appropriate local or remote users.  Configuration Unhashed public-key router# configure terminal router(config)# hostname &amp;lt;hostname&amp;gt; router(config)# ip domain-name &amp;lt;domain&amp;gt; router(config)# crypto key generate rsa modulus &amp;lt;bit-length&amp;gt; router(config)# ip ssh version 2 router(config)# username &amp;lt;user&amp;gt; secret &amp;lt;secret&amp;gt; ! router(config)# ip ssh pubkey-chain router(conf-ssh-pubkey)# username &amp;lt;username&amp;gt; router(conf-ssh-pubkey-user)# key-string router(conf-ssh-pubkey-data)# &amp;lt;key string | max 256 characters per line&amp;gt; router(conf-ssh-pubkey-data)# &amp;lt;can be multiple lines&amp;gt; router(conf-ssh-pubkey-data)# exit router(conf-ssh-pubkey-user)# exit router(conf-ssh-pubkey)# exit router(config)# router#  Hashed public-key router# configure terminal router(config)# hostname &amp;lt;hostname&amp;gt; router(config)# ip domain-name &amp;lt;domain&amp;gt; router(config)# crypto key generate rsa modulus &amp;lt;bit-length&amp;gt; router(config)# ip ssh version 2 router(config)# username &amp;lt;user&amp;gt; secret &amp;lt;secret&amp;gt; !</description>
+    </item>
+    
+    <item>
+      <title>BGP Summarisation</title>
+      <link>http://blog.it-ninja.xyz/study-notes/rouing-bgp-summarisation/</link>
+      <pubDate>Thu, 30 Nov 2017 21:41:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/rouing-bgp-summarisation/</guid>
+      <description>Summarisation  BGP supports summarisation.  Where and how  In the route process aggregate-address &amp;lt;address&amp;gt; &amp;lt;mask&amp;gt; In the route process aggregate-address &amp;lt;address&amp;gt; &amp;lt;mask&amp;gt; (&amp;lt;no-summary&amp;gt;|&amp;lt;uppress-map&amp;gt;) [supress-map-name]  What happens  Without summary-only or suppress-map knobs both the aggregate and more-specific routes are advertised. There must be a route with a longer prefix that lies within the summary-address prefix for the summary-address to be advertised.  Tips  Convert the addres binary.</description>
+    </item>
+    
+    <item>
+      <title>BGP Attributes</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-bgp-attributes/</link>
+      <pubDate>Thu, 30 Nov 2017 20:26:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-bgp-attributes/</guid>
+      <description>Attribute Types  Well-known mandatory: Must appear in all BGP updates. BGP speakers must undertand these.  AS_PATH. origin. next-hop.  Well-known descrentionary: Must be recognised by all BGP speakers but does not have to be included in every BGP udpdate.  LOCAL_PREF. atomic aggregate.  Optional Transitive:  aggregator. community.  Optional non-transitive:.  MED (multi-exit discriminator). Cluster List   Optional attributes Optional attributes that are those that not every BGP speaker will understand.</description>
+    </item>
+    
+    <item>
+      <title>BGP</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-bgp/</link>
+      <pubDate>Thu, 30 Nov 2017 20:16:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-bgp/</guid>
+      <description>Basics  Distance vector protocol. Uses autonomous systems numbers (ASNs). Uses for connecting to external autonomous systems. eBGP and iBGP.  eBGP is where two routers are in different ASs. iBGP is where two routers are in the sam AS.  Runs over tcp/179. Neighbours (also known as peers) are explicitly defined.  TCP keepalives used for maintaining BGP adjacencies.  Routes must be in the route table to be placed into the BGP table.</description>
+    </item>
+    
+    <item>
+      <title>NAT and PAT</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-nat-pat/</link>
+      <pubDate>Thu, 30 Nov 2017 17:08:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-nat-pat/</guid>
+      <description>Basics  Translates RFC1918 to routed public addreses 1:1 burns a lot public addresses. This is known as source nat (SNAT). Dynamic creates a pool on inside global address (DNAT). Port address translation overloads an interface so all users share a single inside global address (PAT).  Address Types  Inside Local address: RFC1918 address in my network. Inside Global address: Public IP address in my network. Outside Local address: RFC1918 address at a remote network.</description>
+    </item>
+    
+    <item>
+      <title>OSPFv3</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospfv3/</link>
+      <pubDate>Thu, 30 Nov 2017 15:31:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospfv3/</guid>
+      <description>Basics  Borrows many of OSPFv2 mechinisms. Interfaces are aded at the interface level with ipv6 ospf &amp;lt;process&amp;gt; area &amp;lt;area&amp;gt;. There is no option under the router process.  The router will automatically create ipv6 router ospf &amp;lt;process&amp;gt;. This cannot be deleted. Doing so will stop the OSPFv3 process.  Still uses an IPv4 RID.  uses router-id route process command if there is no IPv4 address configured on an interface.</description>
+    </item>
+    
+    <item>
+      <title>Hexidecimal and Binary</title>
+      <link>http://blog.it-ninja.xyz/study-notes/hexidecimal-binary/</link>
+      <pubDate>Thu, 30 Nov 2017 14:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/hexidecimal-binary/</guid>
+      <description>Base 16 math. Hex to decimal.
+ 01 = 0 units of 16 + 1 = 1 90 = 9 units of 16 = 0 = 144  Hex to binary  Base 16 math. 0-F  0 = 0000 1 = 0001 2 = 0010 3 = 0011 4 = 0100 5 = 0101 6 = 0110 7 = 0111 8 = 1000 9 = 1001 A = 1010 B = 1011 C = 1100 D = 1101 E = 1110 F = 1111  IPv4 to Binary 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1</description>
+    </item>
+    
+    <item>
+      <title>IPv6</title>
+      <link>http://blog.it-ninja.xyz/study-notes/protocols-ipv6/</link>
+      <pubDate>Thu, 30 Nov 2017 14:04:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/protocols-ipv6/</guid>
+      <description>Basics  128-bit hexidecimal address. Eight sections of 4 bytes separated by seven colons. NAT no longer a thing!! IS-IS, OSPFv3 EIGRP, RIPng routing protocols Designed with summarisation in mind. Supports address compression. No broadcast. ICMPv6 used for layer-2 addres resolution. DHCPv6 or auto-configuration (SLAAC). Fragmentation is moved to an extension header. Intermediate routers not longer perform fragmentation. If it is required the source router does this. Routers exchange routing information over link-local addresses and link-local multicast.</description>
+    </item>
+    
+    <item>
+      <title>Policy Based Routing</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-policy-based-routing/</link>
+      <pubDate>Thu, 30 Nov 2017 13:56:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-policy-based-routing/</guid>
+      <description>Basics  Applied on inbound to an interface only. Matches either source or source and destination of a packet. CEF since IOS version 12.0 natively suports PBR. There is no special configuration required. Using source only results in 100% of traffic from that address following the policy. Deny statements don&amp;rsquo;t drop traffic, they only deny access to the policy. To drop packets set interface null0 needs to be used. Uses route-map and ip policy route-map &amp;lt;name&amp;gt; commands.</description>
+    </item>
+    
+    <item>
+      <title>EIGRP Summarisation</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-eigrp-summarisation/</link>
+      <pubDate>Thu, 30 Nov 2017 12:06:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-eigrp-summarisation/</guid>
+      <description>Summarisation  EIGRP supports summarisation.  Where and how  On the interface using ip summary-address eigrp &amp;lt;as&amp;gt; &amp;lt;address&amp;gt; &amp;lt;mask&amp;gt;  What happens  Neighbour relationsips on the interface. Router where the summary-addres is created will create a summary address with a null0 destination with an AD of 5.  AD can be viewed with show ip route &amp;lt;address&amp;gt; &amp;lt;mask&amp;gt; command or the running-config in some cases.  Downstream routers receive an EIGRP route with an AD of 90 like a normal internal EIGRP route.</description>
+    </item>
+    
+    <item>
+      <title>EIGRP</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-eigrp/</link>
+      <pubDate>Thu, 30 Nov 2017 09:50:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-eigrp/</guid>
+      <description>Features  IP protocol 88. Used to be Cisco propetary. Now open RFC7868. Hybrid protocol, more like a link-state protocol than a vector distance protocol. Multiprotocol support including IPv4, IPv6 etc. Support for CIDR and VLSM. Diffusing update algorithm (DUAL). Complex metric based on:  Bandwidth, on by default. Delay, on by default. Load, off by default. Reliability, off by default.  Accepts CIDR and VLSM wildcard in network route process command.</description>
+    </item>
+    
+    <item>
+      <title>OSPF Summarisation</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-summarisation/</link>
+      <pubDate>Thu, 30 Nov 2017 08:23:56 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-summarisation/</guid>
+      <description>Summarisation  By default type-3 and type-5 LSAs do not contain summarised routes. Inter-area summarisation occurs on the ABR. External route summarisation generally occurs on the ABSR. OSPF is classless which means that subnet information is carried in route advertisements. Reducess the route table through aggregation of routing prefixes. Relies on a well designed IP plan. With OSPF summarisation type-3 and type-5 LSAs can be summarised.  Where and how  ABR summarisation  area &amp;lt;area&amp;gt; range &amp;lt;address&amp;gt; &amp;lt;mask&amp;gt; command is used within the routing process.</description>
+    </item>
+    
+    <item>
+      <title>Routing Protocol Admin Distance</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-admin-distance/</link>
+      <pubDate>Wed, 29 Nov 2017 22:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-admin-distance/</guid>
+      <description> Cause I get confused between Junos and IOS!!
+Cisco Protocol Admin Distances  0: Connected 1: Static 5: EIGRP summary route 20: eBGP 90: EIGRP (internal) 100: IGRP 110: OSPF 115: IS-IS 120: RIP 170: EIGRP (external) 200: iBGP  Junos Route Preferences  0: Directly connected network 4: System routes 5: Static and Static LSPs 6: Static LSPs 7: RSVP-signaled LSPs 9: LDP-signaled LSPs 10: OSPF internal route 15: IS-IS Level 1 internal route 18: IS-IS Level 2 internal route 30 Redirects 40: Kernel 50: SNMP 55: Router discovery 100: RIP 100: RIPng 105: PIM 110: DVMRP 130: Aggregate 150: OSPF AS external routes 160: IS-IS Level 1 external route 165: IS-IS Level 2 external route 170: BGP 175: MSDP  </description>
+    </item>
+    
+    <item>
+      <title>OSPF LSA Types and Stubs</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-lsa-stubs/</link>
+      <pubDate>Wed, 29 Nov 2017 21:48:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-lsa-stubs/</guid>
+      <description>LSAs  Type-1: Router link.  Flooded by all routers in an area. Route types: (O).  Type-2: Network link.  Sent by the DR. Lists all the routers on the segment it is adjacent to. Flooded within the area. Route types: (O).  Type-3: Network summary link.  Sent by the ASBR between areas. Typically from/to area 0. Lists all the prefixes avaialble in a given area. Route types: (O IA).</description>
+    </item>
+    
+    <item>
+      <title>OSPF Authentication</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-auth/</link>
+      <pubDate>Wed, 29 Nov 2017 20:29:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-auth/</guid>
+      <description>Types  Type 0: null (no authentication). Type 1: plain-text. Type 2: message-digest.  Where Can be applied on an entires area or a single network segment.
+ Per-area. Per-segment.  When choosing per-area, all interfaces in the area must be configured with the apporpriate authentication key (md5 or plain-text). The router ospf section mandates authentication for the entire area. Unless you use the interface command ip ospf authentication null.</description>
+    </item>
+    
+    <item>
+      <title>OSPF Virtual Links</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-virtual-links/</link>
+      <pubDate>Wed, 29 Nov 2017 20:12:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-virtual-links/</guid>
+      <description>Why?  To link isolated non-backbone areas to the backbone area, because all non-backbone areas must be connected to the backbone area (area 0 or area 0.0.0.0). Stitches OSPF together so it works. Is a bandaid!!. They are not a solution for poor area design. In the configuration the command defines the transit area. The transit area cannot be any sort of stub area. You must you the RID of the remote router in the area &amp;lt;area&amp;gt; virtual-link route process command.</description>
+    </item>
+    
+    <item>
+      <title>OSPF Nonbroadcast Multiacces (NBMA)</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf-nbma/</link>
+      <pubDate>Wed, 29 Nov 2017 20:08:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf-nbma/</guid>
+      <description>NBMA Networks  Typically applies to frame-relay networks. These networks don&amp;rsquo;t have a multidestination capability, i.e. multicast or broadcast.  RFC 2328:  Nonbroadcast: OSPF similates broadcast network. Neighbours are manually configured.  One IP subnet. Neighbours and manually configured. DR and BDR elected, each needs full connectivity others. Full or partial-mesh topology.  Point-to-multipoint: Used in partial mesh. Treated as a collection of point-to-point links. No DR and BDR is elected and neighbours are dynamically discovered.</description>
+    </item>
+    
+    <item>
+      <title>OSPF</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospf/</link>
+      <pubDate>Wed, 29 Nov 2017 16:35:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospf/</guid>
+      <description>OSPF  IP protocol 89. Link state protocol. Uses dijkstra algorithm. Multi-area and single area topology options.  Data structures (tables)  Topology database or link-state database. Neighbour table or adjacency table. Routing table or forwarding table.  What needs to match between OSPF routers?  Interface netmask except on point-to-point links. Hello and dead timers. Area. Stub flag. Authentication password.  Notes:
+ Unique RID is required for each router in the the OSPF domain.</description>
+    </item>
+    
+    <item>
+      <title>SDM Templates</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-sdm/</link>
+      <pubDate>Wed, 29 Nov 2017 16:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-sdm/</guid>
+      <description>Todo read more!! Cisco Site
+What is it?  Predefined templates for system resource (TCAM) allocation. Allows for easy switch resource allocation based on role.  Access If the MLS is running a lot of ACLs this template will allocate resources to handle the maximum number of ACLs.
+switch(config)# sdm prefer access  Default Default. Treats all functions roughly the same.
+switch(config)# sdm prefer default  Dual IPv4 and IPv6 For dual-stack switches.</description>
+    </item>
+    
+    <item>
+      <title>Spanning-Tree</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-stp/</link>
+      <pubDate>Wed, 29 Nov 2017 15:14:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-stp/</guid>
+      <description>Todo  Split this into respective STP docs. Tidy this up, alot  CST, PVST+, MST  CST: Common spanning-tree. All VLANs in the same instance. One switch handles all traffic. PVST+: Per-VLAN spanning-tree plus. SPT run per-vlan, very granular. MST: Multiple spanning-tree. VLANs are mapped to one of 16 instance that have a common topology.  IST works with CST and is instance 0. Can represent the entire MST region as a virtual CST bridge.</description>
+    </item>
+    
+    <item>
+      <title>Troubleshooting Process</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-process/</link>
+      <pubDate>Wed, 29 Nov 2017 15:08:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-process/</guid>
+      <description>Troubleshooting Process Simplified  Report problem. Problem diagnosis. Problem resolution.  Problem reports can be very vague. Therefore it is important to define sub processes.
+Problem diagnosis  Collect information.  Both from the network/network tools and the user.  Examine collected information.  Examine the data and possibly compare to a previous baseline.  Eliminate potential causes.  Identify key indicators. Use the following inputs:  Documentation. Gathered data.</description>
+    </item>
+    
+    <item>
+      <title>Troubleshooting Methods</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-methods/</link>
+      <pubDate>Wed, 29 Nov 2017 14:47:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-methods/</guid>
+      <description>Troubleshooting Methods Top down  Start at layer-7. Eliminates the most layers. Requires access to the application.  Bottom Up  Start at layer-1 Requires access to the physical network. Requires detailed analysis of layer-1 and layer-2. Slowest.  Divide and conquer  Start at layer-3. Use ping and traceroute to test layer-3 reachability. Validate routing is as expected. Changes are if routing protocols are configured correctly it is a layer-1 or layer-2 issue.</description>
+    </item>
+    
+    <item>
+      <title>Change Management</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-change-mgmt/</link>
+      <pubDate>Wed, 29 Nov 2017 14:22:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-change-mgmt/</guid>
+      <description>Change Management  Identifies:  Who authorised network changes. Which tasks are performed during maintenance windows.  Prior to change it described what procedures must be followed.  i.e. configuration backup.  Describes how success and failure are defined and managed. Rollback plans in case of failure. Process circumvention:  Identifies who can authorise an action that condradicts process. Describes what entitles a change to do so.   Restore after failure  Required:  Duplicate hardware.</description>
+    </item>
+    
+    <item>
+      <title>Troubleshooting Models</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-models/</link>
+      <pubDate>Wed, 29 Nov 2017 13:38:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-models/</guid>
+      <description>Models FCAPS Defined by ISO.
+ F: Fault management. C: Configuration management. A: Accounting. P: Performance management. S: Security management.  ITIL IT infrastructure library of best practices/recommendations that align with business goals.
+TMN Telecommunications management network.
+ ITU-T variation of FACPS designed for Telcos. ITU-T = Telecommunications standardard sector. Used to manage telecommuniction networks, for example PSTN.  Cisco Lifecycle services (PPDIOO) Defined distinct phases in the lifecycle of a networks.</description>
+    </item>
+    
+    <item>
+      <title>Troubleshooting Planned vs Unplanned</title>
+      <link>http://blog.it-ninja.xyz/study-notes/tshoot-planning/</link>
+      <pubDate>Wed, 29 Nov 2017 13:38:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/tshoot-planning/</guid>
+      <description>Structured vs Reactive  Structured: Pre-defined tasks are carried out periodically to ensure the health of the network.  Hours a efficiently allocated to tasks to ensure the health and security of the network.  Reactive: Will always exist, however with a structured approach with peridoic maintenance events that cause a reactive repsonse are kept to a minimum. That&amp;rsquo;s the theory anyway.  Staff are required to drop what they are doing and attend to the issue at hand.</description>
+    </item>
+    
+    <item>
+      <title>EtherChannel</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-etherchannel/</link>
+      <pubDate>Wed, 29 Nov 2017 11:20:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-etherchannel/</guid>
+      <description>EtherChannel  Logical bundle of 2-8 like type interfaces between two switches.  MLAG allows for multi-chasses etherchannel.  Provides a single layer-2 or layer-3 logical interfaces to IOS. STP sees the logical interface as a single link.  Protocols and modes LACP  IEEE-802.3ad, later moved into IEEE-802.1AX-2008. Uses layer-2 multicast destiation of 0180.c200.0002.  This mac is shared by CDP, VTP, DTP, PAgP and UDLD.  Active: Turns on LACP unconditionally.</description>
+    </item>
+    
+    <item>
+      <title>Error Disable</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-err-disable/</link>
+      <pubDate>Wed, 29 Nov 2017 10:54:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-err-disable/</guid>
+      <description>Recovery  All detectors are on by default. All recovery modes are disabled by default. Default recovery timer is 300 seconds.  Min is 30 seconds.  detect and recovery modes configured globally.  Configure Timer interval switch(config)# err-disable recovery interval &amp;lt;30-86400&amp;gt;  Detect ASW1(config)#errdisable detect cause ? all Enable error detection on all cases arp-inspection Enable error detection for arp inspection dhcp-rate-limit Enable error detection on dhcp-rate-limit dtp-flap Enable error detection on dtp-flapping gbic-invalid Enable error detection on gbic-invalid inline-power Enable error detection for inline-power l2ptguard Enable error detection on l2protocol-tunnel link-flap Enable error detection on linkstate-flapping loopback Enable error detection on loopback pagp-flap Enable error detection on pagp-flapping pppoe-ia-rate-limit Enable error detection on PPPoE IA rate-limit psp Enable error detection on PSP security-violation Enable error detection on 802.</description>
+    </item>
+    
+    <item>
+      <title>Port Security</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-port-security/</link>
+      <pubDate>Wed, 29 Nov 2017 10:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-port-security/</guid>
+      <description>Port Security  Port level security feature. Exclusive use from 802.1x. You cannot use both features on the same port. Modes  Shutdown: Default state, the port is placed into err-disabled mode. The LED switches off. Protect: Frames from the offending host are dropped. Restrict: Like protect frames are droped from the offending host and logged.  sticky used to ensure learned MAC survives a reload. THe MAC is saved in the running and startup configurations.</description>
+    </item>
+    
+    <item>
+      <title>Unidirectional Link Detection (UDLD)</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-udld/</link>
+      <pubDate>Wed, 29 Nov 2017 00:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-udld/</guid>
+      <description>Unidirectional Link Detection (UDLD)  Used to also detect unidirectional links. When first enabling agressive mode on the first end-point it waits for the first peering. This tells the first switch that there is a udld enabled switch attached. Has the added benefit of detecting unidirectional links before STP is fully converged after a boot.  Modes  Normal Agressive  Timers  Hello every 15 seconds. Dead timer: 3 x hello.</description>
+    </item>
+    
+    <item>
+      <title>Spanning Tree Uplinkfast</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-uplinkfast/</link>
+      <pubDate>Tue, 28 Nov 2017 23:50:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-uplinkfast/</guid>
+      <description>Uplinkfast  Used to transition a blocking port into forwarding faster than the normal 50 second timer (max-age(20) + (2 x forwarding delay(15)) Transition take around 1-3 seconds. Cisco best practice states only use in the access-layer. Enabled globally for all VLANs on the switch. All or nothing. When the normal root port comes back up uplinkfast will transition back to that port. Time this takes is 2 x forwarding delay + 5 seconds before the root port enters the forwarding state.</description>
+    </item>
+    
+    <item>
+      <title>Spanning-Tree Backbonefast</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-backbonefast/</link>
+      <pubDate>Tue, 28 Nov 2017 23:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-backbonefast/</guid>
+      <description>Todo  More reading. Get better understanding.
+Backbonefast Cisco proprietary.
+ Helps with recover from undirect link failure by detecting inferrior BPDU.
+  Issue SW1 is the root Link from SW to SW2 fails  SW3 receives BPDUs from SW1 and SW2 each claiming they are root. SW3 ignores SW2 BPDUs and begins max-age timer. When max-age timer for SW2 expires the port transitions to the listening state.  STP recovers  SW3 starts to relay SW1 BPDU to SW2.</description>
+    </item>
+    
+    <item>
+      <title>Spanning-Tree Portfast</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-portfast/</link>
+      <pubDate>Tue, 28 Nov 2017 22:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-portfast/</guid>
+      <description>Portfast  Portfast enabled ports contine to send BPDUs every 2 seconds. It does not turn off STP. When portfast is enabled globally with spanning-tree portfast default all access ports become portfast enabled.  Upon use of switchport mode trunk portfast is disabled and trunking mode continues. Any port in swithport mode dynamic desirable mode that negotiates a trunk with DTP will also disable portfast.  switchport nonegotiate turns off DTP and prevent dynamic trunks forming, portfast then stays active.</description>
+    </item>
+    
+    <item>
+      <title>Loop and Root Guard</title>
+      <link>http://blog.it-ninja.xyz/study-notes/switching-guards/</link>
+      <pubDate>Tue, 28 Nov 2017 16:18:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/switching-guards/</guid>
+      <description>Short Version  Loop Guard on non-designated ports, except edge ports. Root Guard on all designated ports. BPDU Guard and portfast on all edge ports.  Loop Guard vs Root Guard Loop Guard  Should be applied on all non-designated ports. Can be configured globally and per interface. Prevents an interface from transitioning to designated in the absence of BPDUs. Is exclusive from root guard. The two cannot cannot be active at the same time.</description>
+    </item>
+    
+    <item>
+      <title>ED-137 - VHF over IP Bandwidth Requirements</title>
+      <link>http://blog.it-ninja.xyz/blog/ed-137-vhf-over-ip-bandwidth-requirements/</link>
+      <pubDate>Thu, 06 Apr 2017 14:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/blog/ed-137-vhf-over-ip-bandwidth-requirements/</guid>
+      <description>In 2014 during a new enterprise MPLS network build we needed to better understand the bandwidth requirements for VoIP services. The project involved extensive training on Eurocae standards ED-137 and ED-138, their parts as well as our selected manufacturer&amp;rsquo;s hardware and software. These standards outline the way Air Traffic Control services such as VHF, data and other services should interoperate and be carried over IP networks.
+I noticed early on in a section around bandwidth requirements that layer-1 was not accounted for and some layer-2 header information were missing in the bandwidth calculations.</description>
+    </item>
+    
+    <item>
+      <title>Converting SNMP Textual Objects to Numerical</title>
+      <link>http://blog.it-ninja.xyz/blog/snmp-textual-objects-to-numerical/</link>
+      <pubDate>Fri, 31 Mar 2017 14:19:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/blog/snmp-textual-objects-to-numerical/</guid>
+      <description>Today I have been working on SNMP monitoring standards for RAD G.SHDSL modems used within our network. Part of this required reading MIB files and extracting the objects for us to monitor network health of these links, not very exciting but very important to our customers.
+The issue with MIB files is that unless they are compiled into your NMS database the textual objects are not very useful. Therefore, I went about taking the known textual object-id from the MIB files and turning them into numerical object-ids.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>OSPF</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/routing-ospf/">OSPF</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 29, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">ospf</span>
+            
+            <span class="label label-success">routing</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="ospf">OSPF</h2>
+
+<ul>
+<li>IP protocol 89.</li>
+<li>Link state protocol.</li>
+<li>Uses dijkstra algorithm.</li>
+<li>Multi-area and single area topology options.</li>
+</ul>
+
+<h2 id="data-structures-tables">Data structures (tables)</h2>
+
+<ul>
+<li>Topology database or link-state database.</li>
+<li>Neighbour table or adjacency table.</li>
+<li>Routing table or forwarding table.</li>
+</ul>
+
+<h2 id="what-needs-to-match-between-ospf-routers">What needs to match between OSPF routers?</h2>
+
+<ul>
+<li>Interface netmask except on point-to-point links.</li>
+<li>Hello and dead timers.</li>
+<li>Area.</li>
+<li>Stub flag.</li>
+<li>Authentication password.</li>
+</ul>
+
+<p><strong>Notes</strong>:</p>
+
+<ul>
+<li>Unique RID is required for each router in the the OSPF domain.</li>
+<li>MTU should match too, else you risk getting stuck in EXSTART due to one neighbour maximising MTU to a point that one neighbour cannot accept the frames due to them being too large.</li>
+</ul>
+
+<h2 id="ospf-networks">OSPF Networks</h2>
+
+<ul>
+<li><strong>Point-to-point</strong>: Network that joins a pair of routers.
+
+<ul>
+<li>No DR or BDR is elected.</li>
+<li>All updates sent to 224.0.0.5.</li>
+</ul></li>
+<li><strong>Broadcast</strong>:
+
+<ul>
+<li>DR and BDR elected.</li>
+<li>Routers flood Type-1 LSAs to DR and DBR only on 224.0.0.6.</li>
+<li>DR floods Type-2 LSAs to all OSPF routers by DR on 224.0.0.5.</li>
+</ul></li>
+<li><a href="/posts/routing-ospf-nbma/">Nonbroadcast multiacces (NBMA)</a></li>
+</ul>
+
+<h2 id="dr-and-bdr-election">DR and BDR election</h2>
+
+<ul>
+<li>Only performed on multiacces networks such as broadcast and NBMA is special configurations.</li>
+<li>Criteria:
+
+<ul>
+<li>Highest OSPF interface priority wins and is the DR.</li>
+<li>Second highest OSPF interface priority is the BDR.</li>
+<li>IN the event all priorities are the same highest RID is the tie-breaker.</li>
+</ul></li>
+<li>Router with an OSPF interface priority of 0 cannot be a DR or BDR.</li>
+<li>Preempt does not occur.  Only way for a DR or BDR to the superceeded is through a loss of that routers OSPF process, i.e. <code>clear ip ospf process &lt;num&gt;</code>, <code>clear ip ospf neighbor &lt;ip&gt;</code> etc.</li>
+</ul>
+
+<h2 id="timers">Timers</h2>
+
+<ul>
+<li>Hello and dead timers must match between OSPF routers.</li>
+<li>Dead timer is 4x hello.</li>
+<li>Hello-interval: Per-network type.
+
+<ul>
+<li>Point-to-point: 10 seconds</li>
+<li>Broadcast: 10 seconds</li>
+<li>Nonbroadcast mutliaccess: 30 seconds</li>
+</ul></li>
+<li>LSA update on Cisco is 30 minutes, other vendors vary.</li>
+</ul>
+
+<h2 id="network-command">Network command</h2>
+
+<ul>
+<li><code>network &lt;network&gt; &lt;wildcard mask&gt; area &lt;area&gt;</code> route process command.</li>
+<li>The above command is used to select interface matching this network and mask for entry into the OSPF process.</li>
+<li>I prefer <code>ip ospf &lt;process&gt; area &lt;area&gt;</code> interface command.  This more explicit and avoids wildcard mask traps.</li>
+</ul>
+
+<h3 id="hub-and-spoke">Hub and Spoke</h3>
+
+<ul>
+<li><code>neighbor &lt;ip&gt;</code> route process command is required to start unicast OSPF neighbor process.
+
+<ul>
+<li>Only required on the hub in hub-n-spoke networks.</li>
+<li>Doesn&rsquo;t hurt to place this on the spokes as well.</li>
+</ul></li>
+<li>Hub <strong>must</strong> be the DR and there can be no BDR.
+
+<ul>
+<li>All spoke interfaces <strong>must</strong> be configured with <code>ip ospf priority 0</code> interface command.</li>
+<li>Adjacencies will come up if this isn&rsquo;t done, however it is inefficient to have a spoke as the DR.  If the hub goes down, then a BDR also serves no purpose as all inter-site communications must go via the hub.</li>
+</ul></li>
+</ul>
+
+<h2 id="passive-interface">Passive interface</h2>
+
+<p>Useful for when an interface has no potential neighbours but you want the network assoicated with the interface injected into OSPF.</p>
+
+<p>Passive interfaces do not send or process received OSPF packets.</p>
+
+<h2 id="configure">Configure</h2>
+
+<h3 id="network-type">Network type</h3>
+
+<ul>
+<li>broadcast: Cisco mode.</li>
+<li>nonbroadcast: RFC-compliant.</li>
+<li>point-to-multipoint: RFC-compliant.</li>
+<li>point-to-multipoint nonbroadcast: Cisco mode</li>
+<li>point-to-point: Cisco Mode</li>
+</ul>
+
+<pre><code>router(config)# interface &lt;iface&gt;
+router(config-if)# ip ospf network &lt;type&gt;
+</code></pre>
+
+<h3 id="hello-interval">Hello interval</h3>
+
+<p>Changing the <code>hello-interval</code> interface command also changes the dead timer interval.</p>
+
+<pre><code>router(config#) interface &lt;iface&gt;
+router(config-if)# ip ospf hello-interval &lt;sec&gt;
+</code></pre>
+
+<h3 id="ospf-interface-priority">OSPF interface priority</h3>
+
+<p>Effects the DR and BDR election.</p>
+
+<pre><code>router(config)# interface &lt;iface&gt;
+router(config-if)# ip ospf priroity &lt;0-255&gt;
+</code></pre>
+
+<h3 id="add-interface-to-routing-process">Add interface to routing process</h3>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# network &lt;network&gt; &lt;wildcard mask&gt; area &lt;area&gt;
+</code></pre>
+
+<p>or</p>
+
+<pre><code>router(config)# interface &lt;iface&gt;
+router(config-if)# ip ospf &lt;process&gt; area &lt;area&gt;
+</code></pre>
+
+<h3 id="passive-interface-1">Passive Interface</h3>
+
+<p>If using the <code>default</code> knob be sure to issue <code>no passive-interface &lt;iface&gt;</code> on interfaces where you expect neighbours to form.</p>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# passive-interface &lt;iface&gt;
+</code></pre>
+
+<p>or</p>
+
+<pre><code>router(config)# interface &lt;iface&gt;
+router(config-if)# ip ospf passive-interface
+</code></pre>
+
+<h3 id="advertise-default-route">Advertise default route</h3>
+
+<p>A default route must exist in the routers route table.</p>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# default information-originate
+</code></pre>
+
+<p>or always, a default route is advertise regardless of the presence of a default route.</p>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# default information-originate always
+</code></pre>
+
+<h2 id="redistributing-something">Redistributing something</h2>
+
+<ul>
+<li>Use subnets to include subnet mask in LSAs, otherwise the advertisement is classful.</li>
+<li>metric-type 2 is the default.  It&rsquo;s dumb.</li>
+</ul>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# redistribute &lt;protocol&gt; subnets metric-type 2
+</code></pre>
+
+<h2 id="verify">Verify</h2>
+
+<h3 id="interfaces">Interfaces</h3>
+
+<pre><code>R3#show ip ospf interface 
+Serial1/0.123 is up, line protocol is up 
+  Internet Address 10.1.1.6/30, Area 0, Attached via Interface Enable
+  Process ID 1, Router ID 10.1.1.3, Network Type POINT_TO_POINT, Cost: 64
+  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
+        0           64        no          no            Base
+  Enabled by interface config, including secondary ip addresses
+  Transmit Delay is 1 sec, State POINT_TO_POINT
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    oob-resync timeout 40
+    Hello due in 00:00:03
+  Supports Link-local Signaling (LLS)
+  Cisco NSF helper support enabled
+  IETF NSF helper support enabled
+  Index 1/1/1, flood queue length 0
+  Next 0x0(0)/0x0(0)/0x0(0)
+  Last flood scan length is 7, maximum is 7
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1 
+    Adjacent with neighbor 10.1.1.2
+  Suppress hello for 0 neighbor(s)
+Serial1/0.134 is up, line protocol is up 
+  Internet Address 10.1.1.9/30, Area 34, Attached via Interface Enable
+  Process ID 1, Router ID 10.1.1.3, Network Type POINT_TO_POINT, Cost: 64
+  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
+        0           64        no          no            Base
+  Enabled by interface config, including secondary ip addresses
+  Transmit Delay is 1 sec, State POINT_TO_POINT
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+    oob-resync timeout 40
+    Hello due in 00:00:06
+  Supports Link-local Signaling (LLS)
+  Cisco NSF helper support enabled
+  IETF NSF helper support enabled
+  Index 1/1/2, flood queue length 0
+  Next 0x0(0)/0x0(0)/0x0(0)
+  Last flood scan length is 2, maximum is 2
+  Last flood scan time is 0 msec, maximum is 1 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1 
+    Adjacent with neighbor 10.1.1.4
+  Suppress hello for 0 neighbor(s)
+</code></pre>
+
+<p>or filtered</p>
+
+<pre><code>R3#show ip ospf interface | i (line|Address|Process|Timer)
+Serial1/0.123 is up, line protocol is up 
+  Internet Address 10.1.1.6/30, Area 0, Attached via Interface Enable
+  Process ID 1, Router ID 10.1.1.3, Network Type POINT_TO_POINT, Cost: 64
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+Serial1/0.134 is up, line protocol is up 
+  Internet Address 10.1.1.9/30, Area 34, Attached via Interface Enable
+  Process ID 1, Router ID 10.1.1.3, Network Type POINT_TO_POINT, Cost: 64
+  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+</code></pre>
+
+<h3 id="neighbours">Neighbours</h3>
+
+<pre><code>R3#show ip ospf neighbor 
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.1.1.2          0   FULL/  -        00:00:37    10.1.1.5        Serial1/0.123
+10.1.1.4          0   FULL/  -        00:00:37    10.1.1.10       Serial1/0.134
+</code></pre>
+
+<p>Specific neighbor information.</p>
+
+<pre><code>R3#show ip ospf neighbor 10.1.1.2
+ Neighbor 10.1.1.2, interface address 10.1.1.5
+    In the area 0 via interface Serial1/0.123
+    Neighbor priority is 0, State is FULL, 6 state changes
+    DR is 0.0.0.0 BDR is 0.0.0.0
+    Options is 0x12 in Hello (E-bit, L-bit)
+    Options is 0x52 in DBD (E-bit, L-bit, O-bit)
+    LLS Options is 0x1 (LR)
+    Dead timer due in 00:00:39
+    Neighbor is up for 1d09h   
+    Index 1/1/2, retransmission queue length 0, number of retransmission 0
+    First 0x0(0)/0x0(0)/0x0(0) Next 0x0(0)/0x0(0)/0x0(0)
+    Last retransmission scan length is 0, maximum is 0
+    Last retransmission scan time is 0 msec, maximum is 0 msec
+</code></pre>
+
+<h3 id="database">Database</h3>
+
+<pre><code>R3#show ip ospf database 
+
+            OSPF Router with ID (10.1.1.3) (Process ID 1)
+
+		Router Link States (Area 0)
+
+Link ID         ADV Router      Age         Seq#       Checksum Link count
+10.1.1.2        10.1.1.2        735         0x8000003F 0x00DE3D 2
+10.1.1.3        10.1.1.3        228         0x80000042 0x00D242 2
+
+		Summary Net Link States (Area 0)
+
+Link ID         ADV Router      Age         Seq#       Checksum
+10.1.1.0        10.1.1.2        735         0x8000003C 0x007436
+10.1.1.8        10.1.1.3        228         0x80000036 0x002A7D
+
+		Summary ASB Link States (Area 0)
+
+Link ID         ADV Router      Age         Seq#       Checksum
+10.1.1.1        10.1.1.2        217         0x8000003A 0x007235
+
+		Router Link States (Area 34)
+
+Link ID         ADV Router      Age         Seq#       Checksum Link count
+10.1.1.3        10.1.1.3        228         0x80000044 0x000BF8 2
+10.1.1.4        10.1.1.4        410         0x80000038 0x0014FA 2
+
+		Summary Net Link States (Area 34)
+
+Link ID         ADV Router      Age         Seq#       Checksum
+0.0.0.0         10.1.1.3        228         0x80000036 0x00539E
+
+		Type-7 AS External Link States (Area 34)
+
+Link ID         ADV Router      Age         Seq#       Checksum Tag
+10.1.4.4        10.1.1.4        410         0x80000037 0x0084A5 0
+10.1.4.8        10.1.1.4        410         0x80000037 0x005CC9 0
+10.2.1.0        10.1.1.4        410         0x80000036 0x00D558 0
+10.2.2.0        10.1.1.4        410         0x80000036 0x00CA62 0
+10.2.4.12       10.1.1.4        167         0x80000036 0x002AF7 0
+
+		Type-5 AS External Link States
+
+Link ID         ADV Router      Age         Seq#       Checksum Tag
+0.0.0.0         10.1.1.1        1323        0x80000034 0x00650D 1
+10.1.4.4        10.1.1.3        228         0x80000036 0x002115 0
+10.1.4.8        10.1.1.3        228         0x80000036 0x00F839 0
+10.2.1.0        10.1.1.3        228         0x80000036 0x0070C8 0
+10.2.2.0        10.1.1.3        228         0x80000036 0x0065D2 0
+10.2.4.12       10.1.1.3        228         0x80000036 0x00C468
+</code></pre>
+
+<h3 id="routes">Routes</h3>
+
+<pre><code>R3#show ip route ospf
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 10.1.1.5 to network 0.0.0.0
+
+O*E2  0.0.0.0/0 [110/1] via 10.1.1.5, 1d04h, Serial1/0.123
+      10.0.0.0/8 is variably subnetted, 10 subnets, 3 masks
+O IA     10.1.1.0/30 [110/128] via 10.1.1.5, 1d05h, Serial1/0.123
+O N2     10.1.4.4/30 [110/20] via 10.1.1.10, 1d05h, Serial1/0.134
+O N2     10.1.4.8/30 [110/20] via 10.1.1.10, 1d05h, Serial1/0.134
+O N2     10.2.1.0/24 [110/20] via 10.1.1.10, 1d05h, Serial1/0.134
+O N2     10.2.2.0/24 [110/20] via 10.1.1.10, 1d05h, Serial1/0.134
+O N2     10.2.4.12/30 [110/20] via 10.1.1.10, 1d05h, Serial1/0.134
+</code></pre>
+
+<h2 id="debug">Debug</h2>
+
+<h3 id="debug-the-ospf-adjacency">Debug the OSPF adjacency</h3>
+
+<ul>
+<li><code>router# ddebugebig ip ospf hello</code>
+
+<ul>
+<li>To see the hello packets sent and received.</li>
+<li>The message output can be cryptic.</li>
+<li>R = received</li>
+<li>C = configured</li>
+</ul></li>
+<li><code>router# debug ip ospf adj</code></li>
+</ul>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/rouing-bgp-summarisation/">BGP Summarisation</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-bgp-attributes/">BGP Attributes</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-bgp/">BGP</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-ospfv3/">OSPFv3</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-policy-based-routing/">Policy Based Routing</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

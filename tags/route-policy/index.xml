@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Route Policy on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/route-policy/</link>
+    <description>Recent content in Route Policy on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 30 Nov 2017 13:56:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/route-policy/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Policy Based Routing</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-policy-based-routing/</link>
+      <pubDate>Thu, 30 Nov 2017 13:56:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-policy-based-routing/</guid>
+      <description>Basics  Applied on inbound to an interface only. Matches either source or source and destination of a packet. CEF since IOS version 12.0 natively suports PBR. There is no special configuration required. Using source only results in 100% of traffic from that address following the policy. Deny statements don&amp;rsquo;t drop traffic, they only deny access to the policy. To drop packets set interface null0 needs to be used. Uses route-map and ip policy route-map &amp;lt;name&amp;gt; commands.</description>
+    </item>
+    
+  </channel>
+</rss>

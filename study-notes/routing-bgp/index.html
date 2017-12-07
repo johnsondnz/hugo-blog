@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>BGP</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/routing-bgp/">BGP</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 30, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">bgp</span>
+            
+            <span class="label label-success">routing</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="basics">Basics</h2>
+
+<ul>
+<li>Distance vector protocol.</li>
+<li>Uses autonomous systems numbers (ASNs).</li>
+<li>Uses for connecting to external autonomous systems.</li>
+<li>eBGP and iBGP.
+
+<ul>
+<li>eBGP is where two routers are in different ASs.</li>
+<li>iBGP is where two routers are in the sam AS.</li>
+</ul></li>
+<li>Runs over tcp/179.</li>
+<li>Neighbours (also known as peers) are explicitly defined.
+
+<ul>
+<li>TCP keepalives used for maintaining BGP adjacencies.</li>
+</ul></li>
+<li>Routes must be in the route table to be placed into the BGP table.</li>
+<li>Full updates with BGP peers when forming an adjacency.
+
+<ul>
+<li>After that BGP updates are sent.</li>
+</ul></li>
+<li>Holds a tonne of information about routes.</li>
+<li>eBGP always lists the advertising router as the <code>next-hop</code> for the destination.</li>
+<li>iBGP does not change the <code>next-hop</code> attribute when advertising the route to iBGP speakers.
+
+<ul>
+<li><code>next-hop-self</code> can be used on iBGP peering to force the iBGP speaker to change the <code>next-hop</code> attribute.</li>
+</ul></li>
+<li>Selects a single route as the best-path.</li>
+<li>Only advertises its best route.</li>
+</ul>
+
+<h2 id="data-structures">Data structures</h2>
+
+<ul>
+<li>Neighbor table</li>
+<li>BGP table.</li>
+<li>Route table.</li>
+</ul>
+
+<h2 id="2-byes-as-number-range">2-byes AS number range</h2>
+
+<ul>
+<li>0 cannot be used.</li>
+<li>1 - 64511 is the public ASN range.</li>
+<li>64512 - 65535 is the private ASN range.</li>
+</ul>
+
+<h2 id="4-byte-as-number-range">4-byte AS number range</h2>
+
+<p><a href="https://www.cisco.com/c/en/us/products/collateral/ios-nx-os-software/border-gateway-protocol-bgp/white_paper_c11_516829.html">Can&rsquo;t get to sleep?</a></p>
+
+<h2 id="router-id">router-id</h2>
+
+<ul>
+<li>Same as EIGRP and OSPF.</li>
+<li><code>bgp router-id</code> route process command can be used.
+
+<ul>
+<li>This resets any current adjancencies.</li>
+</ul></li>
+<li><strong>Must</strong> be unique.</li>
+</ul>
+
+<h2 id="cisco-recommendations">Cisco recommendations</h2>
+
+<ul>
+<li>Use loopbacks for peering.
+
+<ul>
+<li>eBGP peering via loopbacks requires the <code>ebgp-multihop</code> command to be used on the <code>neighbor</code> statement.</li>
+<li><code>update-source loopback</code> command is also required on the <code>neighbor</code> statement.</li>
+<li>IGP routing to the peering is required.</li>
+</ul></li>
+</ul>
+
+<h3 id="when-to-use-it">When to use it</h3>
+
+<ul>
+<li>When you are connecting to more that one AS or ISP.</li>
+<li>Routing policy of your company and ISP differs.</li>
+<li>You are an ISP.</li>
+</ul>
+
+<h3 id="when-not-to-use-it">When not to use it.</h3>
+
+<ul>
+<li>Single ISP connection.</li>
+<li>When you don&rsquo;t care about the path taken to a destination.</li>
+<li>When router resources are limited.</li>
+<li>Low bandwidth connection between ASs.</li>
+</ul>
+
+<h2 id="bgp-states">BGP states</h2>
+
+<ul>
+<li><strong>Idle</strong>: Initial state.  Should never be stuck here.
+
+<ul>
+<li>Ensure IP in <code>neighbor</code> statement is correct.</li>
+<li>Connect follows Idle.</li>
+</ul></li>
+<li><strong>Connect</strong>: TCP connection request sent but not yet replied to.
+
+<ul>
+<li>If the router receives no reply it goes to Active.</li>
+<li>OpenSent follows Connect.</li>
+</ul></li>
+<li><strong>Active</strong>: BGP is continuing to create the peering with the configure neighbour.</li>
+<li><strong>OpenSent</strong>: TCP request has been replied to.
+
+<ul>
+<li>OpenConfirm follows OpenSent</li>
+</ul></li>
+<li><strong>OpenConfirm</strong>: BGP speaker is waiting for a keepalive.
+
+<ul>
+<li>If a keepalive is received the sessions moves to Established.</li>
+<li>If not it moves to Active.</li>
+</ul></li>
+<li><strong>Established</strong>: Update packets are exchanged.</li>
+</ul>
+
+<h2 id="bgp-rules">BGP Rules</h2>
+
+<ul>
+<li>The <code>network</code> route process command requires a route matching exactly be in the routing table.
+
+<ul>
+<li>Excluding the <code>mask</code> in the <code>network</code> command results in CIDR advertisements.</li>
+</ul></li>
+</ul>
+
+<h3 id="ibgp-rules">iBGP rules</h3>
+
+<ul>
+<li>Only advertise routes to an iBGP peer if that route was learned from an eBGP peer.</li>
+<li><strong>BGP Split-horizon</strong>:
+
+<ul>
+<li>iBGP speakers cannot advertises a route learned from one iBGP peer to other iBGP peers.</li>
+<li>Full mesh is required and assumed.</li>
+</ul></li>
+<li>Route relectors can be used to reduce the nx(n-1)/2 expotential growth issue for full-mesh networks.</li>
+<li>iBGP will advertise its locally sourced routes to iBGP peers.</li>
+<li>There must be a route in the IGP (and subsequently route table) to the next-hop address.</li>
+</ul>
+
+<h3 id="synchronisation">Synchronisation</h3>
+
+<ul>
+<li>Only applies when the AS is a transit area and there an non-BGP speakers in the transit area.</li>
+<li>A transit AS will not advertise a route until all routers in that transit AS has the same route in its IGP routing table.
+
+<ul>
+<li>This prevents blackholing of packets.</li>
+</ul></li>
+<li>Switched off by default as of IOS 12.2(8).</li>
+<li><code>no-synch</code> switches synchronisation off.</li>
+</ul>
+
+<h2 id="route-reflectors">Route Reflectors</h2>
+
+<ul>
+<li>A route reflector can take an iBGP learned route and advertise it a other iBGP peers.</li>
+<li><code>clients</code> peer with route-reflectors.</li>
+<li>Route reflectors should be clients or each other as <code>non-clients</code>. <strong>(Need to validate this statement, likely wrong!!)</strong></li>
+</ul>
+
+<h3 id="reflector-rules">Reflector rules</h3>
+
+<ul>
+<li>Updates from RR clients a sent to all client and non-client peers.</li>
+<li>Updates from eBGP peers are sent to all client and non-client peers.</li>
+<li>Updates from non-client peers are sent to all clients.
+
+<ul>
+<li>other non-client peers are not updated, this is normal BGP split-horizon.</li>
+</ul></li>
+</ul>
+
+<h3 id="ebgp-peers">eBGP peers</h3>
+
+<ul>
+<li>Cisco recommends that eBGP peers be directly connected.</li>
+</ul>
+
+<h2 id="best-path-selection">Best path selection</h2>
+
+<p><a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/13753-25.html#anc2">How the Best Path Algorithm Works</a></p>
+
+<ol>
+<li>Highest weight.</li>
+<li>Highest LOCAL_PREF.</li>
+<li>Originated locally.</li>
+<li>Shortest AS_PATH.</li>
+<li>Lowest origin.  (i, then e, then ?)</li>
+<li>Lowest MED.</li>
+<li>eBGP path over iBGP path.</li>
+<li>Lowest IGP metric to the BGP next-hop.</li>
+<li>Determine if multiple paths require installation into the route table for BGP multipath.</li>
+<li>If both paths are external, prefer the oldest one.</li>
+<li>Prefer the path that comes from the BGP speaker with the lowest router-id.</li>
+<li>If the originator or router-id is the same, prefer the path with the minimum cluster list length.</li>
+<li>Prefer the path that comes from the lowest neighbor address.</li>
+</ol>
+
+<h2 id="configure">Configure</h2>
+
+<h3 id="ebgp-neighbor">eBGP neighbor</h3>
+
+<p><code>ebgp-multihop</code> is required when peering using loopback interfaces, otherwise it is not required.</p>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; remote-as &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; update-source loopback
+router(config-router)# neighbor &lt;address&gt; ebgp-multihop 2
+</code></pre>
+
+<h3 id="ibgp-neighbor">iBGP neighbor</h3>
+
+<p><code>ebgp-multihop</code> is <strong>never</strong> required for iBGP.</p>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; remote-as &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; update-source loopback
+</code></pre>
+
+<h3 id="advertise-routes">Advertise routes</h3>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# network &lt;address&gt; mask &lt;netmask&gt;
+</code></pre>
+
+<p>or, route-map is optional.</p>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# redistribute &lt;protocol&gt; [route-map] &lt;name&gt;
+</code></pre>
+
+<h3 id="set-ibgp-next-hop-self">Set iBGP next-hop-self</h3>
+
+<p>Force iBGP to set the <code>next-hop</code> attribute to the local routers advertising interface.</p>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; remote-as &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; next-hop-self
+</code></pre>
+
+<h3 id="set-med-or-local-pref-using-route-map">Set MED or LOCAL_PREF using route-map.</h3>
+
+<ul>
+<li>Sets the metric value on route advertisements.</li>
+<li>Allows the use of prefix-list or access-list for filtering.</li>
+<li>Use <code>out</code> for MED.</li>
+<li>Use <code>in</code> for LOCAL_PREF.</li>
+</ul>
+
+<pre><code>router(config)# access-list &lt;1-199&gt; &lt;and-so-on&gt;
+!
+router(config)# route-map &lt;name&gt; permit &lt;seq&gt;
+router(config-route-map)# match ip address &lt;acl&gt;
+router(config-route-map)# set (&lt;metric&gt;|&lt;local-preference&gt;) &lt;value&gt;
+!
+router(config)# router bgp &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; remote-as &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; route-map &lt;name&gt; (out|in)
+</code></pre>
+
+<h3 id="set-local-pref-all-routes-no-filtering-possible">Set LOCAL_PREF, all routes, no filtering possible.</h3>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# bgp default local-preference &lt;value&gt;
+</code></pre>
+
+<h3 id="set-weight">Set weight</h3>
+
+<h4 id="weight-for-aa-neighbor-filtering-for-specific-prefixes">Weight for aa neighbor filtering for specific prefixes</h4>
+
+<pre><code>router(config)# access-list &lt;1-199&gt; &lt;and-so-on&gt;
+!
+router(config)# route-map &lt;name&gt; permit &lt;seq&gt;
+router(config-route-map)# match ip address &lt;acl&gt;
+router(config-route-map)# set weight &lt;value&gt;
+!
+router(config)# router bgp &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; remote-as &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; route-map &lt;name&gt; in
+</code></pre>
+
+<h4 id="weight-for-all-routes-from-a-neighbor">Weight for all routes from a neighbor</h4>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# neighbor &lt;address&gt; weight &lt;value&gt;
+</code></pre>
+
+<h3 id="route-reflectors-1">Route Reflectors</h3>
+
+<h4 id="clients">Clients</h4>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# neighbor &lt;route-reflector-address&gt; remote-as &lt;as&gt;
+</code></pre>
+
+<h4 id="route-reflector">Route Reflector</h4>
+
+<ul>
+<li>Adjacencies will go down as this command is entered.</li>
+<li><code>show ip bgp neighbor &lt;address&gt;</code> will show that neighbor is a client.</li>
+</ul>
+
+<pre><code>router(config)# router bgp &lt;as&gt;
+router(config-router)# neighbor &lt;client-address&gt; route-reflector-client
+</code></pre>
+
+<h2 id="verify">Verify</h2>
+
+<h3 id="bgp-neighbours-filtered">BGP neighbours (filtered)</h3>
+
+<pre><code>R1#show ip bgp neighbors | i (remote AS|router ID|BGP state|Last read)       
+BGP neighbor is 209.65.200.226,  remote AS 65002, external link
+  BGP version 4, remote router ID 209.65.200.226
+  BGP state = Established, up for 04:02:51
+  Last read 00:00:36, last write 00:00:55, hold time is 180, keepalive interval is 60 seconds
+</code></pre>
+
+<h3 id="bgp-summary">BGP Summary</h3>
+
+<pre><code>R1#show ip bgp summary 
+BGP router identifier 209.65.200.225, local AS number 65001
+BGP table version is 1, main routing table version 1
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+209.65.200.226  4        65002     260     260        1    0    0 03:52:17        0
+</code></pre>
+
+<h3 id="bgp-table">BGP table</h3>
+
+<pre><code>R1#show ip bgp 
+BGP table version is 3, local router ID is 209.65.200.225
+Status codes: s suppressed, d damped, h history, * valid, &gt; best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ r&gt;  209.65.200.224/30
+                       209.65.200.226           0             0 65002 ?
+ *&gt;  209.65.200.240/29
+                       209.65.200.226           0             0 65002 ?
+</code></pre>
+
+<h3 id="bgp-routes">BGP routes</h3>
+
+<pre><code>R1#show ip route bgp
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 209.65.200.226 to network 0.0.0.0
+
+      209.65.200.0/24 is variably subnetted, 3 subnets, 3 masks
+B        209.65.200.240/29 [20/0] via 209.65.200.226, 00:00:23
+</code></pre>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/rouing-bgp-summarisation/">BGP Summarisation</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-bgp-attributes/">BGP Attributes</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-ospfv3/">OSPFv3</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-policy-based-routing/">Policy Based Routing</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-eigrp-summarisation/">EIGRP Summarisation</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

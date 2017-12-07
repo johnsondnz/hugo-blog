@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>OSPF LSA Types and Stubs</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/study-notes/routing-ospf-lsa-stubs/">OSPF LSA Types and Stubs</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          November 29, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">ospf</span>
+            
+            <span class="label label-success">stubs</span>
+            
+            <span class="label label-success">routing</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h2 id="lsas">LSAs</h2>
+
+<ul>
+<li><strong>Type-1</strong>: Router link.
+
+<ul>
+<li>Flooded by all routers in an area.</li>
+<li>Route types: <code>(O)</code>.</li>
+</ul></li>
+<li><strong>Type-2</strong>: Network link.
+
+<ul>
+<li>Sent by the DR.  Lists all the routers on the segment it is adjacent to.</li>
+<li>Flooded within the area.</li>
+<li>Route types: <code>(O)</code>.</li>
+</ul></li>
+<li><strong>Type-3</strong>: Network summary link.
+
+<ul>
+<li>Sent by the ASBR between areas.  Typically from/to area 0.</li>
+<li>Lists all the prefixes avaialble in a given area.</li>
+<li>Route types: <code>(O IA)</code>.</li>
+</ul></li>
+<li><strong>Type-4</strong>: AS external ASBR summary link.
+
+<ul>
+<li>Sent by ASBRs.</li>
+<li>Describes how to reach the ASBR.</li>
+<li>Route types: <code>(O IA)</code>.</li>
+</ul></li>
+<li><strong>Type-5</strong>: External link.
+
+<ul>
+<li>Sent by ASBRs.</li>
+<li>Describes routes external to OSPF.</li>
+<li>Route types: <code>(O E1)</code> or <code>(O E2)</code> with E2 the default.</li>
+</ul></li>
+<li><strong>Type-7</strong>: NSSA external.
+
+<ul>
+<li>Sent by ABSR inside an NSSA.</li>
+<li>Converted to type-5 LSA by ABRs.</li>
+<li>Route types: <code>(O N1)</code> or <code>(O N2)</code> with N2 the default.</li>
+</ul></li>
+</ul>
+
+<p><strong>Notes</strong>:</p>
+
+<ul>
+<li>N2 and E2 types are default for external routes.  These types do not increment the cost as they are propogarted within OSPF.  Cost remains 20.</li>
+<li>N1 and E1 are used if you want to increment the cost to the ABSR as the route is propogated within OSPF.  <strong>Best routes!!</strong></li>
+</ul>
+
+<h2 id="stub-areas">Stub Areas</h2>
+
+<ul>
+<li>Used when an area is a spur of the network.</li>
+<li>Saves CPU cycles by sending a subset or only default route to the stub area router.</li>
+<li>BAckbone area 0 can never be a stub area.</li>
+</ul>
+
+<h2 id="types">Types</h2>
+
+<ul>
+<li>Stub area.
+
+<ul>
+<li>Cannot contain and ASBR.</li>
+<li>Blocks type-5 LSAs.</li>
+<li>ABR converts type-5 LSAs to a type-3 LSA (default route).</li>
+<li>Route types: <code>(O IA)</code>.</li>
+</ul></li>
+<li>Totally stuby area.
+
+<ul>
+<li>Cisco propietary.</li>
+<li>Blocks type-3, type-4 or type-5 LSAs.</li>
+<li>ABR converts type-5 LSAs to a type-3 LSA (default route).</li>
+<li><code>no-summary</code> knob only required on the ABR.</li>
+<li>Route types: <code>(O IA)</code>.</li>
+</ul></li>
+<li>NSSA
+
+<ul>
+<li>Accepts type-3 LSAs.  But does not get the default route by default.</li>
+<li>ASBR sends routes into the area as type-7 LSA.</li>
+<li>ABR converts type-7 LSA to type-5 LSA before sending to area 0.</li>
+<li>Route types:</li>
+<li><code>(O IA)</code>.</li>
+<li><code>(O N1)</code> or <code>(O N2)</code> with N2 the default.</li>
+</ul></li>
+<li>Totally stubby NSSA.
+
+<ul>
+<li>Same as an NSSA but receives the default route from OSPF ABR as a type-3 LSA.</li>
+<li><code>no-summary</code> knob only required on the ABR.</li>
+<li>Route types:</li>
+<li><code>(O IA)</code>.</li>
+<li><code>(O N1)</code> or <code>(O N2)</code> with N2 the default.</li>
+</ul></li>
+</ul>
+
+<p><strong>Notes</strong>: Candidate default route is represented with <code>(O*IA)</code>or <code>(O*Ex)</code> or <code>(O*Nx)</code>.  Where x = 1 or 2 depending on the OSPF metric-type.</p>
+
+<h2 id="configure">Configure</h2>
+
+<h3 id="stub-area">Stub area</h3>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# area &lt;area&gt; stub
+</code></pre>
+
+<h3 id="totally-stubby-area">Totally stubby area</h3>
+
+<p>Only required on the ABR.</p>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# area &lt;area&gt; stub no-summary
+</code></pre>
+
+<h3 id="nssa-not-so-stubby-stub-area">NSSA (Not so stubby stub area)</h3>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# area &lt;area&gt; nssa
+</code></pre>
+
+<h3 id="totally-nssa-not-so-stubby-stub-area">Totally NSSA (Not so stubby stub area)</h3>
+
+<p>Only required on the ABR.</p>
+
+<pre><code>router(config)# router ospf &lt;process&gt;
+router(config-router)# area &lt;area&gt; nssa no-summary
+</code></pre>
+
+<h2 id="verify">Verify</h2>
+
+<p><a href="/posts/routing-ospf/">OSPF</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/rouing-bgp-summarisation/">BGP Summarisation</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-bgp-attributes/">BGP Attributes</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-bgp/">BGP</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-ospfv3/">OSPFv3</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <h6 style="text-align: right">
+            November 30, 2017
+          </h6>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <h6 style="text-align: left">
+            <strong><a href="/study-notes/routing-policy-based-routing/">Policy Based Routing</a></strong>
+          </h6>
+        </div>
+      </div>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

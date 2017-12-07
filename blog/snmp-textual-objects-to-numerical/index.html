@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="map[]" />
+    <meta name="description" content="ramblings of a network engineer">
+    <link rel="shortcut icon" type="image/x-icon" href="http://blog.it-ninja.xyz/img/favicon.ico">
+    <title>Converting SNMP Textual Objects to Numerical</title>
+    <meta name="generator" content="Hugo 0.32-DEV" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="http://blog.it-ninja.xyz/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-110542214-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="http://blog.it-ninja.xyz/"><i class="fa fa-home"></i></a>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/study-notes/">STUDY-NOTES</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="http://blog.it-ninja.xyz/blog/snmp-textual-objects-to-numerical/">Converting SNMP Textual Objects to Numerical</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          March 31, 2017
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">snmp</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<p>Today I have been working on SNMP monitoring standards for RAD G.SHDSL modems used within our network.  Part of this required reading MIB files and extracting the objects for us to monitor network health of these links, not very exciting but very important to our customers.</p>
+
+<p>The issue with MIB files is that unless they are compiled into your NMS database the textual objects are not very useful.  Therefore, I went about taking the known textual object-id from the MIB files and turning them into numerical object-ids.  This way we can tell our NMS to poll the numerical object-ids without the need to compile the MIB database for each NMS.</p>
+
+<p>To do this I first took the zipped MIB file kindly provided by RAD and placed its contents into <code>C:\usr\local\share\mibs\</code> (I know Windows right!! not my first choice).  After this was done I run the following command to ensure that the MIB is found and parsed.</p>
+
+<pre><code>C:\ snmptranslate -m +RAD-RadShdsl-MIB -IR -Td hdsl2ShdslEndpointCurrLineStatus
+RAD-RadShdsl-MIB::hdsl2ShdslEndpointCurrLineStatus
+hdsl2ShdslEndpointCurrLineStatus OBJECT-TYPE
+ -- FROM RAD-RadShdsl-MIB
+ SYNTAX INTEGER {noSync(2), sync(3)}
+ MAX-ACCESS read-only
+ STATUS current
+ DESCRIPTION &quot;The current line synchronization status.&quot;
+::= { iso(1) org(3) dod(6) internet(1) private(4) enterprises(1) rad(164) radWan(3) wanGen(1) diverseIfWanGen(6) shdslIf(12) shdslEndpointCurrTable(1) shdslEndpointCurrEntry(1) 4 }
+</code></pre>
+
+<p>Now, lets use the <code>-m</code> flag to snmptranslate to tell it to load that mib. We&rsquo;ll use <code>-m +RAD-RadShdsl-MIB</code> to indicate that we want the tool to load not only the default set of mibs, but the RAD-RadShdsl-MIB as well (the leading <code>+</code> plus means &ldquo;also&rdquo;).</p>
+
+<p>Once I knew the MIB was being found I rerun with different output options to obtain the decimal oid.</p>
+
+<pre><code>C:\ snmptranslate -m +RAD-RadShdsl-MIB -IR -On hdsl2ShdslEndpointCurrLineStatus
+ .1.3.6.1.4.1.164.3.1.6.12.1.1.4
+</code></pre>
+
+<p>Job done!!</p>
+
+<h3 id="loading-additonal-mibs">Loading additonal MIBs</h3>
+
+<p>It is also possible to load all MIBS automatically at run-time by adding the following to <code>/etc/snmp/snmp.conf</code>.  Just be sure all the MIBs that each file tries to import are present or you will get a lot of errors.</p>
+
+<p><code>mibs +ALL</code></p>
+
+<p>Individual MIBs can be automatically loaded at run-time with:</p>
+
+<pre><code>mibs=+RAD-RadShdsl-MIB
+mibs=+Other-MIB
+</code></pre>
+
+<p>For more reading on net-snmp <a href="http://net-snmp.sourceforge.net/tutorial/tutorial-5/commands/output-options.html">check out this tutorial</a> or this <a href="http://net-snmp.sourceforge.net/tutorial/tutorial-5/commands/mib-options.html">explanation</a></p>
+
+<p>-Donald</p>
+
+              <hr>
+              
+              <div class="related-posts">
+    <h5>Related Posts</h5>
+    
+  </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="http://blog.it-ninja.xyz/js/docs.min.js"></script>
+<script src="http://blog.it-ninja.xyz/js/main.js"></script>
+
+<script src="http://blog.it-ninja.xyz/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+</html>

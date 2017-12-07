@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ipv6 on it-ninja</title>
+    <link>http://blog.it-ninja.xyz/tags/ipv6/</link>
+    <description>Recent content in Ipv6 on it-ninja</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 30 Nov 2017 15:31:19 +1300</lastBuildDate>
+    
+	<atom:link href="http://blog.it-ninja.xyz/tags/ipv6/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OSPFv3</title>
+      <link>http://blog.it-ninja.xyz/study-notes/routing-ospfv3/</link>
+      <pubDate>Thu, 30 Nov 2017 15:31:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/routing-ospfv3/</guid>
+      <description>Basics  Borrows many of OSPFv2 mechinisms. Interfaces are aded at the interface level with ipv6 ospf &amp;lt;process&amp;gt; area &amp;lt;area&amp;gt;. There is no option under the router process.  The router will automatically create ipv6 router ospf &amp;lt;process&amp;gt;. This cannot be deleted. Doing so will stop the OSPFv3 process.  Still uses an IPv4 RID.  uses router-id route process command if there is no IPv4 address configured on an interface.</description>
+    </item>
+    
+    <item>
+      <title>IPv6</title>
+      <link>http://blog.it-ninja.xyz/study-notes/protocols-ipv6/</link>
+      <pubDate>Thu, 30 Nov 2017 14:04:19 +1300</pubDate>
+      
+      <guid>http://blog.it-ninja.xyz/study-notes/protocols-ipv6/</guid>
+      <description>Basics  128-bit hexidecimal address. Eight sections of 4 bytes separated by seven colons. NAT no longer a thing!! IS-IS, OSPFv3 EIGRP, RIPng routing protocols Designed with summarisation in mind. Supports address compression. No broadcast. ICMPv6 used for layer-2 addres resolution. DHCPv6 or auto-configuration (SLAAC). Fragmentation is moved to an extension header. Intermediate routers not longer perform fragmentation. If it is required the source router does this. Routers exchange routing information over link-local addresses and link-local multicast.</description>
+    </item>
+    
+  </channel>
+</rss>
